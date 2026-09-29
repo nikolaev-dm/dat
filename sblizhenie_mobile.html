@@ -1,0 +1,3667 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101922">
+<meta name="description" content="Сближение: Стихии. 30 логических головоломок в карманном формате. Без таймера.">
+<title>Сближение · Стихии</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #101922;
+  --panel: #1a2531;
+  --panel-soft: #151f2a;
+  --line: #2b3947;
+  --text: #edf1f5;
+  --muted: #a2afbd;
+  --dim: #758597;
+  --accent: #c3e3b1;
+  --accent-ink: #243329;
+  --mint: #a9d2c7;
+  --purple: #b9b3dc;
+  --app-height: 100vh;
+}
+@supports (height: 100dvh) { :root { --app-height: 100dvh; } }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; }
+body { background: #0b1119; color: var(--text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+button, input { font: inherit; }
+button { border: 0; cursor: pointer; color: inherit; background: none; padding: 0; touch-action: manipulation; }
+button:disabled { cursor: default; opacity: .34; }
+button:focus-visible, canvas:focus-visible, input:focus-visible + .switch { outline: 2px solid var(--accent); outline-offset: 4px; }
+button:active:not(:disabled) { transform: translateY(1px); }
+h1, h2, h3, p { margin: 0; }
+h1:focus, h2:focus { outline: none; }
+[hidden] { display: none !important; }
+.icon-sprite { width: 0; height: 0; position: absolute; overflow: hidden; }
+.icon { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; vertical-align: middle; }
+.app {
+  position: relative; isolation: isolate; height: var(--app-height); width: 100%; max-width: 480px;
+  margin: 0 auto; overflow: hidden;
+  background: radial-gradient(ellipse at 30% 8%, #28374950, transparent 56%), var(--bg);
+}
+.app::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .34;
+  background-image: radial-gradient(#a5b7cb2e .6px, transparent .8px); background-size: 22px 22px;
+  mask-image: linear-gradient(#000, transparent 90%);
+}
+.screen {
+  height: 100%; min-height: 0; display: flex; flex-direction: column; position: relative;
+  padding: max(14px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+}
+.icon-button { display: inline-flex; width: 44px; height: 44px; flex: 0 0 44px; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 14px; background: #1c283580; }
+.icon-button .icon { width: 21px; height: 21px; }
+.icon-button:not(:disabled):hover { background: #2b3a48; border-color: #536376; }
+.primary-button, .secondary-button { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 54px; border-radius: 16px; padding: 12px 18px; font-size: 15px; font-weight: 650; line-height: 1.25; }
+.primary-button { background: var(--accent); color: var(--accent-ink); box-shadow: 0 4px 0 #849e7960, inset 0 1px 0 #ffffff80; }
+.primary-button:hover { background: #d3edc6; }
+.secondary-button { background: #202b38; border: 1px solid #3b4858; color: var(--text); }
+.secondary-button:hover { background: #2a3746; }
+.text-button { font-size: 13px; color: var(--muted); min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 6px 2px; }
+.text-button:hover { color: var(--text); }
+.text-button .icon { width: 17px; height: 17px; }
+.edition { font-size: 10px; font-weight: 700; letter-spacing: 2.8px; color: var(--accent); line-height: 1.4; }
+.small-label { font-size: 9px; font-weight: 600; letter-spacing: 1.35px; color: var(--muted); }
+.screen-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 50px; flex-shrink: 0; }
+.screen-header h1 { font-size: 17px; line-height: 1.2; font-weight: 650; letter-spacing: -.35px; }
+.header-counter { min-width: 44px; text-align: right; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.progress-track { height: 4px; background: #304050; border-radius: 5px; overflow: hidden; }
+.progress-track > span { display: block; background: var(--accent); height: 100%; width: 0; border-radius: inherit; transition: width .2s; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* Home */
+.home-screen { padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); }
+.home-top { display: flex; align-items: center; justify-content: space-between; min-height: 44px; flex: 0 0 auto; }
+.brand-mark { width: 44px; display: flex; align-items: center; gap: 4px; height: 44px; }
+.brand-mark i { width: 15px; height: 21px; border-radius: 5px; transform: rotate(-11deg); background: var(--accent); }
+.brand-mark i:last-child { border: 1.5px solid var(--accent); background: transparent; transform: rotate(10deg); }
+.home-heading { text-align: center; margin-top: clamp(18px, 5vh, 52px); z-index: 1; }
+.home-heading .edition { margin-bottom: 8px; font-size: 11px; letter-spacing: 5px; }
+.home-heading h1 { font-size: clamp(32px, 9.8vw, 47px); font-weight: 720; letter-spacing: -2px; line-height: 1.16; }
+.home-heading h1 span { color: var(--accent); }
+.home-heading > p:last-child { color: var(--muted); font-size: 14px; margin-top: 11px; }
+.home-art { position: relative; flex: 1 1 260px; width: 100%; min-height: 170px; max-height: 330px; align-self: center; }
+.home-art-inner { position: absolute; width: 100%; height: 100%; inset: 0; }
+.home-art::before { content: ""; position: absolute; width: 270px; height: 230px; left: calc(50% - 135px); top: calc(50% - 100px); background: radial-gradient(ellipse, #938cbd1c, #76927c09 45%, transparent 70%); }
+.orbit { position: absolute; border: 1px solid #7e93b329; border-radius: 50%; left: 50%; top: 50%; transform: translate(-50%,-50%) rotate(-23deg); }
+.orbit-one { width: 280px; height: 165px; }
+.orbit-two { width: 200px; height: 240px; border-style: dashed; border-color: #849eb91a; transform: translate(-50%,-50%) rotate(40deg); }
+.sample-tile { display: inline-flex; position: relative; align-items: center; justify-content: center; width: 68px; height: 68px; border-radius: 17px; color: #263b3d; box-shadow: 0 7px 0 #060d1540, inset 0 2px 0 #ffffff60, inset 0 -3px 0 #00000012, 0 16px 32px #00000022; border: 1px solid #ffffff30; }
+.sample-tile::after { content: ""; position: absolute; left: 10px; top: 9px; width: 12px; height: 2px; background: #ffffff50; border-radius: 8px; }
+.sample-tile .icon { width: 35px; height: 35px; stroke-width: 1.8; }
+.tile-circle { background: linear-gradient(155deg,#f0b29d,#d48e7b); }
+.tile-diamond { background: linear-gradient(150deg,#b7ded0,#8fbcae); }
+.tile-triangle { background: linear-gradient(155deg,#c8c1ed,#a39aca); }
+.tile-cross { background: linear-gradient(150deg,#edcf92,#d4b672); }
+.tile-ice { background: linear-gradient(150deg,#c1eaf4,#81bfd8); color: #345971; }
+.tile-plant { background: linear-gradient(150deg,#c5dfaa,#8cad78); color: #405b3a; }
+.tile-wind { background: linear-gradient(150deg,#d8eded,#9fc7cc); color: #426e77; }
+.tile-fire { background: linear-gradient(150deg,#654638,#3e302b); color: #f4b16d; border-color: #ba865166; box-shadow: 0 6px 0 #00000033, inset 0 3px 0 #ffcc8955, 0 10px 40px #bc83471c; }
+.tile-charcoal { background: linear-gradient(150deg,#7e8088,#535661); color: #2d3037; }
+.tile-portal { background: #233b44; color: #a2dedc; border-color: #96d4db88; }
+.float-tile { position: absolute; z-index: 2; }
+.tile-a { left: calc(50% - 108px); top: calc(50% - 99px); transform: rotate(-13deg) scale(.79); opacity: .92; }
+.tile-b { left: calc(50% + 39px); top: calc(50% - 105px); transform: rotate(12deg) scale(.83); }
+.tile-c { left: calc(50% - 75px); top: calc(50% - 29px); transform: rotate(-7deg); }
+.tile-d { left: calc(50% + 9px); top: calc(50% - 32px); transform: rotate(8deg); }
+.tile-e { left: calc(50% - 88px); top: calc(50% + 49px); transform: rotate(9deg) scale(.7); }
+.tile-f { left: calc(50% + 30px); top: calc(50% + 48px); transform: rotate(-13deg) scale(.74); }
+.art-link { position: absolute; width: 48px; height: 1px; background: #ecb199; left: calc(50% - 24px); top: calc(50% + 5px); box-shadow: 0 0 16px #ffc2a8; z-index: 1; }
+.art-spark { position: absolute; color: #cedcd7; font-size: 19px; }
+.spark-one { left: 13%; top: 57%; color: var(--accent); font-size: 24px; }
+.spark-two { right: 9%; top: 29%; color: #b9b3dc; font-size: 16px; }
+.art-dot { position: absolute; width: 3px; height: 3px; background: #b9b3dc; left: 33%; top: 9%; border-radius: 50%; }
+.home-actions { display: grid; gap: 13px; flex: 0 0 auto; }
+.continue-button { justify-content: space-between; min-height: 68px; text-align: left; padding: 13px 17px; }
+.continue-button > span { flex: 1; }
+.continue-button strong { font-size: 17px; font-weight: 700; display: block; }
+.continue-button small { font-size: 10px; font-weight: 500; margin-top: 5px; display: block; color: #425641; line-height: 1.35; }
+.continue-button > .icon:first-child { width: 30px; height: 30px; }
+.home-actions .secondary-button { justify-content: flex-start; min-height: 56px; }
+.button-counter { margin-left: auto; background: #10192370; border-radius: 8px; padding: 5px 7px; font-size: 11px; color: #b8c5d1; }
+.home-footer { flex: 0 0 auto; margin-top: clamp(20px, 4vh, 36px); }
+.home-progress-heading { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 9px; }
+.home-progress-heading strong { font-weight: 500; color: var(--text); }
+.home-footer > p { font-size: 10px; text-align: center; color: #9eacba; margin-top: 16px; }
+.fullscreen-button { font-size: 11px; min-height: 36px; margin: 4px auto 0; display: flex; }
+.home-footer .fullscreen-button { color: var(--dim); }
+
+/* Chapters */
+.levels-screen { --chapter-color: var(--purple); }
+.chapter-content { flex: 1; min-height: 0; display: flex; flex-direction: column; touch-action: pan-y; }
+.chapter-heading { text-align: center; margin-top: clamp(18px,4.8vh,42px); }
+.chapter-heading .edition { color: var(--chapter-color); margin-bottom: 9px; }
+.chapter-heading h2 { font-size: clamp(25px,7vw,32px); font-weight: 680; letter-spacing: -.9px; }
+.chapter-heading > p:last-child { font-size: 12px; color: var(--muted); margin: 10px auto 0; max-width: 250px; line-height: 1.55; }
+.chapter-art { flex: 1; min-height: 88px; max-height: 270px; position: relative; display: flex; justify-content: center; align-items: center; gap: 9px; }
+.chapter-art::before { content: ""; position: absolute; width: 220px; height: 160px; background: radial-gradient(ellipse,#b9b3dc12,transparent 70%); pointer-events: none; }
+.chapter-art .sample-tile { width: 68px; height: 68px; transform: rotate(-12deg) translateY(7px); }
+.chapter-art .sample-tile:nth-child(2) { transform: rotate(7deg) translateY(-10px); z-index: 1; width: 78px; height: 78px; }
+.chapter-art .sample-tile:nth-child(3) { transform: rotate(14deg) translateY(7px); }
+.chapter-progress { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--muted); margin: 6px 0 13px; }
+.chapter-progress > span:last-child { letter-spacing: 1px; font-size: 10px; color: var(--chapter-color); }
+.level-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 10px; flex: 0 0 auto; }
+.level-button { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; height: clamp(68px,10.8vh,90px); position: relative; border-radius: 17px; border: 1px solid #3a4757; background: linear-gradient(150deg,#26323f,#1b2531); font-variant-numeric: tabular-nums; }
+.level-button:hover { border-color: #90a1b5; background: #2b3948; }
+.level-number { font-size: 23px; font-weight: 650; letter-spacing: -.5px; }
+.level-state { font-size: 9px; min-height: 12px; margin-top: 8px; color: var(--dim); }
+.level-state .icon { width: 13px; height: 13px; color: var(--accent); }
+.level-button.active { border-color: var(--accent); box-shadow: 0 0 0 1px #bdddac33, inset 0 0 24px #a9c6890c; background: #2c3c3c; }
+.level-button.active .level-number { color: #e1efdb; }
+.level-button.active .level-state { color: var(--accent); }
+.level-button.completed:not(.active) { border-color: #7e9c783f; background: #263532; }
+.level-button.completed .level-number { color: #cbe4be; }
+.page-navigation { display: flex; align-items: center; justify-content: space-between; margin: clamp(20px,4.5vh,36px) 0 0; gap: 10px; flex: 0 0 auto; }
+.page-navigation > .icon-button { border-color: #334251; }
+.pager { display: flex; justify-content: center; align-items: center; gap: 2px; }
+.page-dot { width: 34px; height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.page-dot::after { content: ""; width: 6px; height: 6px; background: #495968; border-radius: 8px; }
+.page-dot[aria-current="page"]::after { width: 22px; background: var(--chapter-color, var(--accent)); }
+.screen-footnote { text-align: center; color: var(--muted); font-size: 10px; margin-top: 12px; flex: 0 0 auto; }
+
+/* Board takes exactly the space left between the HUD and thumb controls. */
+.game-screen { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+.game-header { min-height: 52px; }
+.game-heading { flex: 1; min-width: 0; text-align: center; }
+.game-heading > p { color: var(--accent); font-size: 9px; font-weight: 650; letter-spacing: 2px; margin-bottom: 4px; }
+.game-header h1 { font-size: 16px; letter-spacing: -.4px; }
+.game-hud { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; flex-shrink: 0; height: 38px; }
+.hud-stat { min-height: 36px; display: flex; gap: 13px; align-items: center; justify-content: center; background: #1b273380; border: 1px solid #314151; padding: 6px 14px; border-radius: 12px; font-size: 11px; color: var(--muted); }
+.hud-stat strong { font-size: 17px; color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.hud-stat .icon { color: var(--mint); width: 13px; height: 13px; }
+.target-stat { gap: 8px; }
+.level-info-button { width: 44px; height: 44px; color: #8e9fb0; display: flex; align-items: center; justify-content: center; }
+.level-info-button .icon { width: 20px; height: 20px; }
+.stage { position: relative; flex: 1 1 0; min-height: 0; min-width: 0; margin: 14px 0; display: flex; align-items: center; justify-content: center; }
+.stage::before { content: ""; width: 90%; height: 85%; position: absolute; background: radial-gradient(ellipse,#6c8c9f0c,transparent 70%); pointer-events: none; }
+#board { display: block; flex: 0 0 auto; max-width: 100%; max-height: 100%; border-radius: 12px; box-shadow: 0 0 0 1px #3b4e6070, 0 14px 40px #00000033; touch-action: none; position: relative; }
+.game-deck { flex: 0 0 auto; }
+.feedback { min-height: 44px; width: 100%; display: flex; align-items: center; text-align: center; justify-content: center; gap: 8px; padding: 4px 9px; border-radius: 10px; color: var(--muted); }
+.feedback:hover { background: #22303c80; }
+.status-message { font-size: 11px; line-height: 1.55; max-width: 315px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.feedback-info { display: flex; align-items: center; justify-content: center; width: 15px; height: 15px; flex: 0 0 15px; border: 1px solid #5a6d7f; border-radius: 50%; color: #95a6b8; font: 10px Georgia,serif; }
+.status-message.lost { color: #efb39c; }
+.status-message.hint { color: var(--accent); }
+.status-message.fire { color: #e2b78d; }
+.status-message.portal { color: #a9deda; }
+.status-message.element { color: #b8d4d7; }
+.selection-line { min-height: 28px; display: flex; gap: 7px; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); margin-bottom: 9px; }
+.selection-dot { width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; border: 1px solid #a2afbd; }
+#showResultBtn { font-size: 10px; min-height: 28px; margin-left: auto; color: var(--accent); }
+#showResultBtn .icon { width: 13px; height: 13px; }
+.move-controls { display: grid; grid-template-columns: 1fr 39px 1fr; gap: 6px; align-items: center; }
+.move-button { display: flex; align-items: center; justify-content: center; gap: 12px; border: 1px solid #a6c692aa; border-radius: 18px; background: linear-gradient(165deg,#cde8bc,#b6d3a8); box-shadow: 0 4px 0 #74926755; min-height: 60px; font-size: 14px; font-weight: 650; color: #283d2e; }
+.move-button .icon { width: 28px; height: 28px; stroke-width: 1.7; }
+.move-button:disabled { opacity: 1; background: #1f2b37; color: #819486; border-color: #3b4c49; box-shadow: none; }
+.move-button:enabled:hover { background: #dcf1cc; }
+.one-cell { color: var(--dim); font-size: 9px; text-align: center; line-height: 1.5; }
+.game-toolbar { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); margin-top: 17px; border-top: 1px solid #2e3c496e; padding-top: 7px; }
+.tool-button { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 7px; min-height: 47px; color: #c0cbd5; font-size: 11px; }
+.tool-button .icon { width: 21px; height: 21px; }
+.tool-button.hint-button { color: #dbc795; }
+.tool-button:not(:disabled):hover { color: #f1f5f1; }
+.tool-button:disabled { opacity: .38; }
+
+/* Rules are separate pages, never a long sheet below the game. */
+.help-screen { --chapter-color: var(--accent); }
+.rule-content { flex: 1; min-height: 0; display: flex; flex-direction: column; touch-action: pan-y; }
+.rule-art { display: flex; justify-content: center; align-items: center; flex: 1 1 140px; min-height: 80px; max-height: 230px; gap: 14px; }
+.rule-art .sample-tile { width: 70px; height: 70px; }
+.rule-art .art-arrow { color: #748da5; }
+.rule-card { border: 1px solid #3a4b5d; border-radius: 24px; padding: 23px; background: linear-gradient(140deg,#243242ee,#1a2531ee); }
+.rule-card .edition { margin-bottom: 9px; font-size: 9px; letter-spacing: 2px; }
+.rule-card h2 { font-size: 23px; letter-spacing: -.7px; line-height: 1.2; margin-bottom: 18px; }
+.rule-card p:not(.edition) { font-size: 13px; line-height: 1.65; color: #b6c5d1; }
+.rule-card p + p { margin-top: 12px; }
+.rule-card strong { color: #f0f3f6; font-weight: 600; }
+.help-screen .page-navigation { margin-top: auto; padding-top: 16px; }
+.rule-pager { gap: 0; }
+.rule-pager .page-dot { width: 22px; }
+.rule-pager .page-dot::after { width: 4px; height: 4px; }
+.rule-pager .page-dot[aria-current="page"]::after { width: 14px; }
+.help-done { flex-shrink: 0; min-height: 46px; margin-top: 12px; }
+
+/* Native dialogs supply focus trapping, Escape and a real modal surface. */
+.modal { color: var(--text); background: linear-gradient(150deg,#243141,#17232f); width: min(392px,calc(100vw - 32px)); max-width: none; padding: 23px; margin: auto; border: 1px solid #4a5b6c; border-radius: 27px; box-shadow: 0 25px 90px #00000099; max-height: calc(var(--app-height) - 32px); overflow: auto; }
+.modal::backdrop { background: #080e17cc; backdrop-filter: blur(9px); }
+.modal[open] { animation: enter-dialog .16s ease-out; }
+@keyframes enter-dialog { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+.dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 7px; margin: -5px -5px 12px 0; }
+.dialog-header .edition { font-size: 9px; letter-spacing: 1.8px; }
+.dialog-header .icon-button { border: 0; background: none; }
+.modal h2 { font-size: 30px; font-weight: 650; line-height: 1.2; letter-spacing: -.8px; margin-bottom: 10px; }
+.modal-note { font-size: 13px; line-height: 1.6; color: #b6c4d1; margin: 0 0 22px; }
+.pause-dialog h2 { font-size: 34px; }
+.pause-menu { margin-top: 17px; border-bottom: 1px solid #40505f77; }
+.pause-menu > button { display: flex; align-items: center; gap: 13px; min-height: 51px; width: 100%; font-size: 13px; text-align: left; border-top: 1px solid #40505f77; padding: 7px 2px; }
+.pause-menu > button > .icon:first-child { color: #a8bbc6; width: 20px; height: 20px; }
+.pause-menu > button > .icon:last-child { margin-left: auto; width: 17px; height: 17px; color: #8095a8; }
+.setting-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; font-size: 12px; color: #b8c6d1; cursor: pointer; }
+.setting-row input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.switch { margin-left: auto; height: 26px; width: 45px; border: 1px solid #59687b; border-radius: 50px; background: #14202b; padding: 3px; position: relative; flex-shrink: 0; }
+.switch::after { content: ""; width: 18px; height: 18px; background: #8193a6; border-radius: 50%; display: block; transition: transform .15s; }
+.setting-row input:checked + .switch { background: #597c60; border-color: #93b788; }
+.setting-row input:checked + .switch::after { background: #d4e9c4; transform: translateX(18px); }
+.modal .secondary-button { margin-top: 12px; }
+.confirm-dialog h2 { font-size: 25px; }
+.info-dialog h2 { font-size: 25px; }
+.info-mechanics { display: flex; gap: 7px; flex-wrap: wrap; margin: -6px 0 18px; }
+.mechanic-chip { display: inline-flex; align-items: center; gap: 5px; padding: 6px 9px; background: #101a2455; border: 1px solid #516272; border-radius: 8px; font-size: 10px; color: #c3d3de; }
+.mechanic-chip .icon { width: 13px; height: 13px; }
+#infoRulesBtn { display: flex; width: 100%; margin-top: 7px; }
+.result-dialog { text-align: center; padding: 28px 24px 16px; }
+.result-emblem { width: 78px; height: 78px; background: radial-gradient(#45554788,#293a3c44); border: 1px solid #93ab784f; border-radius: 25px; margin: 0 auto 23px; display: flex; justify-content: center; align-items: center; transform: rotate(-9deg); box-shadow: 0 0 55px #b7d49616; color: #d1e4ad; }
+.result-emblem .icon { width: 41px; height: 41px; stroke-width: 1.2; transform: rotate(9deg); }
+.result-dialog h2 { margin: 10px 0 12px; font-size: 29px; }
+.result-dialog .edition { font-size: 9px; }
+.result-dialog .modal-note { margin-bottom: 16px; font-size: 12px; }
+.result-stats { display: grid; grid-template-columns: 1fr 1fr; margin: 18px 0 24px; padding: 16px 6px; border: 1px solid #405465; border-radius: 16px; background: #15202b66; }
+.result-stats > div { display: flex; flex-direction: column; gap: 3px; }
+.result-stats > div + div { border-left: 1px solid #405465; }
+.result-stats strong { font-size: 27px; font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.result-stats span { color: var(--muted); font-size: 10px; }
+.result-secondary { display: flex; gap: 10px; justify-content: center; margin-top: 6px; }
+.result-secondary .text-button { font-size: 10px; min-height: 42px; }
+
+/* Small phones retain actual 44px touch targets instead of scaling the whole UI. */
+@media (max-height: 740px) {
+  .screen { padding-top: max(10px,env(safe-area-inset-top)); padding-bottom: max(12px,env(safe-area-inset-bottom)); }
+  .home-heading { margin-top: 19px; }
+  .home-art { min-height: 142px; }
+  .home-art-inner { transform: scale(.84); }
+  .home-footer { margin-top: 21px; }
+  .home-footer > p { margin-top: 12px; }
+  .continue-button { min-height: 61px; }
+  .home-footer .fullscreen-button { min-height: 32px; }
+  .chapter-heading { margin-top: 24px; }
+  .chapter-art { min-height: 92px; }
+  .level-button { height: 72px; }
+  .page-navigation { margin-top: 20px; }
+  .game-hud { margin-top: 8px; height: 35px; }
+  .stage { margin: 10px 0; }
+  .move-button { min-height: 54px; }
+  .game-toolbar { margin-top: 12px; padding-top: 4px; }
+  .tool-button { min-height: 44px; }
+  .selection-line { min-height: 24px; margin-bottom: 6px; }
+  .feedback { min-height: 39px; padding: 2px 5px; }
+  .rule-art { max-height: 160px; min-height: 85px; }
+  .rule-card { padding: 18px; }
+  .rule-card h2 { font-size: 22px; margin-bottom: 14px; }
+  .rule-card p:not(.edition) { font-size: 12px; }
+  .rule-card p + p { margin-top: 10px; }
+}
+@media (max-height: 610px) and (orientation: portrait) {
+  .screen { padding-top: max(8px,env(safe-area-inset-top)); padding-bottom: max(10px,env(safe-area-inset-bottom)); }
+  .home-heading { margin-top: 8px; }
+  .home-heading .edition { font-size: 9px; letter-spacing: 3px; margin-bottom: 4px; }
+  .home-heading h1 { font-size: 34px; }
+  .home-heading > p:last-child { font-size: 12px; margin-top: 6px; }
+  .home-art { min-height: 118px; }
+  .home-art-inner { transform: scale(.64); }
+  .home-actions { gap: 11px; }
+  .home-actions .secondary-button { min-height: 47px; font-size: 13px; }
+  .continue-button { min-height: 54px; padding: 9px 14px; }
+  .continue-button strong { font-size: 15px; }
+  .continue-button small { font-size: 9px; margin-top: 3px; }
+  .home-footer { margin-top: 16px; }
+  .home-footer > p { margin-top: 9px; font-size: 9px; }
+  .home-footer .fullscreen-button { min-height: 30px; margin-top: 0; }
+  .chapter-heading { margin-top: 12px; }
+  .chapter-heading .edition { margin-bottom: 4px; }
+  .chapter-heading h2 { font-size: 24px; }
+  .chapter-heading > p:last-child { font-size: 11px; margin-top: 6px; }
+  .chapter-art { min-height: 80px; }
+  .chapter-art .sample-tile { width: 47px; height: 47px; border-radius: 13px; }
+  .chapter-art .sample-tile:nth-child(2) { width: 55px; height: 55px; }
+  .chapter-art .sample-tile .icon { width: 27px; height: 27px; }
+  .chapter-progress { font-size: 10px; margin: 3px 0 9px; }
+  .level-grid { gap: 8px; }
+  .level-button { height: 65px; border-radius: 14px; }
+  .level-number { font-size: 20px; }
+  .level-state { margin-top: 5px; font-size: 8px; }
+  .page-navigation { margin-top: 13px; }
+  .screen-footnote { margin-top: 8px; font-size: 9px; }
+  .game-header { min-height: 46px; }
+  .game-header h1 { font-size: 14px; }
+  .game-hud { margin-top: 3px; height: 34px; }
+  .hud-stat { min-height: 30px; padding: 3px 12px; }
+  .stage { margin: 7px 0; }
+  .feedback { min-height: 36px; }
+  .status-message { font-size: 10px; line-height: 1.5; }
+  .selection-line { font-size: 10px; min-height: 22px; margin-bottom: 5px; }
+  .move-button { min-height: 48px; border-radius: 15px; font-size: 13px; }
+  .game-toolbar { margin-top: 9px; padding-top: 3px; }
+  .tool-button { font-size: 10px; gap: 5px; }
+  .tool-button .icon { width: 19px; height: 19px; }
+  .rule-art { min-height: 67px; max-height: 96px; gap: 11px; }
+  .rule-art .sample-tile { width: 48px; height: 48px; border-radius: 12px; }
+  .rule-art .sample-tile .icon { width: 26px; height: 26px; }
+  .rule-card { padding: 15px; border-radius: 18px; }
+  .rule-card .edition { font-size: 8px; margin-bottom: 7px; }
+  .rule-card h2 { font-size: 20px; margin-bottom: 12px; }
+  .rule-card p:not(.edition) { font-size: 11px; line-height: 1.6; }
+  .help-screen .page-navigation { padding-top: 9px; }
+  .help-done { min-height: 44px; margin-top: 7px; }
+  .modal { padding: 18px; border-radius: 22px; }
+  .result-emblem { width: 60px; height: 60px; margin-bottom: 16px; border-radius: 19px; }
+  .result-emblem .icon { width: 32px; height: 32px; }
+  .result-dialog h2 { font-size: 26px; }
+  .result-stats { margin: 12px 0 18px; padding: 12px 6px; }
+  .modal .primary-button, .modal .secondary-button { min-height: 47px; font-size: 13px; }
+  .pause-menu > button { min-height: 46px; }
+  .pause-dialog h2 { font-size: 30px; }
+}
+@media (max-width: 350px) {
+  .screen { padding-left: max(14px,env(safe-area-inset-left)); padding-right: max(14px,env(safe-area-inset-right)); }
+  .home-screen { padding-left: 20px; padding-right: 20px; }
+  .small-label { font-size: 8px; letter-spacing: .9px; }
+  .game-header { gap: 7px; }
+  .game-header h1 { font-size: 13px; }
+  .level-grid { gap: 7px; }
+  .level-number { font-size: 20px; }
+  .level-button { border-radius: 13px; }
+  .rule-pager .page-dot { width: 19px; }
+  .result-secondary { gap: 7px; }
+  .modal { width: calc(100vw - 24px); }
+}
+@media (min-width: 600px) and (min-height: 650px) {
+  body { background: radial-gradient(ellipse at 50% 45%,#1e2b3c,#0a1019 75%); }
+  .app { box-shadow: 0 0 100px #00000066; border-left: 1px solid #3b4b5929; border-right: 1px solid #3b4b5929; }
+}
+/* Landscape phones put the field next to, not underneath, the controls. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .app { max-width: 1040px; }
+  .screen { padding: max(10px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left)); }
+  .game-screen { display: grid; grid-template-columns: minmax(0,1fr) minmax(215px,36%); grid-template-rows: 54px minmax(0,1fr); gap: 7px 22px; }
+  .game-header { grid-column: 1; grid-row: 1; }
+  .game-hud { grid-column: 2; grid-row: 1; margin: 0; height: 44px; align-self: center; gap: 5px; }
+  .hud-stat { padding: 4px 10px; gap: 8px; font-size: 10px; }
+  .hud-stat strong { font-size: 15px; }
+  .target-stat { gap: 5px; }
+  .level-info-button { width: 32px; }
+  .stage { grid-column: 1; grid-row: 2; margin: 0; align-self: stretch; }
+  .game-deck { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; }
+  .feedback { flex: 1; min-height: 36px; padding: 2px; }
+  .status-message { font-size: 10px; }
+  .selection-line { min-height: 24px; font-size: 10px; margin: 6px 0; }
+  .move-controls { gap: 4px; grid-template-columns: 1fr 25px 1fr; }
+  .move-button { min-height: 51px; font-size: 12px; gap: 7px; }
+  .move-button .icon { width: 23px; }
+  .one-cell { font-size: 8px; }
+  .game-toolbar { margin-top: 15px; }
+  .tool-button { flex-direction: column; gap: 4px; font-size: 10px; min-height: 51px; }
+  .home-screen { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 44px 80px minmax(80px,1fr) auto; gap: 8px 30px; padding-left: max(26px,env(safe-area-inset-left)); padding-right: max(26px,env(safe-area-inset-right)); }
+  .home-top { grid-column: 1/-1; }
+  .home-heading { grid-column: 1; grid-row: 2; margin: 0; }
+  .home-heading h1 { font-size: 34px; }
+  .home-heading .edition { font-size: 8px; margin-bottom: 3px; }
+  .home-heading > p:last-child { margin-top: 5px; font-size: 11px; }
+  .home-art { grid-column: 1; grid-row: 3/5; height: 100%; min-height: 100px; max-height: none; }
+  .home-art-inner { transform: scale(.61); }
+  .home-actions { grid-column: 2; grid-row: 2/4; align-self: center; gap: 12px; }
+  .continue-button { min-height: 62px; }
+  .home-actions .secondary-button { min-height: 50px; font-size: 13px; }
+  .home-footer { grid-column: 2; grid-row: 4; margin: 0; }
+  .home-footer > p { font-size: 9px; margin-top: 8px; }
+  .home-footer .fullscreen-button { min-height: 29px; margin-top: 0; }
+  .levels-screen { display: grid; grid-template-columns: 1fr; grid-template-rows: 46px minmax(0,1fr) 44px; gap: 8px; }
+  .chapter-content { display: grid; grid-template-columns: 34% minmax(0,1fr); grid-template-rows: auto 1fr; gap: 8px 25px; min-height: 0; }
+  .chapter-heading { grid-column: 1; grid-row: 1; margin: 5px 0 0; }
+  .chapter-heading h2 { font-size: 23px; }
+  .chapter-heading > p:last-child { font-size: 10px; margin-top: 5px; }
+  .chapter-heading .edition { font-size: 8px; margin-bottom: 3px; }
+  .chapter-art { grid-column: 1; grid-row: 2; min-height: 60px; }
+  .chapter-art .sample-tile { width: 43px; height: 43px; border-radius: 12px; }
+  .chapter-art .sample-tile:nth-child(2) { width: 51px; height: 51px; }
+  .chapter-art .sample-tile .icon { width: 25px; height: 25px; }
+  .chapter-progress { grid-column: 2; grid-row: 1; align-self: end; margin-bottom: 5px; }
+  .level-grid { grid-column: 2; grid-row: 2; align-self: center; gap: 8px; }
+  .level-button { height: clamp(52px,19vh,77px); border-radius: 13px; }
+  .level-number { font-size: 21px; }
+  .level-state { margin-top: 3px; }
+  .page-navigation { margin: 0; }
+  .screen-footnote { display: none; }
+  .levels-screen > .page-navigation { justify-content: center; gap: 28px; }
+  .help-screen { display: grid; grid-template-columns: 1fr 200px; grid-template-rows: 44px minmax(0,1fr) 44px; gap: 10px 20px; }
+  .help-screen > .screen-header { grid-column: 1/-1; }
+  .rule-content { grid-column: 1/-1; grid-row: 2; display: grid; grid-template-columns: 28% minmax(0,1fr); gap: 20px; }
+  .rule-art { min-height: 0; gap: 5px; height: 100%; max-height: none; flex-wrap: wrap; align-content: center; }
+  .rule-art .sample-tile { width: 50px; height: 50px; border-radius: 13px; }
+  .rule-art .sample-tile .icon { width: 26px; height: 26px; }
+  .rule-card { align-self: center; padding: 14px 18px; border-radius: 18px; }
+  .rule-card h2 { font-size: 21px; margin-bottom: 8px; }
+  .rule-card p:not(.edition) { font-size: 11px; line-height: 1.5; }
+  .rule-card p + p { margin-top: 7px; }
+  .rule-card .edition { margin-bottom: 5px; font-size: 8px; }
+  .help-screen > .page-navigation { grid-column: 1; grid-row: 3; padding: 0; justify-content: center; gap: 16px; }
+  .help-done { grid-column: 2; grid-row: 3; margin: 0; min-height: 44px; }
+  .modal { width: min(600px,calc(100vw - 40px)); max-height: calc(var(--app-height) - 20px); padding: 16px 20px; border-radius: 22px; }
+  .pause-dialog[open] { display: grid; grid-template-columns: 1fr 1fr; column-gap: 25px; align-items: center; }
+  .pause-dialog .dialog-header { grid-column: 1/-1; margin-bottom: 0; }
+  .pause-dialog h2 { grid-column: 1; font-size: 28px; margin-bottom: 3px; }
+  .pause-dialog .modal-note { grid-column: 1; margin-bottom: 9px; font-size: 12px; }
+  .pause-dialog > .primary-button { grid-column: 1; min-height: 47px; }
+  .pause-menu { grid-column: 2; grid-row: 2/6; margin: 0; align-self: center; }
+  .pause-menu > button { min-height: 47px; }
+  .setting-row { grid-column: 1; margin-top: 5px; min-height: 35px; }
+  .pause-dialog .fullscreen-button { grid-column: 1; margin-top: 0; min-height: 30px; }
+  .result-dialog[open] { display: grid; grid-template-columns: 1fr 1fr; column-gap: 23px; align-items: center; }
+  .result-emblem { grid-column: 1; grid-row: 1/3; width: 45px; height: 45px; border-radius: 14px; margin: 0 auto 7px; }
+  .result-emblem .icon { width: 25px; height: 25px; }
+  .result-dialog .edition { grid-column: 1; font-size: 8px; }
+  .result-dialog h2 { grid-column: 1; font-size: 25px; margin: 7px 0; }
+  .result-dialog .modal-note { grid-column: 1; font-size: 11px; margin-bottom: 0; }
+  .result-stats { grid-column: 2; grid-row: 1/4; margin: 0 0 12px; padding: 12px 5px; }
+  .result-dialog > .primary-button { grid-column: 2; grid-row: 4; min-height: 46px; font-size: 12px; padding: 10px; }
+  .result-dialog > .secondary-button { grid-column: 2; grid-row: 5; min-height: 44px; font-size: 12px; padding: 8px; margin-top: 10px; }
+  .result-secondary { grid-column: 1/-1; margin-top: 7px; }
+  .info-dialog h2 { font-size: 22px; }
+  .info-dialog .modal-note { margin-bottom: 12px; font-size: 12px; }
+  .info-dialog .primary-button { min-height: 44px; }
+  .info-mechanics { margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+#chapterDots .page-dot { width: 44px; }
+
+/* Compact landscape refinements: no fixed-height fourth row in the home menu. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .home-screen { grid-template-rows: 44px minmax(92px,1fr) auto; }
+  .home-heading { grid-row: 2; align-self: start; }
+  .home-art { grid-row: 2/4; align-self: end; height: calc(100% - 90px); min-height: 0; }
+  .home-actions { grid-row: 2; }
+  .home-footer { grid-row: 3; }
+  .info-dialog[open] { display: grid; grid-template-columns: minmax(0,1fr) 175px; column-gap: 20px; align-items: center; }
+  .info-dialog .dialog-header { grid-column: 1/-1; margin-bottom: 0; }
+  .info-dialog h2 { grid-column: 1; margin-bottom: 8px; }
+  .info-dialog .modal-note { grid-column: 1; grid-row: 3; }
+  .info-dialog .info-mechanics { grid-column: 1; grid-row: 4; margin-bottom: 0; }
+  .info-dialog .primary-button { grid-column: 2; grid-row: 3; }
+  .info-dialog .text-button { grid-column: 2; grid-row: 4; margin: 0; }
+  .confirm-dialog[open] { display: grid; grid-template-columns: 1fr 1fr; column-gap: 15px; }
+  .confirm-dialog .dialog-header, .confirm-dialog h2, .confirm-dialog .modal-note { grid-column: 1/-1; }
+  .confirm-dialog .primary-button { grid-column: 2; grid-row: 4; }
+  .confirm-dialog .secondary-button { grid-column: 1; grid-row: 4; margin: 0; }
+}
+@media (orientation: landscape) and (max-height: 340px) {
+  .rule-content { grid-template-columns: 1fr; }
+  .rule-art { display: none; }
+  .rule-card { padding: 11px 17px; }
+  .rule-card p:not(.edition) { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><symbol id="i-left" viewBox="0 0 24 24"><path d="m13 5-7 7 7 7M6 12h15"/></symbol><symbol id="i-right" viewBox="0 0 24 24"><path d="m11 5 7 7-7 7M18 12H3"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol><symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="3"/></symbol><symbol id="i-undo" viewBox="0 0 24 24"><path d="M8 4 3 9l5 5M3 9h10a7 7 0 1 1-5 12"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path d="M20 8a9 9 0 1 0 1 7M20 3v5h-5"/></symbol><symbol id="i-hint" viewBox="0 0 24 24"><path d="M9 18v-2a6 6 0 1 1 6 0v2M9 18h6M10 22h4M12 3V1"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4M12 17h.01"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5v15M3 4c4-1 6 0 9 1 3-1 5-2 9-1v15c-4-1-6 0-9 1-3-1-5-2-9-1Z"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9"/></symbol><symbol id="i-full" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 10 7-10 7Z" fill="currentColor" stroke="none"/></symbol><symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/></symbol><symbol id="i-diamond" viewBox="0 0 24 24"><path d="m12 3 8 9-8 9-8-9Z"/></symbol><symbol id="i-triangle" viewBox="0 0 24 24"><path d="m12 4 9 15H3Z"/></symbol><symbol id="i-cross" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" stroke-width="3"/></symbol><symbol id="i-fire" viewBox="0 0 24 24"><path d="M13 2c0 5 7 6 7 12a8 8 0 0 1-16 0c0-3 2-5 5-8-1 5 2 7 3 3 1-2-1-4 1-7Z" fill="currentColor" stroke="none"/><path d="M12 12c0 3 5 4 2 7-3 3-5-1-3-3Z" fill="#fff0ce" stroke="none"/></symbol><symbol id="i-ice" viewBox="0 0 24 24"><path d="m12 2 8 5v10l-8 5-8-5V7ZM12 2v20M4 7l16 10M20 7 4 17"/></symbol><symbol id="i-plant" viewBox="0 0 24 24"><path d="M12 22V10M12 12C10 4 15 2 21 3c1 6-4 10-9 9ZM12 18C5 20 2 15 3 9c6-1 10 3 9 9Z"/></symbol><symbol id="i-wind" viewBox="0 0 24 24"><path d="M5 21V9M2 12l3-3 3 3M12 21V3M9 6l3-3 3 3M19 21V9M16 12l3-3 3 3"/></symbol><symbol id="i-charcoal" viewBox="0 0 24 24"><path d="m7 3 5 6-3 5 6 4-1 4M9 14l-6 2M15 18l6-8M16 4l4 3"/></symbol><symbol id="i-portal" viewBox="0 0 24 24"><path d="M4 3v18M20 3v18M8 6l3-2 3 4 3-2M8 18l3 2 3-4 3 2M8 12h8"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2c1 7 3 9 10 10-7 1-9 3-10 10-1-7-3-9-10-10 7-1 9-3 10-10Z"/></symbol></defs></svg>
+<main id="app" class="app" data-screen="home">
+  <section id="homeScreen" class="screen home-screen" aria-labelledby="homeTitle">
+    <header class="home-top">
+      <span class="brand-mark" aria-label="Сближение"><i></i><i></i></span>
+      <span class="small-label">ЛОГИКА В СВОЁМ РИТМЕ</span>
+      <button class="icon-button" id="homeHelpBtn" aria-label="Как играть"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-help"></use></svg></button>
+    </header>
+    <div class="home-heading"><p class="edition">С Т И Х И И</p><h1 id="homeTitle" tabindex="-1">Сближение<span>.</span></h1><p>Один ход меняет всё.</p></div>
+    <div class="home-art" aria-hidden="true"><div class="home-art-inner">
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+      <div class="art-spark spark-one">✧</div><div class="art-spark spark-two">+</div><div class="art-dot"></div>
+      <span class="sample-tile tile-ice float-tile tile-a" aria-hidden="true"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ice"></use></svg></span><span class="sample-tile tile-plant float-tile tile-b" aria-hidden="true"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plant"></use></svg></span>
+      <span class="sample-tile tile-circle float-tile tile-c" aria-hidden="true"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle"></use></svg></span><span class="sample-tile tile-circle float-tile tile-d" aria-hidden="true"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle"></use></svg></span>
+      <span class="sample-tile tile-wind float-tile tile-e" aria-hidden="true"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wind"></use></svg></span><span class="sample-tile tile-fire float-tile tile-f" aria-hidden="true"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fire"></use></svg></span>
+      <span class="art-link"></span>
+    </div></div>
+    <div class="home-actions">
+      <button class="primary-button continue-button" id="continueBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"></use></svg><span><strong id="continueLabel">Играть</strong><small id="continueDetail">Уровень 1 · Первый контакт</small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button>
+      <button class="secondary-button" id="chooseLevelsBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"></use></svg><span>Выбрать уровень</span><span class="button-counter">30</span></button>
+    </div>
+    <footer class="home-footer">
+      <div class="home-progress-heading"><span>Ваше путешествие</span><strong id="homeProgress">0 / 30</strong></div>
+      <div class="progress-track"><span id="homeProgressBar"></span></div>
+      <p>Без таймера. Каждый ход можно отменить.</p>
+      <button class="text-button fullscreen-button" id="homeFullscreenBtn" hidden><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-full"></use></svg> На весь экран</button>
+    </footer>
+  </section>
+
+  <section id="levelsScreen" class="screen levels-screen" aria-labelledby="levelsTitle" hidden>
+    <header class="screen-header">
+      <button class="icon-button" id="levelsBackBtn" aria-label="Назад"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-left"></use></svg></button>
+      <h1 id="levelsTitle" tabindex="-1">Выбор уровня</h1>
+      <span class="header-counter" id="progressText">0 / 30</span>
+    </header>
+    <div class="chapter-content" id="chapterSwipe">
+      <div class="chapter-heading"><p class="edition" id="chapterKicker">ГЛАВА 01</p><h2 id="chapterTitle">Первые шаги</h2><p id="chapterDescription">Совпадения, падения и цепные реакции.</p></div>
+      <div class="chapter-art" id="chapterArt" aria-hidden="true"></div>
+      <div class="chapter-progress"><span id="chapterProgress">Пройдено 0 из 10</span><span id="chapterRange">01 — 10</span></div>
+      <div class="level-grid" id="levelGrid" aria-label="Уровни текущей главы"></div>
+    </div>
+    <nav class="page-navigation" aria-label="Выбор главы">
+      <button class="icon-button" id="prevChapterBtn" aria-label="Предыдущая глава"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-left"></use></svg></button>
+      <div class="pager" id="chapterDots"></div>
+      <button class="icon-button" id="nextChapterBtn" aria-label="Следующая глава"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button>
+    </nav>
+    <p class="screen-footnote" id="chapterFootnote">Все уровни открыты. Листайте главы.</p>
+  </section>
+
+  <section id="gameScreen" class="screen game-screen" aria-labelledby="boardTitle" hidden>
+    <header class="screen-header game-header">
+      <button class="icon-button" id="gameLevelsBtn" aria-label="Выбрать уровень"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"></use></svg></button>
+      <div class="game-heading"><p id="levelKicker">УРОВЕНЬ 01</p><h1 id="boardTitle" tabindex="-1">Первый контакт</h1></div>
+      <button class="icon-button" id="pauseBtn" aria-label="Пауза и меню"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pause"></use></svg></button>
+    </header>
+    <div class="game-hud">
+      <div class="hud-stat"><span>Ходы</span><strong id="moveCount">0</strong></div>
+      <div class="hud-stat target-stat"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-diamond"></use></svg><span>Осталось</span><strong id="blockCount">2</strong></div>
+      <button class="level-info-button" id="levelInfoBtn" aria-label="Задача этого уровня"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-help"></use></svg></button>
+    </div>
+    <div class="stage" id="stage">
+      <canvas id="board" tabindex="0" aria-label="Игровое поле" aria-describedby="boardInstructions boardDescription">Для игры нужен браузер с поддержкой Canvas.</canvas>
+      <p class="sr-only" id="boardInstructions">Коснитесь блока, затем стрелки или смахните блок в сторону. Вверх и вниз: выбрать блок. Влево и вправо: сдвинуть. Z: отменить. R: заново. H: подсказка. Escape: пауза.</p>
+      <p class="sr-only" id="boardDescription"></p>
+    </div>
+    <div class="game-deck">
+      <button class="feedback" id="statusBtn" aria-label="Подробнее о текущем состоянии">
+        <span id="statusMessage" class="status-message" role="status" aria-live="polite">Соедините одинаковые блоки.</span>
+        <span class="feedback-info" aria-hidden="true">i</span>
+      </button>
+      <div class="selection-line" id="selectionLine"><span class="selection-dot" id="selectionDot"></span><span id="selectionText">Коснитесь блока</span><button class="text-button" id="showResultBtn" hidden>Результат <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button></div>
+      <div class="move-controls" aria-label="Перемещение выбранного блока">
+        <button class="move-button" id="leftBtn" aria-label="Передвинуть выбранный блок влево" disabled><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-left"></use></svg><span>Влево</span></button>
+        <span class="one-cell" aria-hidden="true">на 1<br>клетку</span>
+        <button class="move-button" id="rightBtn" aria-label="Передвинуть выбранный блок вправо" disabled><span>Вправо</span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button>
+      </div>
+      <footer class="game-toolbar">
+        <button class="tool-button" id="undoBtn" disabled><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-undo"></use></svg><span>Отмена</span></button>
+        <button class="tool-button hint-button" id="hintBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-hint"></use></svg><span id="hintLabel">Подсказка</span></button>
+        <button class="tool-button" id="gameHelpBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-book"></use></svg><span>Правила</span></button>
+      </footer>
+    </div>
+  </section>
+
+  <section id="helpScreen" class="screen help-screen" aria-labelledby="helpTitle" hidden>
+    <header class="screen-header">
+      <button class="icon-button" id="closeHelpBtn" aria-label="Вернуться"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-left"></use></svg></button>
+      <h1 id="helpTitle" tabindex="-1">Как играть</h1>
+      <span class="header-counter" id="ruleCounter">1 / 9</span>
+    </header>
+    <div class="rule-content" id="ruleSwipe">
+      <div class="rule-art" id="ruleArt" aria-hidden="true"></div>
+      <article class="rule-card" aria-labelledby="ruleTitle">
+        <p class="edition" id="ruleKicker">ОСНОВЫ</p>
+        <h2 id="ruleTitle">Два одинаковых — пара.</h2>
+        <div id="ruleBody"></div>
+      </article>
+    </div>
+    <nav class="page-navigation" aria-label="Страницы правил">
+      <button class="icon-button" id="prevRuleBtn" aria-label="Предыдущее правило"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-left"></use></svg></button>
+      <div id="ruleDots" class="pager rule-pager"></div>
+      <button class="icon-button" id="nextRuleBtn" aria-label="Следующее правило"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button>
+    </nav>
+    <button class="secondary-button help-done" id="playBtn">Понятно <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></button>
+  </section>
+</main>
+
+<dialog id="pauseDialog" class="modal pause-dialog" aria-labelledby="pauseTitle">
+  <div class="dialog-header"><p class="edition">МОЖНО НЕ СПЕШИТЬ</p><button class="icon-button" id="closePauseBtn" aria-label="Продолжить игру"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg></button></div>
+  <h2 id="pauseTitle">Пауза</h2><p id="pauseDetail" class="modal-note">Уровень 1 · 0 ходов</p>
+  <button class="primary-button" id="resumeBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"></use></svg> Продолжить</button>
+  <div class="pause-menu">
+    <button id="resetBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reset"></use></svg> Начать заново <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button>
+    <button id="pauseLevelsBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"></use></svg> Выбрать уровень <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button>
+    <button id="homeBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"></use></svg> Главное меню <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button>
+  </div>
+  <label class="setting-row" for="animationToggle"><span>Анимации</span><input type="checkbox" id="animationToggle" role="switch" checked><span class="switch" aria-hidden="true"></span></label>
+  <button class="text-button fullscreen-button" id="fullscreenBtn" hidden><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-full"></use></svg> На весь экран</button>
+</dialog>
+
+<dialog id="confirmDialog" class="modal confirm-dialog" aria-labelledby="confirmTitle">
+  <div class="dialog-header"><p class="edition">НОВЫЙ СТАРТ</p><button class="icon-button" id="closeConfirmBtn" aria-label="Отмена"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg></button></div>
+  <h2 id="confirmTitle">Начать заново?</h2>
+  <p class="modal-note" id="confirmDescription">Текущая расстановка сбросится. Пройденные уровни сохранятся.</p>
+  <button class="primary-button" id="confirmAcceptBtn">Начать заново</button>
+  <button class="secondary-button" id="confirmCancelBtn" autofocus>Продолжить игру</button>
+</dialog>
+
+<dialog id="infoDialog" class="modal info-dialog" aria-labelledby="infoTitle">
+  <div class="dialog-header"><p class="edition" id="infoKicker">НА ЭТОМ УРОВНЕ</p><button class="icon-button" id="closeInfoBtn" aria-label="Закрыть"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg></button></div>
+  <h2 id="infoTitle">Первый контакт</h2><p class="modal-note" id="infoText"></p>
+  <div class="info-mechanics" id="infoMechanics"></div>
+  <button class="primary-button" id="infoDoneBtn">К игре <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button>
+  <button class="text-button" id="infoRulesBtn">Открыть правила</button>
+</dialog>
+
+<dialog id="winOverlay" class="modal result-dialog" aria-labelledby="winTitle">
+  <div class="result-emblem" aria-hidden="true"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-spark"></use></svg></div>
+  <p class="edition" id="winKicker">УРОВЕНЬ ПРОЙДЕН</p>
+  <h2 id="winTitle">Есть контакт!</h2>
+  <p class="modal-note" id="winDescription">Все цветные блоки убраны.</p>
+  <div class="result-stats"><div><strong id="winMoves">3</strong><span>ходов</span></div><div><strong id="winBest">3</strong><span>лучший результат</span></div></div>
+  <button class="primary-button" id="nextBtn">Следующий уровень <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button>
+  <button class="secondary-button" id="winLevelsBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"></use></svg> Выбрать уровень</button>
+  <div class="result-secondary"><button class="text-button" id="viewBoardBtn">Посмотреть поле</button><button class="text-button" id="winReplayBtn">Ещё раз</button></div>
+</dialog>
+
+<script id="engine-source">/* Sblizhenie 1.3: ice, plants, wind; deterministic physics independent of the UI. */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.PuzzleEngine = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+  const TYPES = 'ABCD';
+  const DIR = { left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] };
+  const OPPOSITE = { left: 'right', right: 'left', top: 'bottom', bottom: 'top' };
+  const MAX_GRAVITY_STEPS = 4096;
+  const clone = blocks => blocks.map(b => ({ ...b }));
+  const cell = (x, y, width) => y * width + x;
+  const edgeKey = (x, y, dx, dy) => `${x},${y}:${dx},${dy}`;
+  const isFire = b => b.type === 'F';
+  const isIce = b => b.type === 'I';
+  const isPlant = b => b.type === 'P';
+  const isWind = b => b.type === 'W';
+  const hasElements = blocks => blocks.some(b => 'IPW'.includes(b.type) || b.out);
+  const liveFire = b => isFire(b) && !b.out;
+  const isActive = b => !b.burnt && TYPES.includes(b.type);
+  const activeCount = blocks => blocks.reduce((n, b) => n + Number(isActive(b)), 0);
+  const inBounds = (board, x, y) => x >= 0 && y >= 0 && x < board.width && y < board.height;
+
+  function parseLevel(level) {
+    if (!level || !Array.isArray(level.rows) || level.rows.length < 3 ||
+        level.rows.some(r => typeof r !== 'string')) throw new Error('A level must contain at least three string rows.');
+    const height = level.rows.length, width = level.rows[0].length;
+    if (width < 3 || level.rows.some(r => r.length !== width)) throw new Error('Level rows must have equal width, at least three cells.');
+    const walls = new Set(), blocks = [];
+    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+      const c = level.rows[y][x];
+      if (!'#.ABCDFXIJQPW'.includes(c)) throw new Error('Unknown tile: ' + c);
+      if ((x === 0 || y === 0 || x === width - 1 || y === height - 1) && c !== '#') throw new Error('The outer boundary must be sealed; portals replace wall edges.');
+      if (c === '#') walls.add(cell(x, y, width));
+      else if (c === 'X') blocks.push({ id: blocks.length, type: 'A', burnt: true, x, y });
+      else if (c === 'J') blocks.push({ id: blocks.length, type: 'I', hits: 1, x, y });
+      else if (c === 'Q') blocks.push({ id: blocks.length, type: 'P', frozen: true, x, y });
+      else if ('ABCDFIPW'.includes(c)) blocks.push({ id: blocks.length, type: c, x, y });
+    }
+    if (level.portals !== undefined && !Array.isArray(level.portals)) throw new Error('portals must be an array.');
+    const board = { width, height, walls, portals: [], portalEdges: new Map() };
+    const ids = new Set();
+    for (const pair of level.portals || []) {
+      if (!pair || !pair.a || !pair.b) throw new Error('Every portal requires two endpoints.');
+      const id = String(pair.id ?? board.portals.length + 1);
+      if (!/^[A-Za-z0-9]{1,4}$/.test(id) || ids.has(id)) throw new Error('Portal IDs must be unique short alphanumeric labels.');
+      ids.add(id);
+      const ends = [pair.a, pair.b].map(p => {
+        const { x, y, side } = p;
+        if (!Number.isInteger(x) || !Number.isInteger(y) || !Object.hasOwn(DIR, side) ||
+            !inBounds(board, x, y) || walls.has(cell(x, y, width))) throw new Error('Portal endpoint must border an open interior cell.');
+        const [dx, dy] = DIR[side];
+        if (!inBounds(board, x + dx, y + dy) || !walls.has(cell(x + dx, y + dy, width))) throw new Error('A portal must be a doorway in a wall, not a floor tile.');
+        return { x, y, side };
+      });
+      if (OPPOSITE[ends[0].side] !== ends[1].side) throw new Error('Portal faces must be opposite: bottom/top or left/right.');
+      const saved = { id, a: ends[0], b: ends[1] };
+      board.portals.push(saved);
+      for (let i = 0; i < 2; i++) {
+        const entry = ends[i], exit = ends[1 - i], [dx, dy] = DIR[entry.side];
+        const key = edgeKey(entry.x, entry.y, dx, dy);
+        if (board.portalEdges.has(key)) throw new Error('Two portals cannot occupy the same edge.');
+        board.portalEdges.set(key, { pair: id, entry, exit });
+      }
+    }
+    return { board, blocks };
+  }
+
+  const occupied = (board, blocks) => new Map(blocks.map(b => [cell(b.x, b.y, board.width), b]));
+
+  // A portal is an EDGE crossing, never a triggered tile. The destination must
+  // already be empty; blocked exits do not swap, push, or overwrite any block.
+  function destination(board, blocks, b, dx, dy, occ = occupied(board, blocks)) {
+    const door = board.portalEdges && board.portalEdges.get(edgeKey(b.x, b.y, dx, dy));
+    const x = door ? door.exit.x : b.x + dx, y = door ? door.exit.y : b.y + dy;
+    if (!inBounds(board, x, y) || board.walls.has(cell(x, y, board.width)) || occ.has(cell(x, y, board.width))) return null;
+    return { x, y, ...(door ? { portal: { ...door, dx, dy, id: b.id } } : {}) };
+  }
+
+  function canMove(board, blocks, id, dx) {
+    if (dx !== -1 && dx !== 1) return false;
+    const b = blocks.find(b => b.id === id);
+    return Boolean(b && destination(board, blocks, b, dx, 0));
+  }
+  function candidateMoves(board, blocks) {
+    const result = [], occ = occupied(board, blocks);
+    for (const b of blocks) for (const dx of [-1, 1]) if (destination(board, blocks, b, dx, 0, occ)) {
+      result.push({ ...b, dx });
+    }
+    return result;
+  }
+  function legalMoves(board, blocks) {
+    const candidates = candidateMoves(board, blocks);
+    return board.portals.length || hasElements(blocks) ? candidates.filter(a => !move(board, blocks, a.id, a.dx).rejected) : candidates;
+  }
+
+  function gravity(board, input, withTrace = false) {
+    if (hasElements(input) || input.some(isFire)) return settleElements(board, input, withTrace, false);
+    // The original fast path also applies to movable fire: every block is solid.
+    if (!board.portals.length) {
+      const blocks = clone(input), occ = new Set(board.walls);
+      for (const b of [...blocks].sort((a, b) => b.y - a.y || a.x - b.x)) {
+        while (b.y + 1 < board.height && !occ.has(cell(b.x, b.y + 1, board.width))) b.y++;
+        occ.add(cell(b.x, b.y, board.width));
+      }
+      return { blocks, trace: withTrace && blocks.some((b, i) => b.y !== input[i].y) ? [{ kind: 'fall', before: clone(input), after: clone(blocks) }] : [] };
+    }
+    const blocks = clone(input), trace = [], seen = new Set();
+    // One deterministic sweep: bottom to top, then left to right, one cell each.
+    // Live occupancy is shared, including blocks that have not moved this sweep.
+    for (let tick = 0; tick < MAX_GRAVITY_STEPS; tick++) {
+      const key = stateKey(blocks);
+      if (seen.has(key)) return { blocks: clone(input), trace: [], rejected: 'portal-loop' };
+      seen.add(key);
+      const before = withTrace ? clone(blocks) : null, occ = occupied(board, blocks), warps = [];
+      let changed = false;
+      for (const b of [...blocks].sort((a, b) => b.y - a.y || a.x - b.x)) {
+        const to = destination(board, blocks, b, 0, 1, occ);
+        if (!to) continue;
+        occ.delete(cell(b.x, b.y, board.width));
+        if (to.portal) warps.push(to.portal);
+        b.x = to.x; b.y = to.y; occ.set(cell(b.x, b.y, board.width), b);
+        changed = true;
+      }
+      if (!changed) return { blocks, trace };
+      if (withTrace) {
+        const previous = trace[trace.length - 1];
+        if (!warps.length && previous && previous.kind === 'fall') previous.after = clone(blocks);
+        else trace.push({ kind: warps.length ? 'teleport' : 'fall', before, after: clone(blocks), ...(warps.length ? { warps } : {}) });
+      }
+    }
+    return { blocks: clone(input), trace: [], rejected: 'settle-limit' };
+  }
+  function fall(board, blocks) {
+    const result = gravity(board, blocks);
+    if (result.rejected) throw new Error('Unstable gravity: ' + result.rejected);
+    return result.blocks;
+  }
+
+  // Thermal reactions are simultaneous within a wave. Only a lit upper face
+  // is dangerous. A burning plant becomes a fire block, keeping its identity.
+  function burn(board, input) {
+    const occ = occupied(board, input), burned = [], melted = [], ignited = [];
+    const blocks = [];
+    for (const b of input) {
+      const below = occ.get(cell(b.x, b.y + 1, board.width));
+      if (below && liveFire(below)) {
+        if (isActive(b)) { burned.push(b.id); blocks.push({ ...b, burnt: true }); continue; }
+        if (isIce(b)) { melted.push(b.id); continue; }
+        if (isPlant(b)) { ignited.push(b.id); blocks.push({ id: b.id, type: 'F', x: b.x, y: b.y }); continue; }
+      }
+      blocks.push({ ...b });
+    }
+    return { blocks, burned, melted, ignited };
+  }
+
+  // Air travels upward to the first solid block or wall, never through a
+  // portal. Upward pressure also lifts touching blocks stacked on that block.
+  // Only the directly exposed block is cooled, not blocks shielded by it.
+  function windField(board, blocks) {
+    const occ = occupied(board, blocks), exposed = new Set(), lifted = new Set(), cells = new Set();
+    for (const fan of blocks.filter(isWind)) {
+      for (let y = fan.y - 1; y >= 0; y--) {
+        const k = cell(fan.x, y, board.width);
+        if (board.walls.has(k)) break;
+        cells.add(k);
+        const target = occ.get(k);
+        if (!target) continue;
+        exposed.add(target.id);
+        for (let yy = y; yy >= 0; yy--) {
+          const stacked = occ.get(cell(fan.x, yy, board.width));
+          if (!stacked) break;
+          lifted.add(stacked.id);
+        }
+        break;
+      }
+    }
+    return { exposed, lifted, cells };
+  }
+
+  function grippedIds(board, blocks) {
+    const occ = occupied(board, blocks), held = new Set();
+    for (const plant of blocks) {
+      if (!isPlant(plant) || plant.frozen) continue;
+      for (const [dx, dy] of Object.values(DIR)) {
+        const other = occ.get(cell(plant.x + dx, plant.y + dy, board.width));
+        if (other && !(isPlant(other) && other.frozen)) held.add(other.id);
+      }
+    }
+    return held;
+  }
+
+  function iceContacts(board, blocks) {
+    const occ = occupied(board, blocks), contacts = new Map();
+    for (const ice of blocks.filter(isIce)) {
+      const top = occ.get(cell(ice.x, ice.y - 1, board.width));
+      if (top) contacts.set(ice.id, top.id);
+    }
+    return contacts;
+  }
+
+  // Counts a NEW arrival of a moving top block, not time spent resting.
+  // Ice sliding below an unmoved block is not itself an impact. Contact state
+  // is derived from positions, so snapshots need no hidden ID-based history.
+  function iceImpacts(board, input, oldContacts, movedIds) {
+    const contacts = iceContacts(board, input), cracked = [], shattered = [];
+    const byId = new Map(input.map(b => [b.id, b]));
+    const blocks = input.flatMap(b => {
+      if (!isIce(b)) return [{ ...b }];
+      const topId = contacts.get(b.id), top = byId.get(topId);
+      if (!top || isWind(top) || !movedIds.has(topId) || oldContacts.get(b.id) === topId) return [{ ...b }];
+      const hits = (b.hits || 0) + 1;
+      if (hits >= 2) { shattered.push(b.id); return []; }
+      cracked.push(b.id); return [{ ...b, hits }];
+    });
+    return { blocks, cracked, shattered };
+  }
+
+  function freezePlants(board, input) {
+    const occ = occupied(board, input), frozen = [];
+    const blocks = input.map(b => {
+      if (isPlant(b) && !b.frozen && Object.values(DIR).some(([dx, dy]) => {
+        const other = occ.get(cell(b.x + dx, b.y + dy, board.width));
+        return other && isIce(other);
+      })) { frozen.push(b.id); return { ...b, frozen: true }; }
+      return { ...b };
+    });
+    return { blocks, frozen };
+  }
+
+  function settleElements(board, input, withTrace = false, withMatches = true,
+                          contactBefore = input, initiallyMoved = []) {
+    let blocks = clone(input), oldContacts = iceContacts(board, contactBefore);
+    let movedIds = new Set(initiallyMoved);
+    const trace = [], seen = new Set();
+    function frame(kind, before, after, data = {}) {
+      if (withTrace) trace.push({ kind, before: clone(before), after: clone(after), ...data });
+    }
+    for (let tick = 0; tick < MAX_GRAVITY_STEPS; tick++) {
+      // Resolve environmental reactions before motion; iterate ignition chains
+      // and re-evaluate air when melting exposes a previously shielded flame.
+      for (let wave = 0; wave <= input.length * 4 + 8; wave++) {
+        let changed = false;
+        const field = windField(board, blocks), extinguished = [], relit = [];
+        const cooled = blocks.map(b => {
+          const n = { ...b };
+          if (isFire(b)) {
+            const out = field.exposed.has(b.id);
+            if (out !== Boolean(b.out)) (out ? extinguished : relit).push(b.id);
+            if (out) n.out = true; else delete n.out;
+          }
+          return n;
+        });
+        if (extinguished.length || relit.length) {
+          frame('breeze', blocks, cooled, { extinguished, relit }); changed = true;
+        }
+        blocks = cooled;
+        const heat = burn(board, blocks);
+        if (heat.burned.length || heat.melted.length || heat.ignited.length) {
+          frame(heat.melted.length || heat.ignited.length ? 'heat' : 'burn', blocks, heat.blocks, { burned: heat.burned, melted: heat.melted, ignited: heat.ignited });
+          changed = true;
+        }
+        blocks = heat.blocks;
+        const impacts = iceImpacts(board, blocks, oldContacts, movedIds);
+        if (impacts.cracked.length || impacts.shattered.length) {
+          frame('ice', blocks, impacts.blocks, { cracked: impacts.cracked, shattered: impacts.shattered }); changed = true;
+        }
+        blocks = impacts.blocks;
+        // A landing is consumed once, even if it triggers several reaction waves.
+        movedIds = new Set(); oldContacts = iceContacts(board, blocks);
+        const frost = freezePlants(board, blocks);
+        if (frost.frozen.length) { frame('freeze', blocks, frost.blocks, { frozen: frost.frozen }); changed = true; }
+        blocks = frost.blocks;
+        if (!changed) break;
+      }
+      const key = stateKey(blocks);
+      if (seen.has(key)) return { blocks: clone(input), trace: [], rejected: hasElements(input) ? 'physics-loop' : 'portal-loop' };
+      seen.add(key);
+      const before = clone(blocks), field = windField(board, blocks), held = grippedIds(board, blocks);
+      const occ = occupied(board, blocks), warps = [], risen = [], fallen = [];
+      oldContacts = iceContacts(board, blocks); movedIds = new Set();
+      function advance(b, dy) {
+        const to = destination(board, blocks, b, 0, dy, occ);
+        if (!to) return;
+        occ.delete(cell(b.x, b.y, board.width));
+        if (to.portal) warps.push(to.portal);
+        b.x = to.x; b.y = to.y; occ.set(cell(b.x, b.y, board.width), b);
+        movedIds.add(b.id); (dy < 0 ? risen : fallen).push(b.id);
+      }
+      // Wind wins over plant grip. Upward motion first, in top-down order;
+      // ordinary gravity then runs bottom-up, using the same force snapshot.
+      for (const b of [...blocks].sort((a,b) => a.y-b.y || a.x-b.x)) if (field.lifted.has(b.id)) advance(b, -1);
+      for (const b of [...blocks].sort((a,b) => b.y-a.y || a.x-b.x)) {
+        if (!field.lifted.has(b.id) && !held.has(b.id)) advance(b, 1);
+      }
+      if (movedIds.size) {
+        const kind = warps.length ? 'teleport' : risen.length ? 'lift' : 'fall';
+        // Coalesce only uninterrupted ordinary falls/lifts. Reaction frames
+        // remain separate; teleport frames never interpolate through walls.
+        const prev = trace[trace.length - 1];
+        if (withTrace && !warps.length && prev && prev.kind === kind && (kind === 'fall' || kind === 'lift')) prev.after = clone(blocks);
+        else frame(kind, before, blocks, { ...(warps.length ? { warps } : {}), risen, fallen });
+        continue;
+      }
+      const groups = withMatches ? matchingGroups(board, blocks) : [];
+      if (!groups.length) return { blocks, trace };
+      const removed = new Set(groups.flat()), after = blocks.filter(b => !removed.has(b.id));
+      frame('match', blocks, after, { removed: [...removed], groups }); blocks = after;
+    }
+    return { blocks: clone(input), trace: [], rejected: 'settle-limit' };
+  }
+  function matchingGroups(board, blocks) {
+    const occ = occupied(board, blocks), visited = new Set(), groups = [];
+    for (const start of blocks) {
+      if (!isActive(start) || visited.has(start.id)) continue;
+      const group = [], stack = [start]; visited.add(start.id);
+      while (stack.length) {
+        const b = stack.pop(); group.push(b.id);
+        for (const [dx, dy] of Object.values(DIR)) {
+          const x = b.x + dx, y = b.y + dy;
+          if (!inBounds(board, x, y)) continue;
+          const n = occ.get(cell(x, y, board.width));
+          if (n && isActive(n) && n.type === start.type && !visited.has(n.id)) { visited.add(n.id); stack.push(n); }
+        }
+      }
+      if (group.length >= 2) groups.push(group);
+    }
+    return groups;
+  }
+  function resolve(board, input, withTrace = false) {
+    if (hasElements(input) || input.some(isFire)) return settleElements(board, input, withTrace);
+    let blocks = clone(input); const trace = [];
+    while (true) {
+      const settled = gravity(board, blocks, withTrace);
+      if (settled.rejected) return { blocks: clone(input), trace: [], rejected: settled.rejected };
+      if (withTrace) trace.push(...settled.trace);
+      blocks = settled.blocks;
+      const charred = burn(board, blocks);
+      if (withTrace && charred.burned.length) trace.push({ kind: 'burn', before: blocks, after: charred.blocks, burned: charred.burned });
+      blocks = charred.blocks;
+      const groups = matchingGroups(board, blocks);
+      if (!groups.length) break;
+      const removed = new Set(groups.flat()), remaining = blocks.filter(b => !removed.has(b.id));
+      if (withTrace) trace.push({ kind: 'match', before: blocks, after: remaining, removed: [...removed], groups });
+      blocks = remaining;
+    }
+    return { blocks, trace };
+  }
+  function move(board, input, id, dx, withTrace = false) {
+    if (dx !== -1 && dx !== 1) return null;
+    const b = input.find(b => b.id === id);
+    if (!b) return null;
+    const to = destination(board, input, b, dx, 0);
+    if (!to) return null;
+    const moved = clone(input), chosen = moved.find(n => n.id === id);
+    chosen.x = to.x; chosen.y = to.y;
+    const resolved = hasElements(input) || input.some(isFire) ? settleElements(board, moved, withTrace, true, input, [id]) : resolve(board, moved, withTrace);
+    if (resolved.rejected) return { blocks: clone(input), trace: [], rejected: resolved.rejected };
+    if (withTrace) resolved.trace.unshift({ kind: to.portal ? 'teleport' : 'slide', before: clone(input), after: moved, ...(to.portal ? { warps: [to.portal] } : {}) });
+    return resolved;
+  }
+  function counts(blocks) {
+    const result = {};
+    for (const b of blocks) if (isActive(b)) result[b.type] = (result[b.type] || 0) + 1;
+    return result;
+  }
+  function status(board, blocks) {
+    if (!activeCount(blocks)) return { kind: 'won' };
+    const singles = Object.entries(counts(blocks)).filter(([, n]) => n === 1).map(([t]) => t);
+    if (singles.length && !blocks.some(isFire)) return { kind: 'lost', reason: 'singleton', types: singles };
+    const candidates = candidateMoves(board, blocks);
+    if (!candidates.length) return { kind: 'lost', reason: 'immobile' };
+    if (board.portals.length || hasElements(blocks)) {
+      let any = false;
+      for (const a of candidates) {
+        const result = move(board, blocks, a.id, a.dx);
+        if (!result.rejected || result.rejected === 'settle-limit') { any = true; break; }
+      }
+      if (!any) return { kind: 'lost', reason: 'immobile' };
+    }
+    return { kind: 'playing' };
+  }
+  // Movable fire belongs in the state key; burnt blocks ignore former colour.
+  function stateKey(blocks) {
+    return blocks.map(b => `${b.burnt ? 'X' : b.type}${isIce(b) && b.hits ? ':1' : ''}${b.frozen ? ':f' : ''}${b.out ? ':o' : ''}:${b.x},${b.y}`).sort().join('|');
+  }
+
+  function createSearch(board, start, maxStates = 60000) {
+    const nodes = [{ blocks: clone(start), parent: -1, via: null }], seen = new Set([stateKey(start)]);
+    let cursor = 0, result = null, incomplete = false;
+    function finish(index) {
+      const path = [];
+      while (nodes[index].parent !== -1) { path.push(nodes[index].via); index = nodes[index].parent; }
+      return { kind: 'solved', path: path.reverse(), explored: seen.size };
+    }
+    return {
+      get result() { return result; }, get explored() { return seen.size; },
+      step(budget = 150) {
+        if (result) return result;
+        for (let n = 0; n < budget; n++) {
+          if (cursor >= nodes.length) return (result = { kind: incomplete ? 'limit' : 'unsolvable', explored: seen.size });
+          const index = cursor++, current = nodes[index];
+          if (!activeCount(current.blocks)) return (result = finish(index));
+          if (Object.values(counts(current.blocks)).includes(1) && !current.blocks.some(isFire)) continue;
+          for (const action of candidateMoves(board, current.blocks)) {
+            const outcome = move(board, current.blocks, action.id, action.dx);
+            if (outcome.rejected) { if (outcome.rejected === 'settle-limit') incomplete = true; continue; }
+            const next = outcome.blocks, key = stateKey(next);
+            if (seen.has(key)) continue;
+            if (Object.values(counts(next)).includes(1) && !next.some(isFire)) continue;
+            if (seen.size >= maxStates) return (result = { kind: 'limit', explored: seen.size });
+            seen.add(key); nodes.push({ blocks: next, parent: index, via: action });
+            if (!activeCount(next)) return (result = finish(nodes.length - 1));
+          }
+        }
+        return null;
+      }
+    };
+  }
+  function solve(board, blocks, maxStates = 60000) {
+    const search = createSearch(board, blocks, maxStates);
+    while (!search.result) search.step(300);
+    return search.result;
+  }
+  function assertValid(board, blocks) {
+    const occ = new Set(), ids = new Set();
+    for (const b of blocks) {
+      const k = cell(b.x, b.y, board.width);
+      if (!Number.isInteger(b.x) || !Number.isInteger(b.y) || !inBounds(board, b.x, b.y) || board.walls.has(k) || occ.has(k) ||
+          typeof b.type !== 'string' || b.type.length !== 1 || !'ABCDFIPW'.includes(b.type) ||
+          (b.burnt !== undefined && typeof b.burnt !== 'boolean') || (!TYPES.includes(b.type) && b.burnt) ||
+          (b.hits !== undefined && (!isIce(b) || !Number.isInteger(b.hits) || b.hits < 0 || b.hits > 1)) ||
+          (b.frozen !== undefined && (!isPlant(b) || typeof b.frozen !== 'boolean')) ||
+          (b.out !== undefined && (!isFire(b) || typeof b.out !== 'boolean')) || !Number.isInteger(b.id) || ids.has(b.id)) throw new Error('Invalid block state.');
+      occ.add(k); ids.add(b.id);
+    }
+    return true;
+  }
+  return { parseLevel, clone, isFire, isIce, isPlant, isWind, windField, grippedIds, isActive, destination, canMove, legalMoves, fall, gravity, burn, matchingGroups, resolve,
+    move, counts, activeCount, status, stateKey, createSearch, solve, assertValid };
+});
+</script>
+<script>/* # wall, . air, A-D gems, F fire, X charcoal, I ice, J cracked ice, P plant, Q frozen plant, W wind. */
+(function(root){
+"use strict";
+const levels = [
+  {
+    "title": "Первый контакт",
+    "note": "Выберите круг и подвиньте его к такому же. Достаточно соприкосновения сторон.",
+    "tag": "Знакомство",
+    "rows": [
+      "########",
+      "#......#",
+      "#......#",
+      "#......#",
+      "#......#",
+      "#A...A.#",
+      "########"
+    ],
+    "par": 3,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 1,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 3,
+        "y": 5,
+        "type": "A"
+      }
+    ]
+  },
+  {
+    "title": "Два языка",
+    "note": "Цвет и знак обозначают тип блока. Соединяйте круги с кругами, ромбы с ромбами.",
+    "tag": "Два типа",
+    "rows": [
+      "#########",
+      "#.......#",
+      "#.......#",
+      "#.......#",
+      "#.......#",
+      "#A..AB.B#",
+      "#########"
+    ],
+    "par": 3,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 1,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 2,
+        "dx": 1,
+        "x": 5,
+        "y": 5,
+        "type": "B"
+      }
+    ]
+  },
+  {
+    "title": "Сила тяжести",
+    "note": "У блока нет кнопки «вниз». Выведите его за край платформы — остальное сделает гравитация.",
+    "tag": "Гравитация",
+    "rows": [
+      "#########",
+      "#.......#",
+      "#.......#",
+      "#.A.....#",
+      "####....#",
+      "#.......#",
+      "#.....A.#",
+      "#########"
+    ],
+    "par": 3,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 3,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 3,
+        "y": 3,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 4,
+        "y": 6,
+        "type": "A"
+      }
+    ]
+  },
+  {
+    "title": "Разные этажи",
+    "note": "Платформы меняют маршруты. Прежде чем сбрасывать блок, посмотрите, где он остановится.",
+    "tag": "Платформы",
+    "rows": [
+      "##########",
+      "#........#",
+      "#.A......#",
+      "####.....#",
+      "#......B.#",
+      "#.....####",
+      "#.B....A.#",
+      "##########"
+    ],
+    "par": 8,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 2,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 3,
+        "y": 2,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 4,
+        "y": 6,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 5,
+        "y": 6,
+        "type": "A"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 7,
+        "y": 4,
+        "type": "B"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 6,
+        "y": 4,
+        "type": "B"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 5,
+        "y": 6,
+        "type": "B"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 4,
+        "y": 6,
+        "type": "B"
+      }
+    ]
+  },
+  {
+    "title": "Третий не лишний",
+    "note": "Здесь три круга. Соедините все три за один раз: удаление только пары оставит одиночный блок.",
+    "tag": "Группа из трёх",
+    "rows": [
+      "#######",
+      "#.....#",
+      "#A....#",
+      "###...#",
+      "#.....#",
+      "#.A.A.#",
+      "#######"
+    ],
+    "par": 2,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 1,
+        "y": 2,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 2,
+        "type": "A"
+      }
+    ]
+  },
+  {
+    "title": "Убрать опору",
+    "note": "Блок тоже может быть опорой. Уберите нижнюю пару, чтобы запустить цепную реакцию.",
+    "tag": "Цепная реакция",
+    "rows": [
+      "#########",
+      "#.......#",
+      "#.......#",
+      "#.......#",
+      "#.......#",
+      "#...A...#",
+      "#..AB..B#",
+      "#########"
+    ],
+    "par": 2,
+    "solution": [
+      {
+        "id": 2,
+        "dx": 1,
+        "x": 4,
+        "y": 6,
+        "type": "B"
+      },
+      {
+        "id": 2,
+        "dx": 1,
+        "x": 5,
+        "y": 6,
+        "type": "B"
+      }
+    ]
+  },
+  {
+    "title": "Узкий проход",
+    "tag": "Планирование",
+    "note": "В узком пространстве блоки мешают друг другу. Освобождайте путь в правильном порядке.",
+    "rows": [
+      "#########",
+      "#.......#",
+      "#.C.....#",
+      "###....C#",
+      "#.....###",
+      "#..AB...#",
+      "#..##...#",
+      "#..B..A.#",
+      "#########"
+    ],
+    "par": 8,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 2,
+        "type": "C"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 7,
+        "y": 3,
+        "type": "C"
+      },
+      {
+        "id": 3,
+        "dx": 1,
+        "x": 4,
+        "y": 5,
+        "type": "B"
+      },
+      {
+        "id": 2,
+        "dx": 1,
+        "x": 3,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 2,
+        "dx": 1,
+        "x": 4,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 3,
+        "y": 5,
+        "type": "C"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 6,
+        "y": 3,
+        "type": "C"
+      },
+      {
+        "id": 3,
+        "dx": -1,
+        "x": 5,
+        "y": 7,
+        "type": "B"
+      }
+    ]
+  },
+  {
+    "title": "Порядок важен",
+    "tag": "Последовательность",
+    "note": "Не всякое совпадение приближает к решению. Следите, какие блоки останутся после падения.",
+    "rows": [
+      "#########",
+      "#.......#",
+      "#.....A.#",
+      "#..##.B.#",
+      "#.....AB#",
+      "###...###",
+      "#.......#",
+      "#..A.B..#",
+      "#########"
+    ],
+    "par": 10,
+    "solution": [
+      {
+        "id": 0,
+        "dx": -1,
+        "x": 6,
+        "y": 2,
+        "type": "A"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 6,
+        "y": 3,
+        "type": "B"
+      },
+      {
+        "id": 2,
+        "dx": -1,
+        "x": 6,
+        "y": 4,
+        "type": "A"
+      },
+      {
+        "id": 3,
+        "dx": -1,
+        "x": 7,
+        "y": 4,
+        "type": "B"
+      },
+      {
+        "id": 5,
+        "dx": 1,
+        "x": 5,
+        "y": 7,
+        "type": "B"
+      },
+      {
+        "id": 5,
+        "dx": 1,
+        "x": 6,
+        "y": 7,
+        "type": "B"
+      },
+      {
+        "id": 2,
+        "dx": -1,
+        "x": 5,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 5,
+        "y": 7,
+        "type": "B"
+      },
+      {
+        "id": 5,
+        "dx": -1,
+        "x": 7,
+        "y": 7,
+        "type": "B"
+      },
+      {
+        "id": 3,
+        "dx": -1,
+        "x": 6,
+        "y": 4,
+        "type": "B"
+      }
+    ]
+  },
+  {
+    "title": "Четыре знака",
+    "tag": "Четыре типа",
+    "note": "Круг, ромб, треугольник и крест. У каждого свой маршрут — начните с освобождения пространства.",
+    "rows": [
+      "##########",
+      "#........#",
+      "#........#",
+      "####.....#",
+      "#.....ADA#",
+      "#.....####",
+      "#...B....#",
+      "#..##....#",
+      "#CB.CD...#",
+      "##########"
+    ],
+    "par": 11,
+    "solution": [
+      {
+        "id": 0,
+        "dx": -1,
+        "x": 6,
+        "y": 4,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 5,
+        "y": 7,
+        "type": "A"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 7,
+        "y": 4,
+        "type": "D"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 6,
+        "y": 4,
+        "type": "D"
+      },
+      {
+        "id": 2,
+        "dx": -1,
+        "x": 8,
+        "y": 4,
+        "type": "A"
+      },
+      {
+        "id": 2,
+        "dx": -1,
+        "x": 7,
+        "y": 4,
+        "type": "A"
+      },
+      {
+        "id": 2,
+        "dx": -1,
+        "x": 6,
+        "y": 4,
+        "type": "A"
+      },
+      {
+        "id": 3,
+        "dx": -1,
+        "x": 4,
+        "y": 6,
+        "type": "B"
+      },
+      {
+        "id": 3,
+        "dx": -1,
+        "x": 3,
+        "y": 6,
+        "type": "B"
+      },
+      {
+        "id": 4,
+        "dx": 1,
+        "x": 1,
+        "y": 8,
+        "type": "C"
+      },
+      {
+        "id": 4,
+        "dx": 1,
+        "x": 2,
+        "y": 8,
+        "type": "C"
+      }
+    ]
+  },
+  {
+    "title": "Равновесие",
+    "tag": "Финальный этюд",
+    "note": "Смотрите на поле целиком. Отмена хода всегда доступна — здесь важна идея, а не скорость.",
+    "rows": [
+      "##########",
+      "#........#",
+      "#........#",
+      "#..##....#",
+      "#B.....###",
+      "###..BA..#",
+      "#....##..#",
+      "#...B....#",
+      "#A..AC..C#",
+      "##########"
+    ],
+    "par": 10,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 1,
+        "y": 4,
+        "type": "B"
+      },
+      {
+        "id": 4,
+        "dx": 1,
+        "x": 1,
+        "y": 8,
+        "type": "A"
+      },
+      {
+        "id": 6,
+        "dx": 1,
+        "x": 5,
+        "y": 8,
+        "type": "C"
+      },
+      {
+        "id": 5,
+        "dx": 1,
+        "x": 4,
+        "y": 8,
+        "type": "A"
+      },
+      {
+        "id": 4,
+        "dx": 1,
+        "x": 2,
+        "y": 8,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 4,
+        "type": "B"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 5,
+        "y": 5,
+        "type": "B"
+      },
+      {
+        "id": 2,
+        "dx": -1,
+        "x": 6,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 2,
+        "dx": -1,
+        "x": 5,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 6,
+        "dx": 1,
+        "x": 6,
+        "y": 8,
+        "type": "C"
+      }
+    ]
+  },
+  {
+    "title": "Первый ожог",
+    "chapter": "fire",
+    "tag": "Огонь · прямой контакт",
+    "note": "Сдвиньте ромб вправо: он упадёт на огонь и станет горелым, но останется на поле. Затем соедините круги справа. Сам огонь теперь тоже можно двигать.",
+    "rows": [
+      "#########",
+      "#.......#",
+      "#..B....#",
+      "####....#",
+      "#.......#",
+      "#...F...#",
+      "#...#A.A#",
+      "#########"
+    ],
+    "par": 2,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 3,
+        "y": 2,
+        "type": "B"
+      },
+      {
+        "id": 2,
+        "dx": 1,
+        "x": 5,
+        "y": 6,
+        "type": "A"
+      }
+    ]
+  },
+  {
+    "title": "Сдвинуть уголь",
+    "chapter": "fire",
+    "tag": "Огонь · подвижная преграда",
+    "note": "Доставьте оба блока в центральный колодец. Уголь закроет огонь: сдвиньте его в сторону. Можно двигать и сам огонь — он тоже падает без опоры.",
+    "rows": [
+      "#########",
+      "#.......#",
+      "#.B...C.#",
+      "####.####",
+      "#.......#",
+      "#.......#",
+      "#...F...#",
+      "#########"
+    ],
+    "par": 5,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 2,
+        "type": "B"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 3,
+        "y": 2,
+        "type": "B"
+      },
+      {
+        "id": 0,
+        "dx": -1,
+        "x": 4,
+        "y": 5,
+        "type": "B",
+        "burnt": true
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 6,
+        "y": 2,
+        "type": "C"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 5,
+        "y": 2,
+        "type": "C"
+      }
+    ]
+  },
+  {
+    "title": "Угольный мост",
+    "chapter": "fire",
+    "tag": "Огонь · защитная опора",
+    "note": "Горелый блок остаётся опорой и не передаёт огонь. Используйте его, чтобы сохранить цветные блоки для совпадения.",
+    "rows": [
+      "#########",
+      "#.......#",
+      "#.A.....#",
+      "###B....#",
+      "#..#.A..#",
+      "#....#..#",
+      "#...F...#",
+      "#########"
+    ],
+    "par": 3,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 2,
+        "type": "A"
+      },
+      {
+        "id": 1,
+        "dx": 1,
+        "x": 3,
+        "y": 3,
+        "type": "B"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 3,
+        "y": 3,
+        "type": "A"
+      }
+    ]
+  },
+  {
+    "title": "Цена следа",
+    "chapter": "fire",
+    "tag": "Огонь · порядок действий",
+    "note": "Освобождайте огонь от угля и следите, куда падают горелые блоки. Пара кругов внизу должна сохранить возможность встретиться.",
+    "rows": [
+      "#########",
+      "#.......#",
+      "#.B...C.#",
+      "####.####",
+      "#.......#",
+      "#...F...#",
+      "#A.A#...#",
+      "#########"
+    ],
+    "par": 6,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 2,
+        "type": "B"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 3,
+        "y": 2,
+        "type": "B"
+      },
+      {
+        "id": 0,
+        "dx": -1,
+        "x": 4,
+        "y": 4,
+        "type": "B",
+        "burnt": true
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 6,
+        "y": 2,
+        "type": "C"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 5,
+        "y": 2,
+        "type": "C"
+      },
+      {
+        "id": 3,
+        "dx": 1,
+        "x": 1,
+        "y": 6,
+        "type": "A"
+      }
+    ]
+  },
+  {
+    "title": "Огонь в движении",
+    "chapter": "portals",
+    "tag": "Подвижный огонь",
+    "note": "Сначала выберите огонь и сдвиньте его на две клетки влево. Затем направьте ромб вправо с платформы: он упадёт на горячую верхнюю грань.",
+    "rows": [
+      "#########",
+      "#.......#",
+      "#..B....#",
+      "####....#",
+      "#.......#",
+      "#.....F.#",
+      "#########"
+    ],
+    "par": 3,
+    "solution": [
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 6,
+        "y": 5,
+        "type": "F"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 5,
+        "y": 5,
+        "type": "F"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 3,
+        "y": 2,
+        "type": "B"
+      }
+    ]
+  },
+  {
+    "title": "Две камеры",
+    "chapter": "portals",
+    "tag": "По вашему примеру · вертикальная дверь",
+    "note": "Две камеры, как на вашем примере. Нижний проём справа ведёт к верхнему: блок падает в дверь, выходит сверху и продолжает падать. Начните с круга в верхней камере.",
+    "rows": [
+      "#####",
+      "#CA.#",
+      "#DB.#",
+      "#####",
+      "#AC.#",
+      "#BD.#",
+      "#####"
+    ],
+    "portals": [
+      {
+        "id": "1",
+        "a": {
+          "x": 3,
+          "y": 5,
+          "side": "bottom"
+        },
+        "b": {
+          "x": 3,
+          "y": 1,
+          "side": "top"
+        }
+      }
+    ],
+    "par": 9,
+    "solution": [
+      {
+        "id": 1,
+        "dx": 1,
+        "x": 2,
+        "y": 1,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 1,
+        "y": 1,
+        "type": "C"
+      },
+      {
+        "id": 5,
+        "dx": 1,
+        "x": 2,
+        "y": 4,
+        "type": "C"
+      },
+      {
+        "id": 4,
+        "dx": 1,
+        "x": 1,
+        "y": 4,
+        "type": "A"
+      },
+      {
+        "id": 7,
+        "dx": 1,
+        "x": 2,
+        "y": 5,
+        "type": "D"
+      },
+      {
+        "id": 4,
+        "dx": 1,
+        "x": 2,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 6,
+        "dx": 1,
+        "x": 1,
+        "y": 5,
+        "type": "B"
+      },
+      {
+        "id": 7,
+        "dx": -1,
+        "x": 3,
+        "y": 1,
+        "type": "D"
+      },
+      {
+        "id": 6,
+        "dx": 1,
+        "x": 2,
+        "y": 5,
+        "type": "B"
+      }
+    ]
+  },
+  {
+    "title": "За другой стеной",
+    "chapter": "portals",
+    "tag": "Боковая дверь",
+    "note": "Выберите круг у левой стены и нажмите ←. Он пройдёт в дверь и выйдет из правой стены другой камеры. Касание двери без движения сквозь неё ничего не делает.",
+    "rows": [
+      "###########",
+      "#....#....#",
+      "#....#....#",
+      "#A...#.A..#",
+      "###########"
+    ],
+    "portals": [
+      {
+        "id": "1",
+        "a": {
+          "x": 1,
+          "y": 3,
+          "side": "left"
+        },
+        "b": {
+          "x": 9,
+          "y": 3,
+          "side": "right"
+        }
+      }
+    ],
+    "par": 2,
+    "solution": [
+      {
+        "id": 0,
+        "dx": -1,
+        "x": 1,
+        "y": 3,
+        "type": "A"
+      },
+      {
+        "id": 0,
+        "dx": -1,
+        "x": 9,
+        "y": 3,
+        "type": "A"
+      }
+    ]
+  },
+  {
+    "title": "Сначала освободить",
+    "chapter": "portals",
+    "tag": "Занятый выход",
+    "note": "Уголь перекрывает верхний выход. Сдвиньте его влево: нижний круг сразу провалится в открытую дверь. Телепорт никогда не выталкивает и не заменяет чужой блок.",
+    "rows": [
+      "#####",
+      "#..X#",
+      "#A.##",
+      "#####",
+      "#...#",
+      "#..A#",
+      "#####"
+    ],
+    "portals": [
+      {
+        "id": "1",
+        "a": {
+          "x": 3,
+          "y": 5,
+          "side": "bottom"
+        },
+        "b": {
+          "x": 3,
+          "y": 1,
+          "side": "top"
+        }
+      }
+    ],
+    "par": 3,
+    "solution": [
+      {
+        "id": 0,
+        "dx": -1,
+        "x": 3,
+        "y": 1,
+        "type": "A",
+        "burnt": true
+      },
+      {
+        "id": 2,
+        "dx": -1,
+        "x": 3,
+        "y": 1,
+        "type": "A"
+      },
+      {
+        "id": 2,
+        "dx": -1,
+        "x": 2,
+        "y": 1,
+        "type": "A"
+      }
+    ]
+  },
+  {
+    "title": "Доставка огня",
+    "chapter": "portals",
+    "tag": "Огонь + телепорт",
+    "note": "Телепорт переносит и огонь. Сдвиньте его вправо в нижний проём — он окажется в верхней камере. Только после этого сбросьте ромб с платформы.",
+    "rows": [
+      "#######",
+      "#.B...#",
+      "###...#",
+      "#.....#",
+      "#######",
+      "#.....#",
+      "#...F.#",
+      "#######"
+    ],
+    "portals": [
+      {
+        "id": "1",
+        "a": {
+          "x": 5,
+          "y": 6,
+          "side": "bottom"
+        },
+        "b": {
+          "x": 3,
+          "y": 1,
+          "side": "top"
+        }
+      }
+    ],
+    "par": 2,
+    "solution": [
+      {
+        "id": 1,
+        "dx": 1,
+        "x": 4,
+        "y": 6,
+        "type": "F"
+      },
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 2,
+        "y": 1,
+        "type": "B"
+      }
+    ]
+  },
+  {
+    "title": "Два маршрута",
+    "chapter": "portals",
+    "tag": "Две пары дверей",
+    "note": "Одинаковые номера соединяют двери. Проведите нижний круг через проём 1, затем через боковую дверь 2. Ромбы можно соединить в нижней камере.",
+    "rows": [
+      "#########",
+      "#...#...#",
+      "#A..#...#",
+      "#########",
+      "#.......#",
+      "#A..B.B.#",
+      "#########"
+    ],
+    "portals": [
+      {
+        "id": "1",
+        "a": {
+          "x": 3,
+          "y": 5,
+          "side": "bottom"
+        },
+        "b": {
+          "x": 5,
+          "y": 1,
+          "side": "top"
+        }
+      },
+      {
+        "id": "2",
+        "a": {
+          "x": 5,
+          "y": 2,
+          "side": "left"
+        },
+        "b": {
+          "x": 3,
+          "y": 2,
+          "side": "right"
+        }
+      }
+    ],
+    "par": 5,
+    "solution": [
+      {
+        "id": 0,
+        "dx": 1,
+        "x": 1,
+        "y": 2,
+        "type": "A"
+      },
+      {
+        "id": 1,
+        "dx": 1,
+        "x": 1,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 1,
+        "dx": 1,
+        "x": 2,
+        "y": 5,
+        "type": "A"
+      },
+      {
+        "id": 1,
+        "dx": -1,
+        "x": 5,
+        "y": 2,
+        "type": "A"
+      },
+      {
+        "id": 2,
+        "dx": 1,
+        "x": 4,
+        "y": 5,
+        "type": "B"
+      }
+    ]
+  },
+  {
+    "title": "Два касания",
+    "tag": "Лёд · 1/2 → 2/2",
+    "note": "Сдвиньте верхний круг вправо на лёд, затем влево и снова вправо. Первое касание оставляет трещину, второе разрушает опору. Простое ожидание лёд не ломает.",
+    "rows": [
+      "#######",
+      "#.....#",
+      "#.....#",
+      "#.....#",
+      "#.A.#.#",
+      "###IA.#",
+      "#######"
+    ],
+    "chapter": "elements",
+    "par": 3,
+    "solution": [
+      {
+        "id": 0,
+        "type": "A",
+        "x": 2,
+        "y": 4,
+        "dx": 1
+      },
+      {
+        "id": 0,
+        "type": "A",
+        "x": 3,
+        "y": 4,
+        "dx": -1
+      },
+      {
+        "id": 0,
+        "type": "A",
+        "x": 2,
+        "y": 4,
+        "dx": 1
+      }
+    ]
+  },
+  {
+    "title": "Тонкая преграда",
+    "tag": "Огонь + лёд",
+    "note": "Лёд перекрывает путь кругу. Сдвиньте его вправо на огонь: лёд растает, а не станет углём. Затем проведите круг по освободившемуся пути.",
+    "rows": [
+      "#######",
+      "#.....#",
+      "#.....#",
+      "#.....#",
+      "#AI...#",
+      "###F..#",
+      "#######"
+    ],
+    "chapter": "elements",
+    "par": 3,
+    "solution": [
+      {
+        "id": 1,
+        "type": "I",
+        "x": 2,
+        "y": 4,
+        "dx": 1
+      },
+      {
+        "id": 0,
+        "type": "A",
+        "x": 1,
+        "y": 4,
+        "dx": 1
+      },
+      {
+        "id": 0,
+        "type": "A",
+        "x": 2,
+        "y": 4,
+        "dx": 1
+      }
+    ]
+  },
+  {
+    "title": "Живая опора",
+    "tag": "Растения · хватка",
+    "note": "Растение удерживает соседний круг над пустотой. Сдвиньте растение вправо, чтобы разорвать контакт: круг упадёт к своей паре. Хватка мешает падению, но не горизонтальному движению.",
+    "rows": [
+      "#######",
+      "#.....#",
+      "#.....#",
+      "#.#AP.#",
+      "#...#.#",
+      "#..A..#",
+      "#######"
+    ],
+    "chapter": "elements",
+    "par": 1,
+    "solution": [
+      {
+        "id": 1,
+        "type": "P",
+        "x": 4,
+        "y": 3,
+        "dx": 1
+      }
+    ]
+  },
+  {
+    "title": "Холодные объятия",
+    "tag": "Лёд + растения",
+    "note": "Сдвиньте лёд влево, к верхней грани растения. Замёрзшее растение отпустит круг и больше не сможет удерживать соседей. Лёд действует с любой стороны.",
+    "rows": [
+      "#######",
+      "#.....#",
+      "#....I#",
+      "#.#AP##",
+      "#...#.#",
+      "#..A..#",
+      "#######"
+    ],
+    "chapter": "elements",
+    "par": 1,
+    "solution": [
+      {
+        "id": 0,
+        "type": "I",
+        "x": 5,
+        "y": 2,
+        "dx": -1
+      }
+    ]
+  },
+  {
+    "title": "Живой факел",
+    "tag": "Растения + огонь",
+    "note": "Растение перегородило дорогу. Сдвиньте его вправо над огнём: оно станет новым огненным блоком. Теперь круг можно провести к его верхней грани.",
+    "rows": [
+      "#######",
+      "#.....#",
+      "#.AP..#",
+      "####..#",
+      "#...F.#",
+      "#######"
+    ],
+    "chapter": "elements",
+    "par": 3,
+    "solution": [
+      {
+        "id": 1,
+        "type": "P",
+        "x": 3,
+        "y": 2,
+        "dx": 1
+      },
+      {
+        "id": 0,
+        "type": "A",
+        "x": 2,
+        "y": 2,
+        "dx": 1
+      },
+      {
+        "id": 0,
+        "type": "A",
+        "x": 3,
+        "y": 2,
+        "dx": 1
+      }
+    ]
+  },
+  {
+    "title": "Вверх без лестницы",
+    "tag": "Ветер · подъём",
+    "note": "Сдвиньте нижний круг вправо в воздушный поток. Ветер поднимет его к верхней паре. На свободном месте вне потока снова действует обычная гравитация.",
+    "rows": [
+      "#######",
+      "#...A.#",
+      "#...#.#",
+      "#.....#",
+      "#.A...#",
+      "###W..#",
+      "#######"
+    ],
+    "chapter": "elements",
+    "par": 1,
+    "solution": [
+      {
+        "id": 1,
+        "type": "A",
+        "x": 2,
+        "y": 4,
+        "dx": 1
+      }
+    ]
+  },
+  {
+    "title": "Сильнее корней",
+    "tag": "Ветер + растения",
+    "note": "Подведите ветер вправо под зависший круг. Поток разорвёт хватку растения и поднимет круг к паре наверху. Само растение останется на своей платформе.",
+    "rows": [
+      "#######",
+      "#...A.#",
+      "#...#.#",
+      "#..AP.#",
+      "#...#.#",
+      "#.W...#",
+      "#######"
+    ],
+    "chapter": "elements",
+    "par": 1,
+    "solution": [
+      {
+        "id": 0,
+        "type": "A",
+        "x": 4,
+        "y": 1,
+        "dx": -1
+      }
+    ]
+  },
+  {
+    "title": "Невесомый",
+    "tag": "Ветер + лёд",
+    "note": "Сдвиньте ветер вправо на лёд: трещина не появится. Затем сдвиньте нижний круг вправо в подготовленный поток, чтобы соединить его с верхним.",
+    "rows": [
+      "########",
+      "#...A..#",
+      "#.A.#..#",
+      "###....#",
+      "#.W....#",
+      "###I...#",
+      "########"
+    ],
+    "chapter": "elements",
+    "par": 2,
+    "solution": [
+      {
+        "id": 0,
+        "type": "A",
+        "x": 4,
+        "y": 1,
+        "dx": -1
+      },
+      {
+        "id": 1,
+        "type": "A",
+        "x": 2,
+        "y": 2,
+        "dx": 1
+      }
+    ]
+  },
+  {
+    "title": "Временное затишье",
+    "tag": "Ветер + огонь",
+    "note": "Поток держит огонь погашенным, поэтому круг над ним пока цел. Уберите ветер в сторону: пламя восстановится, а круг обуглится. Погашенный огонь остаётся твёрдым блоком.",
+    "rows": [
+      "#######",
+      "#..A..#",
+      "#..F..#",
+      "#.....#",
+      "#.....#",
+      "#..W..#",
+      "#######"
+    ],
+    "chapter": "elements",
+    "par": 1,
+    "solution": [
+      {
+        "id": 2,
+        "type": "W",
+        "x": 3,
+        "y": 5,
+        "dx": -1
+      }
+    ]
+  },
+  {
+    "title": "Воздушная дверь",
+    "tag": "Ветер + двери + растения",
+    "note": "Сдвиньте верхний круг вправо. Ветер протолкнёт его через верхнюю дверь к нижнему выходу. Растение в другой камере удержит прибывший блок, чтобы он не упал обратно в проём.",
+    "rows": [
+      "#######",
+      "#.A...#",
+      "###...#",
+      "#..W..#",
+      "#######",
+      "#.....#",
+      "#.....#",
+      "#.A.P.#",
+      "#######"
+    ],
+    "portals": [
+      {
+        "id": "1",
+        "a": {
+          "x": 3,
+          "y": 1,
+          "side": "top"
+        },
+        "b": {
+          "x": 3,
+          "y": 7,
+          "side": "bottom"
+        }
+      }
+    ],
+    "chapter": "elements",
+    "par": 1,
+    "solution": [
+      {
+        "id": 0,
+        "type": "A",
+        "x": 2,
+        "y": 1,
+        "dx": 1
+      }
+    ]
+  }
+];
+if(typeof module === "object" && module.exports) module.exports=levels;
+else root.PuzzleLevels=levels;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* Sblizhenie 1.4: mobile game shell. Physics and level definitions are unchanged. */
+(function () {
+  'use strict';
+  const E = window.PuzzleEngine, LEVELS = window.PuzzleLevels;
+  const $ = id => document.getElementById(id);
+  const canvas = $('board'), ctx = canvas.getContext('2d');
+  if (!ctx) { $('statusMessage').textContent = 'Canvas недоступен. Попробуйте другой браузер.'; return; }
+  const TILE = 64, STORAGE_KEY = 'sblizhenie.progress.mobile.v1';
+  const TYPES = {
+    A: { color: '#eea58e', name: 'Круг', plural: 'круги', description: 'коралловый круг' },
+    B: { color: '#a9d2c7', name: 'Ромб', plural: 'ромбы', description: 'мятный ромб' },
+    C: { color: '#b9b3dc', name: 'Треугольник', plural: 'треугольники', description: 'сиреневый треугольник' },
+    D: { color: '#e3c786', name: 'Крест', plural: 'кресты', description: 'песочный крест' }
+  };
+  const BURNT = { color: '#686a70', name: 'Уголь', description: 'уголь, не участвует в совпадениях' };
+  const FIRE = { color: '#efb47f', name: 'Огонь', description: 'подвижный огонь, обжигает только сверху' };
+  const ICE = { color: '#9bd9ec', name: 'Лёд · 0/2', description: 'целый лёд, два попадания сверху разрушат его' };
+  const CRACKED = { color: '#85c5df', name: 'Лёд · 1/2', description: 'треснувший лёд, одно попадание разрушит его' };
+  const PLANT = { color: '#a9c889', name: 'Растение', description: 'растение, удерживает соседние блоки от падения' };
+  const FROZEN = { color: '#adcfdc', name: 'Замёрзшее растение', description: 'замёрзшее растение, не держит соседей и само не удерживается' };
+  const WIND = { color: '#c7dfdd', name: 'Ветер', description: 'ветер, поднимает блоки и гасит пламя в потоке' };
+  const DAMPED = { color: '#9eaaa9', name: 'Огонь · погашен', description: 'временно погашенный огонь, без потока загорится снова' };
+  const look = b => E.isFire(b) ? b.out ? DAMPED : FIRE : E.isIce(b) ? b.hits ? CRACKED : ICE :
+    E.isPlant(b) ? b.frozen ? FROZEN : PLANT : E.isWind(b) ? WIND : b.burnt ? BURNT : TYPES[b.type];
+  const icon = name => `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${name}"></use></svg>`;
+  const sampleTile = name => `<span class="sample-tile tile-${name}" aria-hidden="true">${icon(name)}</span>`;
+  const CHAPTERS = [
+    { title: 'Первые шаги', description: 'Совпадения, падения и цепные реакции.', color: '#c7bfe6', art: ['circle', 'diamond', 'triangle'] },
+    { title: 'Огонь и двери', description: 'Новые пути. Неожиданные превращения.', color: '#efbb91', art: ['fire', 'portal', 'diamond'] },
+    { title: 'Сила стихий', description: 'Лёд, растения и ветер меняют правила.', color: '#b6d6cc', art: ['ice', 'plant', 'wind'] }
+  ];
+  const RULES = [
+    { tag: 'ОСНОВЫ', title: 'Сдвиньте. Соедините.', art: ['circle', 'circle'],
+      paragraphs: ['Коснитесь блока, затем нажмите <strong>← или →</strong> под полем. Можно просто смахнуть блок в сторону. Один ход — одна свободная клетка.',
+      '<strong>Два и больше одинаковых</strong> блока исчезают при контакте сторонами. Диагональ не считается. Без опоры блоки падают; толкать соседей нельзя.',
+      'Цель — убрать все цветные блоки. Специальные блоки могут остаться. <strong>Таймера нет.</strong>'] },
+    { tag: 'ОГОНЬ И УГОЛЬ', title: 'Сгорел — но не исчез.', art: ['fire', 'charcoal'],
+      paragraphs: ['Огонь тоже можно двигать. Опасна только его <strong>верхняя грань</strong>: цветной блок над ней превращается в уголь.',
+      'Уголь остаётся на поле. Его можно двигать, ронять и использовать как опору, но он <strong>не участвует в совпадениях</strong> и уже считается убранным из цели.',
+      'Уголь не передаёт пламя. Он может защитить следующий блок — или закрыть доступ к огню.'] },
+    { tag: 'ЛЁД', title: 'Всего два касания.', art: ['ice', 'ice'],
+      paragraphs: ['Первый <strong>новый приход блока сверху</strong> оставляет трещину: 0/2 → 1/2. Второй разрушает лёд. Подойдёт и падение, и горизонтальный сдвиг.',
+      'Неподвижный груз не наносит повторных ударов. Можно убрать тот же блок и вернуть его ещё раз. Сдвиг самого льда под груз — не удар.',
+      '<strong>Ветровой блок не повреждает лёд.</strong> А лёд над горящим огнём тает и исчезает.'] },
+    { tag: 'РАСТЕНИЯ', title: 'Опора из соседства.', art: ['plant', 'diamond'],
+      paragraphs: ['Незамёрзшее растение держит блоки рядом <strong>с любой из четырёх сторон</strong> и не даёт им падать.',
+      'Хватка не запрещает горизонтальные ходы. Сдвиньте блок или растение, чтобы разорвать контакт. По диагонали и через телепорт хватка не действует.',
+      '<strong>Ветер сильнее растения:</strong> он способен вырвать блок из этой хватки и поднять его.'] },
+    { tag: 'ХОЛОД И ПЛАМЯ', title: 'Растения меняются.', art: ['ice', 'plant', 'fire'],
+      paragraphs: ['Лёд рядом с любой стороной растения <strong>замораживает его</strong>. Оно отпускает соседей, и другие растения уже не могут удержать его самого.',
+      'Заморозка сохраняется и после удаления льда. Растение остаётся твёрдым и подвижным, но не становится ледяным блоком.',
+      'Растение непосредственно над огнём <strong>превращается в огонь</strong>. Это работает и с замёрзшим растением.'] },
+    { tag: 'ВЕТЕР', title: 'Дорога наверх.', art: ['wind', 'diamond'],
+      paragraphs: ['Ветер дует <strong>строго вверх</strong> до первой стены или блока. Он поднимает этот блок и соприкасающуюся стопку над ним.',
+      'В потоке блок удерживается наверху. Вне потока снова действуют гравитация и хватка растений. Воздух сквозь блоки не проходит.',
+      'Сам ветровой блок подвижен и настолько лёгок, что <strong>не оставляет трещин на льду</strong>.'] },
+    { tag: 'ВЕТЕР И ОГОНЬ', title: 'Временное затишье.', art: ['wind', 'fire'],
+      paragraphs: ['Огонь, на который <strong>непосредственно дует ветер</strong>, гаснет. Он остаётся твёрдым и подвижным, но не обжигает, не плавит и не поджигает.',
+      'Уберите поток — <strong>пламя сразу вернётся</strong>. Таймера нет: всё зависит от расположения блоков.',
+      'Блок между ветром и огнём закрывает пламя от обдува. Даже если вся стопка поднимается, воздух через неё не проходит.'] },
+    { tag: 'ТЕЛЕПОРТЫ', title: 'Дверь, а не клетка.', art: ['portal', 'diamond', 'portal'],
+      paragraphs: ['Для перехода нужно <strong>пересечь проём</strong>. Нижний вход ведёт к верхнему выходу; боковой — к противоположному. Ветер может провести блок вверх через верхнюю дверь.',
+      'Одинаковые номера обозначают одну пару. <strong>Занятый выход блокирует переход.</strong> Через двери проходят все подвижные блоки, сохраняя своё состояние.',
+      'После выхода действуют местные силы. Воздух, обжиг и хватка растений через дверь не передаются.'] },
+    { tag: 'БЕЗ СПЕШКИ', title: 'Пробуйте другой путь.', art: ['triangle', 'diamond'],
+      paragraphs: ['<strong>Отмена</strong> возвращает весь ход: движения, лёд, растения, огонь, переходы и совпадения. Перезапуск находится в меню паузы.',
+      '<strong>Подсказка</strong> показывает один ход от текущей позиции. Достижение лимита поиска не означает проигрыш. Ход с бесконечным циклом движения отклоняется.',
+      'На клавиатуре: ↑ / ↓ — выбрать, ← / → — двигать, Z — отмена, R — заново, H — подсказка, Escape — меню.'] }
+  ];
+
+  let reviewingWin = false;
+  let board, blocks = [], levelIndex = 0, selectedId = null, moves = 0, history = [];
+  let busy = false, animation = null, generation = 0, hintToken = 0, hintBusy = false;
+  let hint = null, provenDeadlock = false, message = '', messageKind = '';
+  let pointerStart = null, completed = {}, storedLevel = 0;
+  let currentScreen = 'home', levelPage = 0, rulePage = 0, levelsReturn = 'home', helpReturn = 'home';
+  let pendingConfirmation = null, storedSession = null, lastSession = null, booting = true, storageAvailable = true;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let animationsEnabled = !reducedMotion.matches;
+  try {
+    const keys = [STORAGE_KEY, 'sblizhenie.progress.elements.v1', 'sblizhenie.progress.portals.v1',
+      'sblizhenie.progress.fire.v1', 'sblizhenie.progress.v1'];
+    for (const key of keys) {
+      const raw = localStorage.getItem(key);
+      if (!raw || raw.length > 3000000) continue;
+      let saved;
+      try { saved = JSON.parse(raw); } catch (_) { continue; }
+      if (!saved || typeof saved !== 'object' || Array.isArray(saved)) continue;
+      const limit = key.includes('fire.') || key === 'sblizhenie.progress.v1' ? 10 : key.includes('portals.') ? 20 : LEVELS.length;
+      if (Number.isInteger(saved.level) && saved.level >= 0 && saved.level < limit) storedLevel = saved.level;
+      if (saved.completed && typeof saved.completed === 'object' && !Array.isArray(saved.completed)) {
+        for (const [key, best] of Object.entries(saved.completed)) {
+          const index = Number(key);
+          if (Number.isInteger(index) && index >= 0 && index < limit && Number.isInteger(best) && best >= 0 && best <= 100000) completed[index] = best;
+        }
+      }
+      if (key === STORAGE_KEY) {
+        storedSession = saved.session;
+        if (typeof saved.preferences?.animations === 'boolean') animationsEnabled = saved.preferences.animations;
+      }
+      break;
+    }
+  } catch (_) { storageAvailable = false; }
+
+  const signature = index => LEVELS[index].rows.join('\n') + '|' + JSON.stringify(LEVELS[index].portals || []);
+  function saveProgress() {
+    if (!board) return;
+    // Only committed turns are saved: a reload in an animation never stores half a move.
+    if (!busy) {
+      lastSession = { version: 1, level: levelIndex, signature: signature(levelIndex), blocks: E.clone(blocks),
+        moves, selectedId, history: history.slice(-300).map(h => ({blocks: E.clone(h.blocks), selectedId: h.selectedId, moves: h.moves})),
+        reviewingWin };
+    }
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({level: levelIndex, completed, session: lastSession, preferences: {animations: animationsEnabled}}));
+    } catch (_) { storageAvailable = false; }
+  }
+  function restoreSession(saved) {
+    if (!saved || saved.version !== 1 || saved.level !== levelIndex || saved.signature !== signature(levelIndex)) return false;
+    try {
+      const initial = E.parseLevel(LEVELS[levelIndex]).blocks, ids = new Set(initial.map(b => b.id));
+      function validState(state) {
+        if (!Array.isArray(state) || state.length > initial.length || state.some(b => !b || !ids.has(b.id))) throw new Error('Invalid session size.');
+        E.assertValid(board, state);
+      }
+      validState(saved.blocks);
+      if (!Number.isInteger(saved.moves) || saved.moves < 0 || saved.moves > 100000 ||
+          !Array.isArray(saved.history) || saved.history.length > 300 || saved.history.length > saved.moves) return false;
+      let previousMove = saved.moves - saved.history.length - 1;
+      for (const item of saved.history) {
+        validState(item.blocks);
+        if (!Number.isInteger(item.moves) || item.moves !== previousMove + 1) return false;
+        previousMove = item.moves;
+      }
+      blocks = E.clone(saved.blocks); moves = saved.moves;
+      history = saved.history.map(h => ({blocks: E.clone(h.blocks), selectedId: h.selectedId, moves: h.moves}));
+      selectedId = blocks.some(b => b.id === saved.selectedId) ? saved.selectedId : null;
+      reviewingWin = Boolean(saved.reviewingWin);
+      message = moves ? 'Позиция восстановлена. Продолжайте с того же места.' : message;
+      saveProgress(); return true;
+    } catch (_) { return false; }
+  }
+  function plural(n, forms) {
+    const a = Math.abs(n) % 100, b = a % 10;
+    return forms[a > 10 && a < 20 ? 2 : b === 1 ? 0 : b >= 2 && b <= 4 ? 1 : 2];
+  }
+  function moveWord(n) { return `${n} ${plural(n, ['ход', 'хода', 'ходов'])}`; }
+  function getStatus() {
+    const s = E.status(board, blocks);
+    return s.kind === 'playing' && provenDeadlock ? { kind: 'lost', reason: 'proven' } : s;
+  }
+  function cancelHint() { hintToken++; hintBusy = false; hint = null; }
+  function setMessage(text, kind = '') { message = text; messageKind = kind; updateUI(); }
+  function anyModal() { return Boolean(document.querySelector('dialog[open]')); }
+  function shouldAnimate() { return animationsEnabled && currentScreen === 'game' && !anyModal(); }
+  function closeDialogs() { document.querySelectorAll('dialog[open]').forEach(d => d.close()); }
+
+  function nextUnsolved() {
+    for (let step = 1; step <= LEVELS.length; step++) {
+      const i = (levelIndex + step) % LEVELS.length;
+      if (!Object.prototype.hasOwnProperty.call(completed, i)) return i;
+    }
+    return null;
+  }
+  function updateHome() {
+    const count = Object.keys(completed).length;
+    $('homeProgress').textContent = `${count} / ${LEVELS.length}`;
+    $('homeProgressBar').style.width = `${count / LEVELS.length * 100}%`;
+    const won = board && getStatus().kind === 'won';
+    const target = won ? nextUnsolved() : levelIndex;
+    $('continueLabel').textContent = target === null ? 'Ещё одну партию?' : won ? 'Дальше' : moves || levelIndex || count ? 'Продолжить' : 'Играть';
+    $('continueDetail').textContent = target === null ? 'Все уровни пройдены · выберите любимый' : `Уровень ${target + 1} · ${LEVELS[target].title}`;
+    if (!storageAvailable) $('homeProgressBar').parentElement.nextElementSibling.textContent = 'Без хранилища прогресс сохранится лишь до закрытия игры.';
+  }
+
+  function showScreen(name, focus = true) {
+    if (!['home','levels','game','help'].includes(name)) return;
+    currentScreen = name;
+    cancelHint(); pointerStart = null;
+    closeDialogs();
+    $('app').dataset.screen = name;
+    for (const key of ['home','levels','game','help']) $(key + 'Screen').hidden = key !== name;
+    if (name === 'levels') renderLevels();
+    if (name === 'help') renderRule();
+    updateHome(); updateUI(); saveProgress();
+    requestAnimationFrame(() => {
+      resizeCanvas();
+      if (focus) $(name === 'game' ? 'boardTitle' : name === 'levels' ? 'levelsTitle' : name === 'help' ? 'helpTitle' : 'homeTitle').focus({preventScroll:true});
+    });
+  }
+  function openLevels(from = currentScreen) {
+    levelsReturn = from === 'game' ? 'game' : 'home';
+    levelPage = Math.floor(levelIndex / 10);
+    $('levelsBackBtn').setAttribute('aria-label', levelsReturn === 'game' ? 'Вернуться в игру' : 'В главное меню');
+    showScreen('levels');
+  }
+  function openHelp(page = 0) {
+    helpReturn = currentScreen === 'help' ? helpReturn : currentScreen;
+    rulePage = Math.min(RULES.length - 1, Math.max(0, page));
+    showScreen('help');
+  }
+  function contextualRule() {
+    const selected = blocks.find(b => b.id === selectedId);
+    const source = selected && (E.isIce(selected) || E.isPlant(selected) || E.isWind(selected) || E.isFire(selected) || selected.burnt) ? [selected] : blocks;
+    if (source.some(E.isIce)) return 2;
+    if (source.some(E.isPlant)) return 3;
+    if (source.some(E.isWind)) return 5;
+    if (source.some(b => E.isFire(b) || b.burnt)) return 1;
+    return board.portals.length ? 7 : 0;
+  }
+
+  const levelButtons = LEVELS.map((level, i) => {
+    const button = document.createElement('button');
+    button.className = 'level-button'; button.dataset.index = i;
+    button.innerHTML = `<span class="level-number">${String(i + 1).padStart(2, '0')}</span><span class="level-state"></span>`;
+    button.title = level.title;
+    button.addEventListener('click', () => chooseLevel(i));
+    $('levelGrid').append(button); return button;
+  });
+  for (let i = 0; i < CHAPTERS.length; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'page-dot'; dot.dataset.page = i;
+    dot.setAttribute('aria-label', `Глава ${i + 1}: ${CHAPTERS[i].title}`);
+    dot.addEventListener('click', () => changeChapter(i));
+    $('chapterDots').append(dot);
+  }
+  // Rule dots are indicators, not tiny tap targets; both navigation arrows are 44px.
+  for (let i = 0; i < RULES.length; i++) {
+    const dot = document.createElement('span'); dot.className = 'page-dot'; dot.setAttribute('aria-hidden','true');
+    $('ruleDots').append(dot);
+  }
+  function updateLevelNavigation() {
+    levelButtons.forEach((button, index) => {
+      const done = Object.prototype.hasOwnProperty.call(completed, index);
+      button.classList.toggle('active', index === levelIndex);
+      button.classList.toggle('completed', done);
+      if (index === levelIndex) button.setAttribute('aria-current', 'step');
+      else button.removeAttribute('aria-current');
+      button.setAttribute('aria-label', `Уровень ${index + 1}: ${LEVELS[index].title}${done ? `. Пройден за ${moveWord(completed[index])}` : '. Не пройден'}`);
+      button.querySelector('.level-state').innerHTML = done ? icon('check') : index === levelIndex ? 'СЕЙЧАС' : '·';
+    });
+    $('progressText').textContent = `${Object.keys(completed).length} / ${LEVELS.length}`;
+    renderLevels(); updateHome();
+  }
+  function renderLevels() {
+    const chapter = CHAPTERS[levelPage];
+    $('levelsScreen').style.setProperty('--chapter-color', chapter.color);
+    $('chapterKicker').textContent = `ГЛАВА ${String(levelPage + 1).padStart(2,'0')}`;
+    $('chapterTitle').textContent = chapter.title;
+    $('chapterDescription').textContent = chapter.description;
+    $('chapterArt').innerHTML = chapter.art.map(sampleTile).join('');
+    const first = levelPage * 10, end = Math.min(first + 10, LEVELS.length);
+    let count = 0;
+    levelButtons.forEach((button, i) => {
+      button.hidden = i < first || i >= end;
+      if (!button.hidden && Object.prototype.hasOwnProperty.call(completed,i)) count++;
+    });
+    $('chapterProgress').textContent = `Пройдено ${count} из ${end - first}`;
+    $('chapterRange').textContent = `${String(first + 1).padStart(2,'0')} — ${end}`;
+    $('levelGrid').setAttribute('aria-label', `Глава ${levelPage + 1}. Уровни ${first + 1}–${end}`);
+    $('prevChapterBtn').disabled = levelPage === 0;
+    $('nextChapterBtn').disabled = levelPage === CHAPTERS.length - 1;
+    [...$('chapterDots').children].forEach((dot, i) => {
+      if (i === levelPage) dot.setAttribute('aria-current','page'); else dot.removeAttribute('aria-current');
+    });
+  }
+  function changeChapter(index) {
+    if (index < 0 || index >= CHAPTERS.length) return;
+    levelPage = index; renderLevels();
+  }
+  function renderRule() {
+    const rule = RULES[rulePage];
+    $('ruleCounter').textContent = `${rulePage + 1} / ${RULES.length}`;
+    $('ruleKicker').textContent = rule.tag; $('ruleTitle').textContent = rule.title;
+    $('ruleBody').innerHTML = rule.paragraphs.map(p => `<p>${p}</p>`).join('');
+    $('ruleArt').innerHTML = rule.art.map(sampleTile).join(rule.art.length === 2 ? `<span class="art-arrow">${icon('right')}</span>` : '');
+    $('prevRuleBtn').disabled = rulePage === 0;
+    $('nextRuleBtn').disabled = rulePage === RULES.length - 1;
+    [...$('ruleDots').children].forEach((dot, i) => {
+      if (i === rulePage) dot.setAttribute('aria-current','page'); else dot.removeAttribute('aria-current');
+    });
+  }
+  function changeRule(index) { if (index >= 0 && index < RULES.length) { rulePage = index; renderRule(); } }
+
+  function chooseLevel(index) {
+    if (index === levelIndex) { showScreen('game'); return; }
+    const commit = () => loadLevel(index);
+    if (moves && getStatus().kind !== 'won') askConfirmation('Перейти на другой уровень?', 'Текущая расстановка сбросится. Пройденные уровни сохранятся.', 'Перейти', commit);
+    else commit();
+  }
+  function askConfirmation(title, description, label, callback) {
+    cancelHint(); closeDialogs();
+    $('confirmTitle').textContent = title; $('confirmDescription').textContent = description;
+    $('confirmAcceptBtn').textContent = label;
+    $('confirmCancelBtn').textContent = currentScreen === 'game' ? 'Продолжить игру' : 'Остаться здесь';
+    pendingConfirmation = callback; $('confirmDialog').showModal();
+  }
+  function requestReset() {
+    const callback = () => loadLevel(levelIndex);
+    if (moves) askConfirmation('Начать заново?', 'Ходы на этом уровне будут сброшены. Общий прогресс сохранится.', 'Начать заново', callback);
+    else callback();
+  }
+  function openPause() {
+    if (currentScreen !== 'game') return;
+    cancelHint(); $('pauseDetail').textContent = `Уровень ${levelIndex + 1} · ${moveWord(moves)}`;
+    $('animationToggle').checked = animationsEnabled;
+    $('pauseDialog').showModal(); updateUI();
+  }
+  function resume() { $('pauseDialog').close(); updateUI(); }
+  function showInfo(kind = 'level') {
+    cancelHint();
+    $('infoKicker').textContent = kind === 'level' ? `УРОВЕНЬ ${levelIndex + 1} · ${LEVELS[levelIndex].tag}` : 'СЕЙЧАС НА ПОЛЕ';
+    $('infoTitle').textContent = kind === 'level' ? LEVELS[levelIndex].title : getStatus().kind === 'lost' ? 'Есть другой путь.' : 'После вашего хода';
+    $('infoText').textContent = kind === 'level' ? LEVELS[levelIndex].note : $('statusMessage').textContent;
+    const chips = [];
+    for (const [test, key, text] of [[E.isIce,'ice','Лёд'],[E.isPlant,'plant','Растения'],[E.isWind,'wind','Ветер'],[E.isFire,'fire','Огонь'],[b=>b.burnt,'charcoal','Уголь']]) {
+      if (blocks.some(test)) chips.push(`<span class="mechanic-chip">${icon(key)}${text}</span>`);
+    }
+    if (board.portals.length) chips.push(`<span class="mechanic-chip">${icon('portal')}Телепорт</span>`);
+    $('infoMechanics').innerHTML = chips.join('');
+    $('infoDoneBtn').innerHTML = `К игре ${icon('right')}`;
+    $('infoRulesBtn').hidden = false;
+    $('infoDialog').showModal();
+  }
+
+  function loadLevel(index) {
+    if (!Number.isInteger(index) || index < 0 || index >= LEVELS.length) return;
+    generation++; cancelHint(); animation = null; busy = false; pointerStart = null;
+    levelIndex = index;
+    const parsed = E.parseLevel(LEVELS[index]);
+    board = parsed.board;
+    const initial = E.resolve(board, parsed.blocks);
+    if (initial.rejected) throw new Error('Уровень содержит бесконечное движение: ' + initial.rejected);
+    blocks = initial.blocks;
+    selectedId = null; moves = 0; history = []; provenDeadlock = false; reviewingWin = false;
+    const hasFire = blocks.some(E.isFire), hasPortals = board.portals.length > 0;
+    const hasElements = blocks.some(b => E.isIce(b) || E.isPlant(b) || E.isWind(b));
+    message = hasElements ? 'Уберите все цветные блоки. Специальные могут остаться.' : hasPortals ? 'Одинаковые номера — одна пара дверей. Пересеките проём.' : hasFire ? 'Огонь можно двигать. Он обжигает только сверху.' : 'Соедините одинаковые блоки. Совпадение — по сторонам.';
+    messageKind = hasElements ? 'element' : hasPortals ? 'portal' : hasFire ? 'fire' : '';
+    const level = LEVELS[index];
+    $('boardTitle').textContent = level.title;
+    $('levelKicker').textContent = `УРОВЕНЬ ${String(index + 1).padStart(2, '0')} / ${LEVELS.length}`;
+    canvas.setAttribute('aria-label', `Игровое поле. Уровень ${index + 1}: ${level.title}. ${board.width} на ${board.height} клеток.`);
+    saveProgress(); updateLevelNavigation();
+    if (!booting) showScreen('game'); else updateUI();
+    resizeCanvas();
+  }
+
+  function updateUI() {
+    if (!board) return;
+    const status = getStatus(), selected = blocks.find(b => b.id === selectedId);
+    $('moveCount').textContent = moves;
+    $('blockCount').textContent = E.activeCount(blocks);
+    $('leftBtn').disabled = busy || status.kind !== 'playing' || !selected || !E.canMove(board, blocks, selectedId, -1);
+    $('rightBtn').disabled = busy || status.kind !== 'playing' || !selected || !E.canMove(board, blocks, selectedId, 1);
+    $('undoBtn').disabled = busy || !history.length;
+    $('hintBtn').disabled = busy || hintBusy || status.kind !== 'playing';
+    $('hintLabel').textContent = hintBusy ? 'Ищу ход…' : 'Подсказка';
+    $('selectionDot').style.backgroundColor = selected ? look(selected).color : 'transparent';
+    $('selectionDot').style.borderColor = selected ? look(selected).color : '#8195a3';
+    $('selectionText').textContent = busy ? 'Блоки движутся…' : status.kind === 'won' ? 'Все цветные убраны' : selected ? look(selected).name : 'Коснитесь блока';
+    let text = message, kind = messageKind;
+    if (!busy && status.kind === 'lost') {
+      text = status.reason === 'singleton' ? 'Остался блок без пары. Отмените ход и попробуйте иначе.' : status.reason === 'proven' ? 'Решения из этой позиции нет. Отмените один или несколько ходов.' : 'Все блоки заблокированы. Попробуйте отменить ход.';
+      kind = 'lost';
+    } else if (!busy && status.kind === 'won') {
+      text = 'Все цветные блоки убраны. Уголь и специальные блоки могут остаться.';
+      kind = 'hint';
+    }
+    $('statusMessage').textContent = text; $('statusMessage').className = `status-message ${kind}`;
+    $('statusBtn').setAttribute('aria-label', `${text} Подробнее`);
+    $('pauseDetail').textContent = `Уровень ${levelIndex + 1} · ${moveWord(moves)}`;
+    const descriptions = blocks.map(b => `${look(b).description}: столбец ${b.x + 1}, строка ${b.y + 1}${b.id === selectedId ? ', выбран' : ''}`);
+    const sideNames = {top:'сверху', bottom:'снизу', left:'слева', right:'справа'};
+    for (const pair of board.portals) descriptions.push(`Двери ${pair.id}: ${sideNames[pair.a.side]} у клетки ${pair.a.x + 1}, ${pair.a.y + 1}; ${sideNames[pair.b.side]} у клетки ${pair.b.x + 1}, ${pair.b.y + 1}`);
+    $('boardDescription').textContent = descriptions.join('. ') || 'Поле очищено.';
+    const won = !busy && status.kind === 'won';
+    $('showResultBtn').hidden = !won || !reviewingWin;
+    if (won) {
+      const allDone = Object.keys(completed).length === LEVELS.length;
+      $('winKicker').textContent = `УРОВЕНЬ ${levelIndex + 1} ПРОЙДЕН`;
+      $('winTitle').textContent = allDone ? 'Все сошлись!' : 'Есть контакт!';
+      $('winDescription').textContent = allDone ? 'Все 30 головоломок решены. Можно вернуться к любой.' : blocks.length ? 'Цветных блоков не осталось. Специальные могут остаться.' : 'Все цветные блоки убраны. Ещё одна маленькая победа.';
+      $('winMoves').textContent = moves;
+      $('winBest').textContent = completed[levelIndex] ?? moves;
+      $('nextBtn').innerHTML = `${levelIndex < LEVELS.length - 1 ? 'Следующий уровень' : nextUnsolved() === null ? 'К выбору уровней' : 'К непройденному'} ${icon('right')}`;
+    }
+    const wantResult = won && !reviewingWin && currentScreen === 'game';
+    if (!wantResult && $('winOverlay').open) $('winOverlay').close();
+    if (wantResult && !anyModal()) $('winOverlay').showModal();
+  }
+
+  function selectBlock(id) {
+    if (busy || currentScreen !== 'game' || anyModal() || getStatus().kind !== 'playing' || !blocks.some(b => b.id === id)) return;
+    selectedId = id; hint = null;
+    const selected = blocks.find(b => b.id === id);
+    message = E.isIce(selected) ? (selected.hits ? 'Следующее попадание сверху разрушит лёд.' : 'Два новых попадания сверху разрушат лёд. Ветер не повреждает его.') :
+      E.isPlant(selected) ? (selected.frozen ? 'Замёрзшее растение не держит соседей и само не удерживается.' : 'Держит соседей с четырёх сторон. Лёд замораживает, огонь снизу поджигает.') :
+      E.isWind(selected) ? 'Поднимает блоки, разрывает хватку, гасит пламя. Не повреждает лёд.' :
+      E.isFire(selected) && selected.out ? 'Пламя погашено потоком. Без ветра оно загорится снова.' :
+      E.isFire(selected) ? 'Подвижный огонь. Опасна только верхняя грань.' :
+      selected.burnt ? 'Уголь подвижен, но больше не участвует в совпадениях.' :
+      board.portals.length ? 'Пересеките дверь. Занятый выход блокирует переход.' : 'Соедините одинаковые блоки сторонами. Диагональ не считается.';
+    messageKind = E.isIce(selected) || E.isPlant(selected) || E.isWind(selected) ? 'element' : E.isFire(selected) || selected.burnt ? 'fire' : board.portals.length ? 'portal' : '';
+    saveProgress(); updateUI(); draw();
+  }
+  function cycleSelection(direction) {
+    if (busy || getStatus().kind !== 'playing') return;
+    const ordered = [...blocks].sort((a, b) => a.y - b.y || a.x - b.x);
+    let index = ordered.findIndex(b => b.id === selectedId);
+    index = index < 0 ? direction > 0 ? 0 : ordered.length - 1 : (index + direction + ordered.length) % ordered.length;
+    if (ordered[index]) selectBlock(ordered[index].id);
+  }
+
+  async function requestMove(dx) {
+    if (busy || currentScreen !== 'game' || anyModal() || getStatus().kind !== 'playing') return false;
+    if (selectedId === null) { setMessage('Сначала коснитесь блока на поле.'); return false; }
+    const result = E.move(board, blocks, selectedId, dx, true);
+    if (!result) { setMessage('Проход занят. Проверьте соседнюю клетку и выход телепорта.'); return false; }
+    if (result.rejected) {
+      setMessage((result.rejected === 'portal-loop' || result.rejected === 'physics-loop') ? 'Этот ход создаёт бесконечный цикл движения. Ход не сделан — измените опору, ветер или маршрут.' : 'Достигнут предел расчёта падений. Ход не сделан; это не доказательство тупика.', 'portal');
+      return false;
+    }
+    cancelHint();
+    history.push({ blocks: E.clone(blocks), selectedId, moves });
+    moves++; busy = true; message = ''; messageKind = '';
+    const token = generation;
+    updateUI();
+    if (shouldAnimate()) {
+      for (const frame of result.trace) {
+        if (!shouldAnimate()) break;
+        const okay = await animateFrame(frame, token);
+        if (!okay || token !== generation) return false;
+      }
+    }
+    if (token !== generation) return false;
+    blocks = result.blocks; animation = null; busy = false;
+    if (!blocks.some(b => b.id === selectedId)) selectedId = null;
+    const matches = result.trace.filter(f => f.kind === 'match');
+    const removed = matches.reduce((sum, f) => sum + f.removed.length, 0);
+    const teleports = result.trace.filter(f => f.kind === 'teleport').reduce((n, f) => n + f.warps.length, 0);
+    const burned = result.trace.filter(f => f.burned).reduce((sum, f) => sum + f.burned.length, 0);
+    message = burned ? `${burned} ${plural(burned, ['блок обуглился', 'блока обуглились', 'блоков обуглились'])}, но ${burned === 1 ? 'остался' : 'остались'} на поле.${removed ? ` Совпадения убрали ещё ${removed}.` : ' Уголь можно сдвинуть.'}` : matches.length > 1 ? `Цепная реакция: ${matches.length} ${plural(matches.length, ['совпадение', 'совпадения', 'совпадений'])} за один ход.` : removed ? `Совпадение! ${removed} ${plural(removed, ['блок исчез', 'блока исчезли', 'блоков исчезли'])}.` : 'Следующий ход — когда будете готовы.';
+    const events = [];
+    const total = key => result.trace.reduce((n, f) => n + (f[key]?.length || 0), 0);
+    if (total('cracked')) events.push('Лёд треснул: 1/2.');
+    if (total('shattered')) events.push('Лёд раскололся.');
+    if (total('melted')) events.push('Лёд растаял.');
+    if (total('frozen')) events.push('Растение замёрзло и отпустило соседей.');
+    if (total('ignited')) events.push('Растение стало огненным блоком.');
+    if (total('extinguished')) events.push('Ветер временно погасил пламя.');
+    if (total('relit')) events.push('Без потока пламя восстановилось.');
+    if (events.length) message = events.join(' ') + (removed ? ` Убрано совпадениями: ${removed}.` : burned ? ` Обуглилось: ${burned}.` : '');
+    if (teleports) message = `Переходов через дверь: ${teleports}. ` + message;
+    messageKind = events.length ? 'element' : burned ? 'fire' : teleports ? 'portal' : removed ? 'hint' : '';
+    if (getStatus().kind === 'won') {
+      completed[levelIndex] = Math.min(completed[levelIndex] ?? Infinity, moves);
+      saveProgress(); updateLevelNavigation();
+    }
+    saveProgress(); updateHome(); updateUI(); draw();
+    return true;
+  }
+
+  function undo() {
+    if (busy || !history.length) return;
+    generation++; cancelHint(); animation = null; pointerStart = null;
+    const previous = history.pop();
+    blocks = E.clone(previous.blocks); selectedId = previous.selectedId; moves = previous.moves;
+    provenDeadlock = false; reviewingWin = false;
+    message = 'Ход отменён целиком. Можно попробовать другой путь.'; messageKind = '';
+    saveProgress(); updateHome(); updateUI(); draw();
+  }
+
+  function animateFrame(frame, token) {
+    let duration = frame.kind === 'teleport' ? 370 : frame.kind === 'slide' ? 130 : frame.kind === 'match' ? 235 : frame.kind === 'burn' ? 360 : 180;
+    if (frame.kind === 'fall' || frame.kind === 'lift') {
+      const before = new Map(frame.before.map(b => [b.id, b]));
+      const distance = Math.max(...frame.after.map(b => Math.abs(b.y - before.get(b.id).y)));
+      duration = Math.min(430, 130 + distance * 55);
+    }
+    if (['heat', 'ice', 'freeze', 'breeze'].includes(frame.kind)) duration = 290;
+    return new Promise(resolve => {
+      const start = performance.now();
+      function tick(now) {
+        if (token !== generation) { resolve(false); return; }
+        if (!shouldAnimate()) { resolve(true); return; }
+        const progress = Math.min(1, (now - start) / duration);
+        animation = { frame, progress };
+        draw();
+        if (progress < 1) requestAnimationFrame(tick);
+        else resolve(true);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function requestHint() {
+    if (busy || hintBusy || currentScreen !== 'game' || anyModal() || getStatus().kind !== 'playing') return;
+    cancelHint(); hintBusy = true; const token = hintToken;
+    message = 'Ищу путь от текущей позиции…'; messageKind = 'hint'; updateUI();
+    const search = E.createSearch(board, blocks, 60000);
+    function chunk() {
+      if (token !== hintToken) return;
+      const result = search.step(12);
+      if (!result) { setTimeout(chunk, 0); return; }
+      hintBusy = false;
+      if (result.kind === 'solved' && result.path.length) {
+        hint = result.path[0]; selectedId = hint.id;
+        message = `${look(blocks.find(b => b.id === hint.id) || hint).name}: ${hint.dx < 0 ? 'влево ←' : 'вправо →'}. Решение отсюда: ${moveWord(result.path.length)}.`;
+      } else if (result.kind === 'unsolvable') {
+        provenDeadlock = true;
+        message = 'Все продолжения проверены: решения из этой позиции нет.';
+      } else if (result.kind === 'limit') {
+        message = 'Достигнут лимит поиска. Это не означает тупик — игру можно продолжать.';
+      } else { message = 'Все игровые блоки уже убраны.'; }
+      messageKind = 'hint'; updateUI(); draw();
+    }
+    setTimeout(chunk, 20);
+  }
+
+  function roundRect(x, y, w, h, r) {
+    const radius = Math.min(r, w / 2, h / 2);
+    ctx.beginPath(); ctx.moveTo(x + radius, y);
+    ctx.arcTo(x + w, y, x + w, y + h, radius);
+    ctx.arcTo(x + w, y + h, x, y + h, radius);
+    ctx.arcTo(x, y + h, x, y, radius);
+    ctx.arcTo(x, y, x + w, y, radius); ctx.closePath();
+  }
+  function shade(hex, amount) {
+    const value = parseInt(hex.slice(1), 16);
+    return `rgb(${Math.max(0, (value >> 16) + amount)},${Math.max(0, ((value >> 8) & 255) + amount)},${Math.max(0, (value & 255) + amount)})`;
+  }
+  function drawWall(x, y) {
+    const px = x * TILE, py = y * TILE;
+    const boundary = x === 0 || y === 0 || x === board.width - 1 || y === board.height - 1;
+    const gradient = ctx.createLinearGradient(px, py, px, py + TILE);
+    gradient.addColorStop(0, boundary ? '#2b3740' : '#3b4850');
+    gradient.addColorStop(1, boundary ? '#253039' : '#313e47');
+    ctx.fillStyle = gradient; roundRect(px + 2, py + 2, TILE - 4, TILE - 4, 6); ctx.fill();
+    ctx.strokeStyle = boundary ? '#37454e' : '#506067'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(px + 9, py + 3.5); ctx.lineTo(px + TILE - 9, py + 3.5); ctx.stroke();
+    ctx.fillStyle = boundary ? '#64747b22' : '#81949533';
+    ctx.beginPath(); ctx.arc(px + TILE / 2, py + TILE / 2, 1.2, 0, Math.PI * 2); ctx.fill();
+  }
+  function drawFire(x, y, out = false) {
+    const px = x * TILE, py = y * TILE;
+    ctx.save(); ctx.translate(px, py);
+    if (out) {
+      ctx.fillStyle = '#364448'; roundRect(3, 3, 58, 58, 8); ctx.fill();
+      ctx.strokeStyle = '#8ca2a5'; ctx.lineWidth = 1; roundRect(3.5, 3.5, 57, 57, 8); ctx.stroke();
+      ctx.strokeStyle = '#b8c8c5'; ctx.lineWidth = 2; ctx.beginPath();
+      ctx.moveTo(31, 18); ctx.bezierCurveTo(43, 33, 45, 44, 33, 44);
+      ctx.bezierCurveTo(20, 46, 21, 33, 25, 30); ctx.lineTo(29, 36);
+      ctx.bezierCurveTo(35, 32, 27, 24, 31, 18); ctx.stroke();
+      ctx.strokeStyle = '#bfe3e5'; ctx.lineWidth = 1.5;
+      for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.moveTo(13 + i * 4, 9 + i * 5); ctx.lineTo(36 + i * 4, 9 + i * 5); ctx.stroke(); }
+      ctx.fillStyle = '#b4c9c8'; ctx.font = 'bold 8px Arial'; ctx.textAlign = 'center'; ctx.fillText('ПАУЗА', 32, 55);
+      ctx.restore(); return;
+    }
+    const glow = ctx.createRadialGradient(32, 17, 4, 32, 25, 42);
+    glow.addColorStop(0, '#f3954430'); glow.addColorStop(1, '#f3954400');
+    ctx.fillStyle = glow; ctx.fillRect(-10, -10, 84, 84);
+    const base = ctx.createLinearGradient(0, 2, 0, 62);
+    base.addColorStop(0, '#5b3d2d'); base.addColorStop(1, '#342a27');
+    ctx.fillStyle = base; roundRect(3, 3, 58, 58, 8); ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = '#b77243'; roundRect(3.5, 3.5, 57, 57, 8); ctx.stroke();
+    // Lit upper lip marks the only dangerous contact face.
+    ctx.shadowColor = '#ec9146'; ctx.shadowBlur = 10;
+    ctx.fillStyle = '#ffc780'; roundRect(8, 3, 48, 3, 1.5); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#ee9956'; ctx.beginPath();
+    ctx.moveTo(32, 12); ctx.bezierCurveTo(34, 23, 46, 24, 45, 35);
+    ctx.bezierCurveTo(44, 49, 22, 51, 20, 37);
+    ctx.bezierCurveTo(18, 29, 24, 24, 26, 21);
+    ctx.bezierCurveTo(24, 29, 28, 30, 30, 25);
+    ctx.bezierCurveTo(32, 22, 29, 18, 32, 12); ctx.fill();
+    ctx.fillStyle = '#ffe0a0'; ctx.beginPath();
+    ctx.moveTo(33, 29); ctx.bezierCurveTo(34, 36, 40, 37, 36, 43);
+    ctx.bezierCurveTo(32, 48, 27, 43, 28, 39);
+    ctx.bezierCurveTo(28, 35, 31, 34, 33, 29); ctx.fill();
+    ctx.strokeStyle = '#ad7850'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(21, 52); ctx.lineTo(43, 52);
+    ctx.moveTo(25,49); ctx.lineTo(21,52); ctx.lineTo(25,55);
+    ctx.moveTo(39,49); ctx.lineTo(43,52); ctx.lineTo(39,55); ctx.stroke();
+    ctx.restore();
+  }
+  function drawCharcoalGlyph() {
+    ctx.save(); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.strokeStyle = '#292c32'; ctx.lineWidth = 2.5; ctx.beginPath();
+    ctx.moveTo(-12, -16); ctx.lineTo(-4, -7); ctx.lineTo(-7, 0);
+    ctx.lineTo(3, 6); ctx.lineTo(1, 17);
+    ctx.moveTo(-7, 0); ctx.lineTo(-17, 5);
+    ctx.moveTo(3, 6); ctx.lineTo(13, 0); ctx.lineTo(16, -13); ctx.stroke();
+    ctx.strokeStyle = '#ada59a88'; ctx.lineWidth = 1.2; ctx.beginPath();
+    ctx.moveTo(-9, -16); ctx.lineTo(-2, -8);
+    ctx.moveTo(7, 9); ctx.lineTo(14, 4); ctx.stroke();
+    ctx.fillStyle = '#b2a897'; ctx.fillRect(-14, 12, 3, 2); ctx.fillRect(11, -17, 2, 2);
+    ctx.restore();
+  }
+  function drawBurnFrame(frame, p) {
+    const burned = new Set(frame.burned), old = new Map(frame.before.map(b => [b.id, b]));
+    for (const b of frame.after) {
+      drawBlock(b);
+      if (!burned.has(b.id)) continue;
+      drawBlock(old.get(b.id), 1 - p);
+      const cx = (b.x + .5) * TILE, cy = (b.y + .5) * TILE;
+      ctx.save(); ctx.globalAlpha = Math.sin(Math.PI * p) * .8;
+      ctx.strokeStyle = '#ffc177'; ctx.lineWidth = 2;
+      ctx.shadowColor = '#ef9047'; ctx.shadowBlur = 15;
+      roundRect(cx - 27, cy - 27, 54, 54, 10); ctx.stroke();
+      ctx.shadowBlur = 0;
+      for (let i = 0; i < 5; i++) {
+        ctx.fillStyle = i % 2 ? '#de965c' : '#d3c1a6';
+        ctx.beginPath(); ctx.arc(cx - 19 + i * 9 + Math.sin(i + p * 3) * 3,
+          cy - 12 - p * (20 + i * 3), 1 + (i % 2) * .5, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+    }
+  }
+  function drawGlyph(type, x, y) {
+    ctx.save(); ctx.translate(x, y); ctx.strokeStyle = '#283d3b'; ctx.fillStyle = '#283d3b';
+    ctx.lineWidth = 2.7; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.beginPath();
+    if (type === 'A') { ctx.arc(0, 0, 10, 0, Math.PI * 2); ctx.stroke(); }
+    else if (type === 'B') { ctx.moveTo(0, -12); ctx.lineTo(11, 0); ctx.lineTo(0, 12); ctx.lineTo(-11, 0); ctx.closePath(); ctx.stroke(); }
+    else if (type === 'C') { ctx.moveTo(0, -12); ctx.lineTo(12, 9); ctx.lineTo(-12, 9); ctx.closePath(); ctx.stroke(); }
+    else { ctx.lineWidth = 4; ctx.moveTo(-10, 0); ctx.lineTo(10, 0); ctx.moveTo(0, -10); ctx.lineTo(0, 10); ctx.stroke(); }
+    ctx.restore();
+  }
+  function drawBlock(block, alpha = 1, scale = 1) {
+    if (E.isFire(block)) {
+      ctx.save(); ctx.globalAlpha = alpha;
+      ctx.translate((block.x + .5) * TILE, (block.y + .5) * TILE);
+      ctx.scale(scale, scale); drawFire(-.5, -.5, block.out);
+      if (block.id === selectedId) {
+        ctx.strokeStyle = '#f8e4c7'; ctx.lineWidth = 1.6;
+        roundRect(-31, -31, 62, 62, 11); ctx.stroke();
+      }
+      ctx.restore(); return;
+    }
+    const cx = (block.x + .5) * TILE, cy = (block.y + .5) * TILE;
+    ctx.save(); ctx.globalAlpha = alpha; ctx.translate(cx, cy); ctx.scale(scale, scale);
+    const size = TILE - 12, pos = -size / 2, color = look(block).color;
+    ctx.shadowColor = '#00000045'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 4;
+    const gradient = ctx.createLinearGradient(0, pos, 0, pos + size);
+    gradient.addColorStop(0, color); gradient.addColorStop(1, shade(color, -21)); ctx.fillStyle = gradient;
+    roundRect(pos, pos, size, size, 10); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+    ctx.strokeStyle = '#ffffff33'; ctx.lineWidth = 1; roundRect(pos + .5, pos + .5, size - 1, size - 1, 9); ctx.stroke();
+    ctx.strokeStyle = '#ffffff40'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(pos + 10, pos + 7); ctx.lineTo(pos + 18, pos + 7); ctx.stroke();
+    if (block.burnt) drawCharcoalGlyph();
+    else if (E.isIce(block) || E.isPlant(block) || E.isWind(block)) drawElementGlyph(block);
+    else drawGlyph(block.type, 0, 0);
+    if (block.id === selectedId) {
+      ctx.strokeStyle = '#e2ecd8'; ctx.lineWidth = 1.6; roundRect(pos - 4, pos - 4, size + 8, size + 8, 13); ctx.stroke();
+    }
+    ctx.restore();
+  }
+  function drawElementGlyph(block) {
+    ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 2;
+    if (E.isIce(block)) {
+      ctx.strokeStyle = '#245b78'; ctx.fillStyle = '#d5f1f366';
+      ctx.beginPath(); ctx.moveTo(0,-17); ctx.lineTo(13,-9); ctx.lineTo(13,6);
+      ctx.lineTo(0,13); ctx.lineTo(-13,6); ctx.lineTo(-13,-9); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,-17); ctx.lineTo(0,13); ctx.moveTo(-13,-9); ctx.lineTo(13,6);
+      ctx.moveTo(13,-9); ctx.lineTo(-13,6); ctx.stroke();
+      if (block.hits) {
+        ctx.strokeStyle='#eefbff';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(8,-23);ctx.lineTo(3,-11);
+        ctx.lineTo(10,-4);ctx.lineTo(-3,5);ctx.lineTo(-7,17);ctx.stroke();
+        ctx.strokeStyle='#326786';ctx.lineWidth=1.5;ctx.stroke();
+      }
+      ctx.fillStyle='#19455d';ctx.font='bold 8px Arial';ctx.textAlign='center';ctx.fillText(block.hits ? '1 / 2' : '0 / 2',0,22);
+    } else if (E.isPlant(block)) {
+      ctx.strokeStyle = block.frozen ? '#3f788e' : '#3f6139';
+      ctx.fillStyle = block.frozen ? '#deedf3' : '#5e844b';
+      ctx.beginPath(); ctx.moveTo(0,17); ctx.bezierCurveTo(3,5,-2,-4,2,-16); ctx.stroke();
+      ctx.beginPath();ctx.moveTo(1,-4);ctx.bezierCurveTo(0,-17,11,-18,16,-17);
+      ctx.bezierCurveTo(18,-7,9,-2,1,-4);ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(1,8);ctx.bezierCurveTo(-11,8,-15,2,-15,-7);
+      ctx.bezierCurveTo(-4,-8,0,-2,1,8);ctx.fill();ctx.stroke();
+      if (block.frozen) {
+        ctx.strokeStyle='#f1fbff';ctx.lineWidth=1.7;
+        for(let i=0;i<3;i++){const a=i*Math.PI/3,cx=15,cy=14;ctx.beginPath();ctx.moveTo(cx-6*Math.cos(a),cy-6*Math.sin(a));ctx.lineTo(cx+6*Math.cos(a),cy+6*Math.sin(a));ctx.stroke();}
+        ctx.strokeStyle='#edf9fd66';roundRect(-23,-23,46,46,8);ctx.stroke();
+      }
+    } else {
+      ctx.strokeStyle='#426e77';ctx.lineWidth=2.2;
+      for (let i=0;i<3;i++) {
+        const x=(i-1)*12,y=i===1?-17:-9;
+        ctx.beginPath();ctx.moveTo(x,16);ctx.bezierCurveTo(x+5,7,x-5,4,x,y);
+        ctx.lineTo(x-4,y+5);ctx.moveTo(x,y);ctx.lineTo(x+4,y+5);ctx.stroke();
+      }
+      ctx.strokeStyle='#648e97';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(-17,22);ctx.lineTo(17,22);ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawFields(state) {
+    const field=E.windField(board,state), occ=new Map(state.map(b=>[b.y*board.width+b.x,b]));
+    ctx.save();
+    for(const k of field.cells) {
+      if (occ.has(k)) continue;
+      const x=k%board.width,y=Math.floor(k/board.width),cx=(x+.5)*TILE,cy=(y+.5)*TILE;
+      ctx.fillStyle='#b9e0e309';ctx.fillRect(x*TILE+7,y*TILE,50,TILE);
+      ctx.strokeStyle='#a3d9df35';ctx.lineWidth=1.3;
+      for(const offset of [-13,13]) {ctx.beginPath();ctx.moveTo(cx+offset,cy+24);ctx.lineTo(cx+offset,cy-24);ctx.stroke();}
+      ctx.strokeStyle='#bfe4e45c';ctx.beginPath();ctx.moveTo(cx-5,cy+1);ctx.lineTo(cx,cy-5);ctx.lineTo(cx+5,cy+1);ctx.stroke();
+    }
+    for(const plant of state) {
+      if(!E.isPlant(plant)||plant.frozen)continue;
+      const cx=(plant.x+.5)*TILE,cy=(plant.y+.5)*TILE;
+      for(const [dx,dy] of [[-1,0],[1,0],[0,-1],[0,1]]){
+        const next=occ.get((plant.y+dy)*board.width+plant.x+dx);
+        if(!next||(E.isPlant(next)&&next.frozen))continue;
+        ctx.strokeStyle='#9fbe8299';ctx.lineWidth=3;
+        ctx.beginPath();ctx.moveTo(cx+dx*22,cy+dy*22);
+        ctx.quadraticCurveTo(cx+dx*32-dy*5,cy+dy*32+dx*5,cx+dx*44,cy+dy*44);ctx.stroke();
+        ctx.fillStyle='#a9c889';ctx.beginPath();ctx.ellipse(cx+dx*32,cy+dy*32,4,2,dx?-.5:.8,0,Math.PI*2);ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
+
+  function drawElementFrame(frame,p) {
+    const prior=new Map(frame.before.map(b=>[b.id,b])), afterIds=new Set(frame.after.map(b=>b.id));
+    const affected=new Set(['burned','melted','ignited','cracked','shattered','frozen','extinguished','relit'].flatMap(k=>frame[k]||[]));
+    for(const block of frame.after){
+      drawBlock(block);
+      if(affected.has(block.id)&&prior.has(block.id))drawBlock(prior.get(block.id),1-p);
+    }
+    for(const block of frame.before){
+      if(!afterIds.has(block.id))drawBlock(block,1-p,1-.3*p);
+      if(!affected.has(block.id))continue;
+      const cx=(block.x+.5)*TILE,cy=(block.y+.5)*TILE;
+      ctx.save();ctx.globalAlpha=Math.sin(p*Math.PI)*.85;
+      ctx.strokeStyle=frame.kind==='heat'?'#f2c08b':frame.kind==='freeze'?'#cfecf9':'#b6e4ed';
+      ctx.lineWidth=1.7;roundRect(cx-29,cy-29,58,58,11);ctx.stroke();
+      ctx.fillStyle=ctx.strokeStyle;
+      for(let i=0;i<6;i++){
+        const a=Math.PI*2*i/6+block.id,r=19+22*p;
+        ctx.beginPath();ctx.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,2*(1-p)+.5,0,Math.PI*2);ctx.fill();
+      }
+      ctx.restore();
+    }
+  }
+
+  function drawArrow(x, y, dx, highlighted) {
+    ctx.save(); ctx.translate((x + .5) * TILE, (y + .5) * TILE);
+    ctx.fillStyle = highlighted ? '#b9d7ad28' : '#b9d7ad0b';
+    ctx.strokeStyle = highlighted ? '#b9d7ad66' : '#b9d7ad18'; ctx.lineWidth = 1;
+    roundRect(-19, -19, 38, 38, 9); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = highlighted ? '#c6dfb8' : '#899d81'; ctx.lineWidth = 1.7; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(-8 * dx, 0); ctx.lineTo(8 * dx, 0); ctx.moveTo(3 * dx, -5); ctx.lineTo(8 * dx, 0); ctx.lineTo(3 * dx, 5); ctx.stroke();
+    ctx.restore();
+  }
+
+  // Doors are drawn on cell EDGES. Identical numerals identify a pair without
+  // relying on colour, and the opening is visible even with an occupied exit.
+  function drawPortal(end, label, index) {
+    const dirs = {left:[-1,0],right:[1,0],top:[0,-1],bottom:[0,1]};
+    const [dx,dy] = dirs[end.side];
+    const x = (end.x + .5 + dx * .5) * TILE, y = (end.y + .5 + dy * .5) * TILE;
+    const colors = ['#91dedb', '#c6abf1', '#f0c58e', '#a8d794'];
+    const color = colors[index % colors.length];
+    const angle = {bottom:0,top:Math.PI,left:Math.PI/2,right:-Math.PI/2}[end.side];
+    ctx.save(); ctx.translate(x,y); ctx.rotate(angle);
+    ctx.fillStyle = '#131d26';
+    ctx.fillRect(-28, -3, 56, 31);
+    const light = ctx.createLinearGradient(0,-15,0,20);
+    light.addColorStop(0,color+'00'); light.addColorStop(.45,color+'26'); light.addColorStop(1,color+'00');
+    ctx.fillStyle = light; ctx.fillRect(-28,-15,56,35);
+    ctx.shadowBlur = 10; ctx.shadowColor = color;
+    ctx.strokeStyle = color; ctx.lineWidth = 2.3; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(-25,0);
+    for (let k = 1; k <= 10; k++) ctx.lineTo(-25 + k*5, k === 10 ? 0 : k%2 ? -3 : 3);
+    ctx.stroke(); ctx.shadowBlur=0;
+    for (const sign of [-1,1]) {
+      ctx.fillStyle = color; roundRect(sign*28-2,-7,4,14,2); ctx.fill();
+      ctx.fillStyle = '#f0f6f1'; ctx.beginPath(); ctx.arc(sign*28,0,2,0,Math.PI*2);ctx.fill();
+    }
+    ctx.restore();
+    ctx.save(); ctx.translate(x+dx*18,y+dy*18);
+    ctx.fillStyle = '#142029'; ctx.strokeStyle = color+'88'; ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(0,0,9,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.fillStyle=color;ctx.font='bold 11px "Segoe UI",Arial,sans-serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,0,.5);
+    ctx.restore();
+  }
+
+  // Disappear into one doorway, reappear from its partner. Never interpolate
+  // a teleported block across the intervening walls or unrelated chambers.
+  function drawTeleportFrame(frame, p) {
+    const old = new Map(frame.before.map(b => [b.id,b]));
+    const warps = new Map(frame.warps.map(w => [w.id,w]));
+    const dirs = {left:[-1,0],right:[1,0],top:[0,-1],bottom:[0,1]};
+    for (const b of frame.after) {
+      const prior = old.get(b.id) || b, warp = warps.get(b.id);
+      if (!warp) {
+        const e = p*p;
+        drawBlock({...b,x:prior.x+(b.x-prior.x)*e,y:prior.y+(b.y-prior.y)*e});
+      } else if (p < .5) {
+        const q = p*2;
+        drawBlock({...prior,x:prior.x+warp.dx*.38*q,y:prior.y+warp.dy*.38*q},1-q,1-.35*q);
+      } else {
+        const q = (p-.5)*2, [dx,dy] = dirs[warp.exit.side];
+        drawBlock({...b,x:b.x+dx*.38*(1-q),y:b.y+dy*.38*(1-q)},q,.65+.35*q);
+      }
+    }
+  }
+
+  function draw() {
+    if (!board || !canvas.width) return;
+    const width = board.width * TILE, height = board.height * TILE;
+    ctx.setTransform(canvas.width / width, 0, 0, canvas.height / height, 0, 0);
+    ctx.clearRect(0, 0, width, height); ctx.fillStyle = '#151c23'; ctx.fillRect(0, 0, width, height);
+    for (let y = 0; y < board.height; y++) {
+      for (let x = 0; x < board.width; x++) {
+        if (board.walls.has(y * board.width + x)) drawWall(x, y);
+        else {
+          ctx.strokeStyle = '#53647112'; ctx.lineWidth = .7; ctx.strokeRect(x * TILE + .5, y * TILE + .5, TILE - 1, TILE - 1);
+          ctx.fillStyle = '#71818b27'; ctx.beginPath(); ctx.arc((x + .5) * TILE, (y + .5) * TILE, 1, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+    }
+    board.portals.forEach((pair, index) => { drawPortal(pair.a, pair.id, index); drawPortal(pair.b, pair.id, index); });
+    drawFields(animation ? animation.frame.before : blocks);
+    if (!animation) {
+      const selected = blocks.find(b => b.id === selectedId);
+      if (selected && getStatus().kind === 'playing') {
+        for (const dx of [-1, 1]) {
+          const to = E.destination(board, blocks, selected, dx, 0);
+          if (to) drawArrow(to.x, to.y, dx, hint && hint.dx === dx);
+        }
+      }
+      blocks.forEach(b => drawBlock(b)); return;
+    }
+    const { frame, progress: p } = animation;
+    if (frame.kind === 'teleport') {
+      drawTeleportFrame(frame, p);
+    } else if (['heat', 'ice', 'freeze', 'breeze'].includes(frame.kind)) {
+      drawElementFrame(frame, p);
+    } else if (frame.kind === 'burn') {
+      drawBurnFrame(frame, p);
+    } else if (frame.kind === 'match') {
+      const removed = new Set(frame.removed);
+      for (const b of frame.before) {
+        const gone = removed.has(b.id);
+        drawBlock(b, gone ? 1 - p : 1, gone ? 1 - p * .35 : 1);
+        if (gone) {
+          ctx.save(); ctx.globalAlpha = (1 - p) * .8; ctx.fillStyle = TYPES[b.type].color;
+          const cx = (b.x + .5) * TILE, cy = (b.y + .5) * TILE;
+          for (let i = 0; i < 6; i++) {
+            const angle = Math.PI * 2 * i / 6 + b.id;
+            const distance = 16 + p * 25, size = (1 - p) * 3;
+            ctx.beginPath(); ctx.arc(cx + Math.cos(angle) * distance, cy + Math.sin(angle) * distance, size, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.restore();
+        }
+      }
+    } else {
+      const before = new Map(frame.before.map(b => [b.id, b]));
+      const ease = frame.kind === 'fall' || frame.kind === 'lift' ? p * p : 1 - Math.pow(1 - p, 3);
+      for (const b of frame.after) {
+        const old = before.get(b.id) || b;
+        drawBlock({ ...b, x: old.x + (b.x - old.x) * ease, y: old.y + (b.y - old.y) * ease });
+      }
+    }
+  }
+  let resizeQueued = false;
+  function resizeCanvas() {
+    if (!board || currentScreen !== 'game') return;
+    const stage = $('stage');
+    const width = Math.floor(stage.clientWidth), height = Math.floor(stage.clientHeight);
+    if (!width || !height) return;
+    const scale = Math.min(width / board.width, height / board.height, 64);
+    const cssWidth = Math.max(1, Math.floor(board.width * scale));
+    const cssHeight = Math.max(1, Math.floor(board.height * scale));
+    canvas.style.width = `${cssWidth}px`; canvas.style.height = `${cssHeight}px`;
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const backingWidth = Math.round(cssWidth * ratio), backingHeight = Math.round(cssHeight * ratio);
+    if (canvas.width !== backingWidth || canvas.height !== backingHeight) {
+      canvas.width = backingWidth; canvas.height = backingHeight;
+    }
+    draw();
+  }
+  function queueResize() {
+    if (resizeQueued) return; resizeQueued = true;
+    requestAnimationFrame(() => { resizeQueued = false; resizeCanvas(); });
+  }
+  function fitViewport() {
+    const vv = window.visualViewport;
+    const height = vv && Math.abs(vv.scale - 1) < .01 ? vv.height : window.innerHeight;
+    document.documentElement.style.setProperty('--app-height', `${Math.floor(height)}px`);
+    queueResize();
+  }
+
+  function eventCell(event) {
+    const rect = canvas.getBoundingClientRect();
+    return { x: Math.floor((event.clientX - rect.left) / rect.width * board.width), y: Math.floor((event.clientY - rect.top) / rect.height * board.height) };
+  }
+  canvas.addEventListener('pointerdown', event => {
+    if (!event.isPrimary || event.button !== 0 || busy || currentScreen !== 'game' || anyModal() || getStatus().kind !== 'playing') return;
+    event.preventDefault(); canvas.focus({ preventScroll: true });
+    const pos = eventCell(event), target = blocks.find(b => b.x === pos.x && b.y === pos.y);
+    if (target) selectBlock(target.id);
+    pointerStart = { clientX: event.clientX, clientY: event.clientY, id: event.pointerId, onBlock: Boolean(target) };
+    try { canvas.setPointerCapture(event.pointerId); } catch (_) {}
+  });
+  canvas.addEventListener('pointerup', event => {
+    if (!pointerStart || event.pointerId !== pointerStart.id) return;
+    const start = pointerStart; pointerStart = null;
+    try { canvas.releasePointerCapture(event.pointerId); } catch (_) {}
+    if (busy || currentScreen !== 'game' || anyModal() || getStatus().kind !== 'playing') return;
+    const dx = event.clientX - start.clientX, dy = event.clientY - start.clientY;
+    if (Math.abs(dx) >= 16 && Math.abs(dx) > Math.abs(dy) * 1.2 && start.onBlock) { requestMove(dx < 0 ? -1 : 1); return; }
+    if (Math.abs(dx) > 12 || Math.abs(dy) > 12) return;
+    const pos = eventCell(event), target = blocks.find(b => b.x === pos.x && b.y === pos.y);
+    if (target) { selectBlock(target.id); return; }
+    const selected = blocks.find(b => b.id === selectedId);
+    if (selected && pos.y === selected.y && Math.abs(pos.x - selected.x) === 1) { requestMove(pos.x - selected.x); return; }
+    selectedId = null; hint = null; updateUI(); draw();
+  });
+  canvas.addEventListener('pointercancel', () => { pointerStart = null; });
+  canvas.addEventListener('lostpointercapture', () => { pointerStart = null; });
+
+
+  function bindSwipe(node, change) {
+    let start = null, moved = false, suppressClick = false;
+    node.addEventListener('pointerdown', event => {
+      if (!event.isPrimary || event.button !== 0) return;
+      start = {x:event.clientX,y:event.clientY,id:event.pointerId}; moved = false;
+    });
+    node.addEventListener('pointermove', event => {
+      if (!start || start.id !== event.pointerId) return;
+      const dx = event.clientX - start.x, dy = event.clientY - start.y;
+      if (Math.abs(dx) > 16 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+        moved = true; event.preventDefault();
+        try { node.setPointerCapture(event.pointerId); } catch (_) {}
+      }
+    });
+    node.addEventListener('pointerup', event => {
+      if (!start || start.id !== event.pointerId) return;
+      const dx = event.clientX - start.x, dy = event.clientY - start.y;
+      start = null;
+      if (moved) {
+        suppressClick = true; setTimeout(() => { suppressClick = false; }, 0);
+        if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.3) change(dx < 0 ? 1 : -1);
+      }
+      try { node.releasePointerCapture(event.pointerId); } catch (_) {}
+    });
+    node.addEventListener('pointercancel', () => { start = null; });
+    node.addEventListener('lostpointercapture', event => { if (event.target === node) start = null; });
+    node.addEventListener('click', event => {
+      if (suppressClick) { event.preventDefault(); event.stopImmediatePropagation(); }
+    }, true);
+  }
+
+  $('continueBtn').addEventListener('click', () => {
+    if (getStatus().kind === 'won') {
+      const next = nextUnsolved();
+      if (next === null) openLevels('home'); else loadLevel(next);
+    } else showScreen('game');
+  });
+  $('chooseLevelsBtn').addEventListener('click', () => openLevels('home'));
+  $('homeHelpBtn').addEventListener('click', () => openHelp(0));
+  $('levelsBackBtn').addEventListener('click', () => showScreen(levelsReturn));
+  $('gameLevelsBtn').addEventListener('click', () => openLevels('game'));
+  $('prevChapterBtn').addEventListener('click', () => changeChapter(levelPage - 1));
+  $('nextChapterBtn').addEventListener('click', () => changeChapter(levelPage + 1));
+  bindSwipe($('chapterSwipe'), dx => changeChapter(levelPage + dx));
+
+  $('leftBtn').addEventListener('click', () => requestMove(-1));
+  $('rightBtn').addEventListener('click', () => requestMove(1));
+  $('undoBtn').addEventListener('click', undo);
+  $('hintBtn').addEventListener('click', requestHint);
+  $('pauseBtn').addEventListener('click', openPause);
+  $('closePauseBtn').addEventListener('click', resume);
+  $('resumeBtn').addEventListener('click', resume);
+  $('resetBtn').addEventListener('click', requestReset);
+  $('pauseLevelsBtn').addEventListener('click', () => openLevels('game'));
+  $('homeBtn').addEventListener('click', () => showScreen('home'));
+  $('animationToggle').addEventListener('change', () => {
+    animationsEnabled = $('animationToggle').checked; saveProgress();
+  });
+  $('levelInfoBtn').addEventListener('click', () => showInfo('level'));
+  $('statusBtn').addEventListener('click', () => showInfo('status'));
+  $('gameHelpBtn').addEventListener('click', () => openHelp(contextualRule()));
+  $('closeInfoBtn').addEventListener('click', () => { $('infoDialog').close(); updateUI(); });
+  $('infoDoneBtn').addEventListener('click', () => { $('infoDialog').close(); updateUI(); });
+  $('infoRulesBtn').addEventListener('click', () => openHelp(contextualRule()));
+  $('closeHelpBtn').addEventListener('click', () => showScreen(helpReturn));
+  $('playBtn').addEventListener('click', () => showScreen(helpReturn));
+  $('prevRuleBtn').addEventListener('click', () => changeRule(rulePage - 1));
+  $('nextRuleBtn').addEventListener('click', () => changeRule(rulePage + 1));
+  bindSwipe($('ruleSwipe'), dx => changeRule(rulePage + dx));
+  function cancelConfirmation() {
+    pendingConfirmation = null; $('confirmDialog').close(); updateUI();
+  }
+  $('confirmCancelBtn').addEventListener('click', cancelConfirmation);
+  $('closeConfirmBtn').addEventListener('click', cancelConfirmation);
+  $('confirmAcceptBtn').addEventListener('click', () => {
+    const callback = pendingConfirmation; pendingConfirmation = null;
+    $('confirmDialog').close(); if (callback) callback();
+  });
+  $('confirmDialog').addEventListener('cancel', () => { pendingConfirmation = null; });
+  $('winReplayBtn').addEventListener('click', () => loadLevel(levelIndex));
+  $('viewBoardBtn').addEventListener('click', () => {
+    reviewingWin = true; $('winOverlay').close(); saveProgress(); updateUI(); draw();
+  });
+  $('showResultBtn').addEventListener('click', () => { reviewingWin = false; updateUI(); });
+  $('winOverlay').addEventListener('cancel', event => {
+    event.preventDefault(); reviewingWin = true; $('winOverlay').close(); saveProgress(); updateUI();
+  });
+  $('winLevelsBtn').addEventListener('click', () => openLevels('game'));
+  $('nextBtn').addEventListener('click', () => {
+    const next = levelIndex < LEVELS.length - 1 ? levelIndex + 1 : nextUnsolved();
+    if (next === null) openLevels('game'); else loadLevel(next);
+  });
+  // Dismissing a transient modal must not leave a completed game without its result.
+  for (const id of ['pauseDialog','infoDialog','confirmDialog']) {
+    $(id).addEventListener('cancel', () => setTimeout(updateUI, 0));
+  }
+
+  function updateFullscreenButtons() {
+    for (const id of ['homeFullscreenBtn','fullscreenBtn']) {
+      $(id).hidden = !document.fullscreenEnabled;
+      $(id).innerHTML = `${icon('full')} ${document.fullscreenElement ? 'Выйти из полного экрана' : 'На весь экран'}`;
+    }
+  }
+  async function toggleFullscreen() {
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else await document.documentElement.requestFullscreen();
+    } catch (_) {
+      closeDialogs();
+      $('infoKicker').textContent = 'РЕЖИМ БРАУЗЕРА';
+      $('infoTitle').textContent = 'Полный экран недоступен.';
+      $('infoText').textContent = 'Этот браузер не разрешил полноэкранный режим. Можно продолжать: поле и кнопки подстраиваются под доступную область.';
+      $('infoMechanics').replaceChildren(); $('infoRulesBtn').hidden = true;
+      $('infoDoneBtn').textContent = 'Понятно'; $('infoDialog').showModal();
+    }
+    updateFullscreenButtons(); fitViewport();
+  }
+  $('homeFullscreenBtn').addEventListener('click', toggleFullscreen);
+  $('fullscreenBtn').addEventListener('click', toggleFullscreen);
+  document.addEventListener('fullscreenchange', () => { updateFullscreenButtons(); fitViewport(); });
+
+  window.addEventListener('keydown', event => {
+    if (anyModal() || event.altKey || event.ctrlKey || event.metaKey || event.repeat ||
+        ['INPUT', 'TEXTAREA', 'SELECT'].includes(event.target.tagName) || event.target.isContentEditable) return;
+    if (currentScreen === 'levels') {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); changeChapter(levelPage + (event.key === 'ArrowLeft' ? -1 : 1)); }
+      else if (event.key === 'Escape') showScreen(levelsReturn);
+      return;
+    }
+    if (currentScreen === 'help') {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); changeRule(rulePage + (event.key === 'ArrowLeft' ? -1 : 1)); }
+      else if (event.key === 'Escape') showScreen(helpReturn);
+      return;
+    }
+    if (currentScreen !== 'game') return;
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); requestMove(event.key === 'ArrowLeft' ? -1 : 1); }
+    else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') { event.preventDefault(); cycleSelection(event.key === 'ArrowDown' ? 1 : -1); }
+    else if (event.code === 'KeyZ') { event.preventDefault(); undo(); }
+    else if (event.code === 'KeyR') { event.preventDefault(); requestReset(); }
+    else if (event.code === 'KeyH') { event.preventDefault(); requestHint(); }
+    else if (event.key === 'Escape') { event.preventDefault(); openPause(); }
+  });
+  if (window.ResizeObserver) new ResizeObserver(queueResize).observe($('stage'));
+  window.addEventListener('resize', fitViewport);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', fitViewport);
+  window.addEventListener('pagehide', saveProgress);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) saveProgress(); });
+
+  // Read-only snapshot and direct controls for level authors and reproducible tests.
+  window.Sblizhenie = Object.freeze({
+    loadLevel, selectBlock, move: requestMove, undo, hint: requestHint,
+    snapshot: () => ({ levelIndex, blocks: E.clone(blocks), selectedId, moves,
+      screen: currentScreen, chapterPage: levelPage, rulePage, animationsEnabled, storageAvailable,
+      boardSize: {width: board.width, height: board.height},
+      busy, hintBusy, historyLength: history.length, status: getStatus(), completed: {...completed},
+      activeCount: E.activeCount(blocks), burntCount: blocks.filter(b => b.burnt).length,
+      ice: blocks.filter(E.isIce).map(b => ({id:b.id,x:b.x,y:b.y,hits:b.hits || 0})),
+      plants: blocks.filter(E.isPlant).map(b => ({id:b.id,x:b.x,y:b.y,frozen:Boolean(b.frozen)})),
+      wind: blocks.filter(E.isWind).map(b => ({id:b.id,x:b.x,y:b.y})),
+      extinguishedFires: blocks.filter(b => E.isFire(b) && b.out).map(b => b.id),
+      fires: blocks.filter(E.isFire).map(b => ({id:b.id,x:b.x,y:b.y})),
+      portals: board.portals.map(p => ({id:p.id,a:{...p.a},b:{...p.b}})),
+      reviewingWin, animationPhase: animation ? animation.frame.kind : null })
+  });
+  loadLevel(storedLevel);
+  restoreSession(storedSession);
+  booting = false;
+  updateLevelNavigation(); updateFullscreenButtons();
+  $('animationToggle').checked = animationsEnabled;
+  fitViewport(); showScreen('home', false);
+})();
+</script>
+</body>
+</html>
