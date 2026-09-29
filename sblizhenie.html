@@ -1,0 +1,4219 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#151b21">
+<meta name="description" content="Логическая головоломка: лёд, растения, ветер, огонь, телепорты и 30 уровней. Без таймера. Каждый ход можно отменить.">
+<title>Сближение — стихии</title>
+<style>
+:root {color-scheme:dark;--bg:#141a20;--panel:#1b222a;--panel-deep:#151c23;--text:#e9eee9;--muted:#8c9b9e;--soft:#606f77;--line:#303b43;--accent:#b9d7ad;--coral:#eea58e;--mint:#a9d2c7;--lilac:#b9b3dc;--gold:#e3c786;--danger:#edab92;--radius:22px;font-family:"Segoe UI",Arial,sans-serif;font-synthesis:none;}
+* {box-sizing:border-box;}[hidden]{display:none!important;}body{margin:0;background:radial-gradient(ellipse at 8% 0%,#26312d55,transparent 45%),var(--bg);color:var(--text);min-height:100vh;}button,a,canvas{-webkit-tap-highlight-color:transparent;}button{font:inherit;cursor:pointer;color:inherit;}button:disabled{cursor:default;}button:focus-visible,a:focus-visible,canvas:focus-visible{outline:2px solid var(--accent);outline-offset:5px;}button{transition:background .18s,border-color .18s,transform .18s,opacity .18s;}button:not(:disabled):active{transform:translateY(1px);}a{text-decoration:none;color:inherit;}h1,h2,h3,p{margin:0;}.app-shell{max-width:1264px;padding:0 54px;margin:auto;}.site-header{height:104px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);}.brand{display:flex;align-items:center;gap:13px;font-size:26px;font-weight:650;letter-spacing:-1px;}.brand-dot{color:var(--accent);}.brand-mark{display:flex;gap:3px;transform:rotate(-8deg);}.brand-mark i{width:15px;height:19px;background:var(--accent);border-radius:4px;display:block;}.brand-mark i:last-child{background:transparent;border:1.5px solid var(--accent);transform:translateY(4px);}.header-right{display:flex;align-items:center;gap:25px;}.quiet-label{color:var(--muted);font-size:12px;display:flex;align-items:center;gap:8px;}.quiet-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px #b9d7ad0a;}.icon-button{border:1px solid var(--line);background:transparent;width:33px;height:33px;border-radius:50%;font-size:16px;}.icon-button:hover{background:#ffffff0b;border-color:var(--soft);}.workspace{display:grid;grid-template-columns:300px minmax(0,1fr);gap:65px;padding:45px 0 32px;align-items:start;}.sidebar{padding-top:10px;}.eyebrow{font-size:9px;letter-spacing:1.55px;font-weight:600;color:var(--muted);}.intro h1{font-family:Georgia,"Times New Roman",serif;font-size:41px;font-weight:400;line-height:1.2;letter-spacing:-1.4px;margin:21px 0 19px;}.intro h1 span{color:var(--accent);}.intro-copy{color:var(--muted);font-size:12px;line-height:1.9;}.level-section{margin-top:39px;}.section-topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}.section-topline h2{font-size:12px;font-weight:500;}.section-topline>span{font-size:10px;color:var(--soft);letter-spacing:1px;font-variant-numeric:tabular-nums;}.level-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}.level-button{position:relative;border:1px solid var(--line);border-radius:9px;background:transparent;height:41px;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;}.level-button:hover{border-color:#7b8c83;background:#b9d7ad08;}.level-button.active{background:var(--accent);border-color:var(--accent);color:#25342b;font-weight:700;box-shadow:0 3px 16px #b9d7ad0e;}.level-button.completed:not(.active){border-color:#536c60;color:var(--accent);}.level-button.completed::after{content:"";width:4px;height:4px;border-radius:50%;background:currentColor;position:absolute;bottom:5px;left:calc(50% - 2px);}.progress-track{height:2px;background:var(--line);margin-top:17px;overflow:hidden;}.progress-track span{display:block;height:100%;width:0;background:var(--accent);transition:width .4s;}.level-caption{color:var(--soft);font-size:10px;margin-top:10px;}.lesson{border:1px solid var(--line);background:linear-gradient(120deg,#2530296e,#2128303b);border-radius:14px;padding:19px 20px 21px;margin-top:26px;min-height:155px;}.lesson-topline{color:var(--accent);font-size:9px;letter-spacing:1.1px;display:flex;align-items:center;gap:8px;text-transform:uppercase;}.tiny-spark{font-size:18px;line-height:1;}.lesson h2{font-size:15px;font-weight:500;margin-top:15px;}.lesson p{font-size:11px;line-height:1.85;color:var(--muted);margin-top:10px;}.legend{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;margin:24px 7px 0;}.legend-item{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:10px;}.shape{width:14px;text-align:center;font-size:13px;}.coral .shape{color:var(--coral);}.mint .shape{color:var(--mint);}.lilac .shape{color:var(--lilac);}.gold .shape{color:var(--gold);}.sidebar-footer{display:flex;align-items:center;gap:13px;color:var(--soft);font-size:10px;line-height:1.85;margin-top:28px;}.clock-icon{font:28px Georgia,serif;color:#8b9b92;}.game-panel{background:var(--panel);border:1px solid #364047;border-radius:var(--radius);overflow:hidden;box-shadow:0 20px 65px #00000016;}.game-header{display:flex;align-items:center;justify-content:space-between;padding:25px 29px 23px;gap:10px;}.level-kicker{font-size:8px;letter-spacing:1.9px;color:var(--muted);font-variant-numeric:tabular-nums;}.game-level h2{font-size:19px;font-weight:500;letter-spacing:-.2px;margin-top:7px;}.stats{display:flex;gap:27px;padding-left:20px;}.stat{display:flex;flex-direction:column;align-items:center;min-width:29px;gap:4px;}.stat strong{font-size:23px;font-weight:400;line-height:1;font-variant-numeric:tabular-nums;}.stat span{color:var(--soft);font-size:9px;}.stage{position:relative;display:flex;justify-content:center;margin:0 27px;padding:16px;background:var(--panel-deep);border:1px solid #2b353e;border-radius:12px;overflow:hidden;min-height:160px;}.stage canvas{display:block;max-width:100%;height:auto;width:100%;touch-action:none;border-radius:4px;cursor:crosshair;aspect-ratio:8/7;}.win-overlay{position:absolute;inset:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;border:1px solid #829e8133;border-radius:9px;background:#19231ff5;padding:24px;backdrop-filter:blur(8px);}.win-symbol{color:var(--accent);font-size:62px;line-height:1;margin-bottom:23px;}.win-overlay .eyebrow{font-size:8px;letter-spacing:1.8px;}.win-overlay h3{font-family:Georgia,"Times New Roman",serif;font-size:34px;line-height:1.2;letter-spacing:-.8px;font-weight:400;margin-top:14px;}.win-overlay p:not(.eyebrow){font-size:12px;color:var(--muted);margin:15px 0 25px;line-height:1.7;}.primary-button{display:flex;align-items:center;justify-content:center;gap:24px;border:none;border-radius:9px;background:var(--accent);color:#28362b;padding:13px 20px;font-size:12px;font-weight:600;}.primary-button:hover{background:#c7e3bd;}.primary-button>span{font-size:19px;line-height:1;}.text-button{background:none;border:none;font-size:11px;color:var(--muted);padding:15px 20px 4px;}.text-button:hover{color:var(--text);}.control-section{padding:19px 27px 15px;}.selection-line{display:flex;align-items:center;justify-content:center;gap:7px;font-size:10px;color:var(--muted);min-height:16px;}.selection-dot{width:5px;height:5px;border:1px solid #708089;border-radius:50%;}.move-controls{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:13px;}.move-button{border:1px solid #475650;background:#b9d7ad08;border-radius:9px;min-width:114px;height:39px;display:flex;justify-content:center;align-items:center;gap:20px;font-size:11px;color:var(--accent);}.move-button span:first-child:not(:last-child),.move-button span:last-child:not(:first-child){line-height:1;}.move-button#leftBtn>span:first-child,.move-button#rightBtn>span:last-child{font-size:22px;}.move-button:disabled{opacity:.3;border-color:var(--line);background:transparent;}.move-button:not(:disabled):hover{background:#b9d7ad19;border-color:var(--accent);}.one-cell{font-size:8px;line-height:1.4;color:var(--soft);text-align:center;letter-spacing:.3px;}.status-message{font-size:10px;color:var(--soft);text-align:center;line-height:1.65;margin-top:13px;min-height:33px;display:flex;align-items:center;justify-content:center;}.status-message.lost{color:var(--danger);}.status-message.hint{color:var(--accent);}.game-toolbar{display:flex;align-items:stretch;border-top:1px solid var(--line);background:#182027;min-height:59px;padding:0 19px;gap:3px;}.tool-button{display:flex;align-items:center;justify-content:center;gap:7px;flex:1;border:0;background:transparent;font-size:10px;color:var(--muted);border-radius:7px;margin:8px 0;padding:5px 8px;}.tool-button:not(:disabled):hover{background:#ffffff07;color:var(--text);}.tool-button:disabled{opacity:.3;}.tool-icon{font-size:20px;line-height:1;}.tool-button.hint-button{color:var(--accent);}.tool-button kbd{margin-left:auto;}kbd{font-family:inherit;font-size:8px;color:var(--soft);border:1px solid #3e4b526e;border-bottom-width:2px;border-radius:4px;min-width:16px;height:17px;display:inline-flex;align-items:center;justify-content:center;padding:1px 3px;}.page-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);min-height:74px;color:var(--soft);gap:16px;}.page-footer>span{font-size:8px;letter-spacing:1.1px;white-space:nowrap;}.page-footer p{font-size:9px;line-height:2;}.page-footer kbd{margin:0 2px;font-size:10px;}.footer-separator{display:inline-block;margin:0 12px;color:#3e4b52;}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}dialog{border:1px solid #465449;background:#1c2524;color:var(--text);border-radius:20px;max-width:580px;width:calc(100% - 32px);max-height:calc(100dvh - 48px);padding:29px 33px;box-shadow:0 30px 90px #0007;}dialog::backdrop{background:#0b1214bb;backdrop-filter:blur(5px);}.dialog-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:23px;}.dialog-header .icon-button{font-size:25px;}dialog h2{font-family:Georgia,serif;font-weight:400;font-size:28px;letter-spacing:-.4px;line-height:1.25;margin-bottom:15px;}dialog>p{font-size:12px;line-height:1.85;color:var(--muted);}.rules-list{margin:22px 0;}.rules-list>div{display:flex;gap:15px;margin:15px 0;}.rule-number{font-size:10px;color:var(--accent);padding-top:4px;font-variant-numeric:tabular-nums;}.rules-list p,.dialog-note p{font-size:11px;line-height:1.9;color:var(--muted);}.rules-list strong{color:var(--text);font-weight:500;}.dialog-note{border-top:1px solid var(--line);padding-top:17px;margin-bottom:20px;}.dialog-note>strong{font-size:12px;font-weight:500;}.dialog-note p{margin-top:9px;}dialog>.primary-button{margin-left:auto;}
+@media(min-width:1320px){.app-shell{max-width:1280px;}.workspace{grid-template-columns:310px minmax(0,1fr);gap:76px;}.game-panel{max-width:680px;}.stage{padding:19px;}}
+@media(max-width:1050px){.app-shell{padding:0 32px;}.workspace{grid-template-columns:250px minmax(0,1fr);gap:34px;}.intro h1{font-size:35px;}.eyebrow{font-size:8px;letter-spacing:1px;}.game-header{padding:23px;}.game-level h2{font-size:16px;}.stage{margin:0 20px;padding:13px;}.stats{gap:18px;}.tool-button kbd{display:none;}.tool-button{gap:6px;padding:5px;}.lesson{padding:17px;}.legend{gap:13px 8px;}.page-footer .edition{display:none;}.workspace{padding-top:33px;}}
+@media(max-width:760px){.app-shell{padding:0 20px;max-width:620px;}.site-header{height:76px;}.brand{font-size:23px;}.header-right{gap:16px;}.quiet-label{font-size:10px;}.workspace{display:flex;flex-direction:column;gap:20px;padding:24px 0;}.sidebar{display:contents;}.intro{display:none;}.level-section{margin:0;order:0;width:100%;}.section-topline{margin-bottom:11px;}.section-topline h2{font-size:11px;}.level-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;}.level-button{height:35px;font-size:10px;border-radius:7px;}.progress-track{margin-top:11px;}.level-caption{display:none;}.game-panel{order:1;width:100%;border-radius:17px;}.lesson{order:2;margin:0;min-height:0;width:100%;padding:19px 21px;}.lesson-topline{font-size:8px;}.lesson h2{margin-top:11px;font-size:14px;}.lesson p{font-size:11px;margin-top:8px;}.legend,.sidebar-footer{display:none;}.game-header{padding:20px 23px;}.game-level h2{font-size:18px;}.stage{margin:0 18px;padding:13px;}.stat strong{font-size:22px;}.control-section{padding:16px 20px 12px;}.game-toolbar{padding:0 13px;min-height:57px;}.tool-button{font-size:11px;gap:8px;}.page-footer{display:block;text-align:center;padding:18px 0;min-height:0;}.page-footer>span{display:none;}.page-footer p{font-size:8px;}.footer-separator{margin:0 6px;}.status-message{font-size:10px;}.win-overlay h3{font-size:29px;}.win-symbol{font-size:49px;margin-bottom:17px;}.win-overlay .primary-button{font-size:11px;gap:16px;padding:12px 16px;}}
+@media(max-width:380px){.app-shell{padding:0 12px;}.quiet-label{display:none;}.game-header{padding:17px 19px;}.game-level h2{font-size:16px;}.stats{gap:16px;}.stage{margin:0 12px;padding:9px;}.move-button{min-width:99px;}.level-grid{gap:4px;}.level-button{height:33px;font-size:9px;}.tool-button{font-size:10px;}.win-overlay{padding:12px;}.win-overlay h3{font-size:26px;}.win-symbol{font-size:38px;margin-bottom:12px;}.win-overlay p:not(.eyebrow){margin:13px 0 18px;}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important;}}
+
+/* Fire expansion: preserve the original campaign's cool palette. */
+:root{--ember:#efb47f;}
+.fire-mode{--accent:#e5b381;--danger:#edab92;background:radial-gradient(ellipse at 8% 0%,#46301f45,transparent 46%),var(--bg);}
+.intro h1{font-size:36px;letter-spacing:-1.1px;line-height:1.23;}
+.fire-chapter-heading{display:flex;align-items:center;justify-content:space-between;margin:19px 0 10px;font-size:11px;color:var(--ember);}
+.new-badge{font-size:7px;letter-spacing:1px;border:1px solid #a1704444;background:#a1704411;border-radius:4px;padding:4px 5px;color:#c39c76;}
+.fire-level-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
+.fire-level{border-color:#79573766;color:#c5a07f;background:#67442310;}
+.fire-level:hover{border-color:#c4966e;background:#c4966e0a;}
+.fire-level.active{background:var(--ember);color:#382b20;border-color:var(--ember);}
+.fire-mode .level-button:not(.fire-level).active{background:#b9d7ad;border-color:#b9d7ad;color:#25342b;}
+.fire-mode .lesson{background:linear-gradient(125deg,#503a2755,#23272c44);border-color:#68533f66;}
+.fire-mode .lesson-topline{color:var(--ember);}
+.fire-mode .brand-mark i{background:var(--ember);}
+.fire-mode .brand-mark i:last-child{background:transparent;border-color:var(--ember);}
+.fire-mode .primary-button:hover{background:#f0c99f;}
+.fire-mode .stats{gap:18px;padding-left:7px;}
+.burnt-stat strong{color:#aaa7a2;}
+.flame-icon{width:16px;height:18px;flex-shrink:0;color:var(--ember);}
+.fire-legend,.ash-legend{font-size:9px;gap:7px;white-space:nowrap;}
+.ash-mini{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border:1px solid #8b8782;border-radius:3px;background:#626469;color:#2b2c32;font-size:15px;font-weight:bold;flex-shrink:0;}
+.mechanic-strip{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 28px 0;font-size:9px;line-height:1.6;color:var(--muted);}
+.mechanic-label{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;color:var(--ember);}
+.status-message.fire{color:#d7aa82;}
+.win-secondary{display:flex;justify-content:center;flex-wrap:wrap;column-gap:13px;}
+.win-secondary .text-button{padding:14px 0 3px;font-size:10px;}
+.result-link{display:block;margin:0 auto 14px;border:0;background:transparent;font-size:11px;color:var(--accent);padding:5px 8px;line-height:1.7;}
+.result-link:hover{text-decoration:underline;}
+@media(max-width:1050px){.intro h1{font-size:30px;}.fire-mode .stats{gap:12px;padding-left:0;}.game-level{min-width:0;}.game-level h2{line-height:1.35;}.fire-legend,.ash-legend{font-size:8px;gap:4px;}.mechanic-strip{margin-right:21px;margin-left:21px;font-size:8px;}}
+@media(max-width:760px){.fire-chapter-heading{margin:13px 0 7px;font-size:10px;}.fire-level-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;}.fire-level{height:33px;}.new-badge{font-size:6px;padding:3px 5px;}.mechanic-strip{margin:11px 19px 0;font-size:8px;gap:9px;}.mechanic-strip>span:last-child{text-align:right;max-width:155px;}.mechanic-label{gap:5px;}.fire-mode .stats{gap:13px;}.fire-mode .stat strong{font-size:22px;}.fire-mode .game-level h2{font-size:17px;}.fire-mode .game-header{gap:12px;}.fire-mode .control-section{padding-top:14px;}.win-secondary{column-gap:14px;}.win-secondary .text-button{font-size:9px;}.win-overlay .eyebrow{font-size:7px;}}
+@media(max-width:380px){.fire-mode .game-header{padding:17px 16px;gap:8px;}.fire-mode .game-level h2{font-size:15px;}.fire-mode .stats{gap:9px;}.fire-mode .stat strong{font-size:20px;}.fire-mode .stat span{font-size:8px;}.mechanic-strip{margin-left:14px;margin-right:14px;font-size:7px;}.mechanic-strip>span:last-child{max-width:132px;}.selection-line{font-size:9px;}.win-overlay h3{font-size:24px;}.win-overlay .win-symbol{margin-bottom:8px;}.win-overlay p:not(.eyebrow){font-size:10px;margin:9px 0 13px;}.win-secondary .text-button{padding-top:10px;}}
+
+
+/* Portals: numbered paired wall openings. */
+:root { --portal: #9cdeda; }
+.portal-mode { --accent: #9cdeda; background: radial-gradient(ellipse at 14% 0%,#24464a50,transparent 48%),var(--bg); }
+.portal-mode .brand-mark i { background:var(--portal); }
+.portal-mode .brand-mark i:last-child { background:transparent;border-color:var(--portal); }
+.portal-mode .lesson { background:linear-gradient(125deg,#25434566,#23272c44);border-color:#44666888; }
+.portal-mode .lesson-topline { color:var(--portal); }
+.portal-mode .primary-button:hover { background:#c5eeea; }
+.intro h1 { font-size:44px; line-height:1.16; margin:19px 0; }
+.level-section { margin-top:29px; }
+.chapter-counter { font-size:9px;color:var(--soft); }
+.portal-chapter-heading { display:flex;align-items:center;justify-content:space-between;margin:17px 0 10px;font-size:11px;color:var(--portal); }
+.portal-badge { font-size:7px;letter-spacing:.6px;border:1px solid #80c7c644;background:#80c7c60a;border-radius:4px;padding:4px 5px; }
+.portal-level-grid { grid-template-columns:repeat(6,minmax(0,1fr));gap:7px; }
+.portal-level { border-color:#69999766;color:#abd5d1;background:#29505016; }
+.portal-level:hover { border-color:var(--portal);background:#9cdeda12; }
+.portal-level.active { background:var(--portal);color:#183331;border-color:var(--portal); }
+.portal-mode .level-button:not(.portal-level):not(.fire-level).active { background:#b9d7ad;border-color:#b9d7ad; }
+.portal-strip { color:#a2bebf; }
+.portal-strip .mechanic-label,.portal-legend { color:var(--portal); }
+.portal-mini { display:inline-flex;justify-content:center;align-items:center;min-width:16px;height:17px;font:600 10px "Segoe UI",Arial,sans-serif;border-left:2px solid var(--portal);border-right:2px solid var(--portal);border-radius:3px;color:var(--portal);line-height:1;flex-shrink:0; }
+.portal-legend { font-size:9px;gap:7px; }
+.status-message.portal { color:var(--portal); }
+.game-header { gap:16px; }
+.stats { flex-shrink:0; }
+.legend { row-gap:12px; }
+@media(max-width:1050px) {
+  .intro h1 { font-size:37px; }
+  .portal-level-grid { gap:5px; }
+}
+@media(max-width:760px) {
+  .portal-chapter-heading { margin:12px 0 7px;font-size:10px; }
+  .portal-badge { font-size:6px;padding:3px 5px; }
+  .portal-level-grid { grid-template-columns:repeat(6,minmax(0,1fr));gap:7px; }
+  .portal-level { height:33px; }
+  .level-section { margin:0; }
+  .workspace { padding-top:19px; }
+  .game-header { padding-top:19px;padding-bottom:19px; }
+  .game-level h2 { font-size:17px; }
+}
+@media(max-width:380px) {
+  .portal-level-grid { gap:5px; }
+  .game-level h2 { font-size:15px; }
+  .game-header { gap:9px; }
+}
+.fire-mode .level-button.portal-level.active { background:var(--portal);color:#183331;border-color:var(--portal); }
+button, .brand { touch-action: manipulation; }
+
+/* Elements: cool ice, living leaves and translucent upward airflow. */
+:root { --ice:#9bd9ec; --leaf:#a9c889; --air:#c7dfdd; }
+.element-mode { --accent:#b7d7c2; background:radial-gradient(ellipse at 10% 0%,#32494355,transparent 48%),var(--bg); }
+.element-mode .brand-mark i { background:var(--accent); }
+.element-mode .brand-mark i:last-child { background:transparent;border-color:var(--accent); }
+.element-mode .lesson { background:linear-gradient(135deg,#29474055,#1c283b33);border-color:#5f83766b; }
+.element-mode .lesson-topline { color:#b9d9c8; }
+.intro h1 {font-size:38px;line-height:1.19;margin:18px 0 16px;letter-spacing:-1.2px;}
+.element-chapter-heading {display:flex;align-items:center;justify-content:space-between;margin:18px 0 10px;font-size:11px;color:#bddfd2;}
+.element-badge {font-size:7px;letter-spacing:.65px;border:1px solid #9ac3b55c;background:#9ac3b515;border-radius:4px;padding:4px 6px;}
+.element-level-grid {grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;}
+.element-level {border-color:#6f9e9666;color:#b9d9d1;background:#37564d1a;}
+.element-level:hover {border-color:#afdbcf;background:#afdbcf10;}
+.element-mode .level-button.element-level.active,.level-button.element-level.active {background:#b9dbc8;border-color:#b9dbc8;color:#203d35;}
+.elements-strip {display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:13px 27px 0;}
+.element-chip {display:inline-flex;align-items:center;gap:6px;font-size:9px;line-height:1.5;padding:5px 9px;border:1px solid #718e853f;background:#2d454036;border-radius:6px;color:#c0d4cd;}
+.element-chip b {font-size:14px;font-weight:500;color:#c5e5df;line-height:1;}
+.ice-legend,.plant-legend,.wind-legend {font-size:9px;gap:7px;white-space:nowrap;}
+.ice-legend .element-mini {color:var(--ice);}.plant-legend .element-mini {color:var(--leaf);}.wind-legend .element-mini {color:var(--air);}
+.element-mini {display:inline-flex;align-items:center;justify-content:center;width:16px;font-size:17px;line-height:1;}
+.status-message.element {color:#badccd;}
+.element-mode .stats {gap:18px;padding-left:5px;}
+.legend {column-gap:12px;row-gap:11px;}
+.lesson {margin-top:22px;}
+.sidebar-footer {margin-top:21px;}
+@media(max-width:1050px){.intro h1{font-size:31px;}.element-mode .stats{gap:12px;padding-left:0;}.elements-strip{margin-left:20px;margin-right:20px;}.element-chip{font-size:8px;padding:5px 7px;}.ice-legend,.plant-legend,.wind-legend{font-size:8px;}}
+@media(max-width:760px){
+ .element-chapter-heading{margin:12px 0 7px;font-size:10px;}
+ .element-badge{font-size:6px;padding:3px 5px;}
+ .element-level-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;}
+ .element-level{height:33px;font-size:10px;}
+ .elements-strip{margin:10px 14px 0;gap:5px;}
+ .element-chip{font-size:8px;padding:5px 6px;}
+ .element-chip b{font-size:12px;}
+ .element-mode .game-level h2{font-size:16px;}
+ .element-mode .stats{gap:13px;}
+ .lesson{margin:0;}
+}
+@media(max-width:380px){
+ .element-level-grid{gap:4px;}.element-level{font-size:9px;}
+ .element-mode .game-level h2{font-size:14px;}
+ .element-mode .game-header{padding:17px 16px;gap:7px;}
+ .element-mode .stats{gap:8px;}.element-mode .stat strong{font-size:20px;}
+ .elements-strip{gap:4px;margin-left:12px;margin-right:12px;}
+ .element-chip{font-size:7px;padding:4px 5px;}
+}
+
+</style>
+<link rel="icon" href="data:,">
+</head>
+<body>
+<div class="app-shell">
+  <header class="site-header">
+    <a class="brand" href="#" id="brand" aria-label="Сближение — к первому уровню">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
+      <span>сближение<span class="brand-dot">.</span></span>
+    </a>
+    <div class="header-right"><span class="quiet-label"><span class="quiet-dot"></span> В своём ритме</span><button class="icon-button help-trigger" id="helpBtn" aria-label="Правила и управление" title="Правила и управление">?</button></div>
+  </header>
+
+  <main class="workspace">
+    <aside class="sidebar">
+      <div class="intro">
+        <p class="eyebrow">ОБНОВЛЕНИЕ · СТИХИИ</p>
+        <h1>Холод. Ветер.<br><span>Живая логика.</span></h1>
+        <p class="intro-copy">Сдвигайте, замораживайте, поднимайте.<br>У каждого блока — свой характер.</p>
+      </div>
+      <section class="level-section" aria-label="Выбор уровня">
+        <div class="section-topline"><h2>Ваш путь</h2><span id="progressText">0 / 30</span></div>
+        <div class="level-grid" id="levelGrid"></div>
+        <div class="fire-chapter-heading"><span>Огненные этюды</span><span class="chapter-counter">11–14</span></div>
+        <div class="level-grid fire-level-grid" id="fireLevelGrid" aria-label="Четыре уровня с огнём"></div>
+        <div class="portal-chapter-heading"><span>Огонь и двери</span><span class="portal-badge">15–20</span></div>
+        <div class="level-grid portal-level-grid" id="portalLevelGrid" aria-label="Шесть уровней с новыми механиками"></div>
+        <div class="element-chapter-heading"><span>Стихии</span><span class="element-badge">НОВОЕ · 21–30</span></div>
+        <div class="level-grid element-level-grid" id="elementLevelGrid" aria-label="Десять уровней со льдом, растениями и ветром"></div>
+        <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
+        <p class="level-caption">Любой уровень открыт с самого начала.</p>
+      </section>
+      <section class="lesson" aria-labelledby="lessonTitle">
+        <div class="lesson-topline"><span class="tiny-spark" aria-hidden="true">✧</span><span id="lessonTag">ЗНАКОМСТВО</span></div>
+        <h2 id="lessonTitle">Первый контакт</h2>
+        <p id="lessonNote"></p>
+      </section>
+      <div class="legend" aria-label="Типы блоков">
+        <span class="legend-item coral"><span class="shape">●</span> круг</span>
+        <span class="legend-item mint"><span class="shape">◆</span> ромб</span>
+        <span class="legend-item lilac"><span class="shape">▲</span> треугольник</span>
+        <span class="legend-item gold"><span class="shape">✚</span> крест</span>
+        <span class="legend-item fire-legend"><svg class="flame-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 5 7 6 7 12a7 7 0 0 1-14 0c0-3 2-5 4-7-1 4 2 6 3 3 1-2-1-5 0-8Z" fill="currentColor"/><path d="M12 12c0 3 4 4 2 7-2 2-5-1-3-3Z" fill="#ffdca3"/></svg> огонь · подвижный</span>
+        <span class="legend-item ash-legend"><span class="ash-mini" aria-hidden="true">╱</span> уголь · подвижный</span>
+        <span class="legend-item ice-legend"><span class="element-mini">❄</span> лёд · два касания</span>
+        <span class="legend-item plant-legend"><span class="element-mini">♧</span> растения · хватка</span>
+        <span class="legend-item wind-legend"><span class="element-mini">↑</span> ветер · подъём</span>
+        <span class="legend-item portal-legend"><span class="portal-mini" aria-hidden="true">1</span> двери · парные</span>
+      </div>
+      <div class="sidebar-footer"><span class="clock-icon" aria-hidden="true">∞</span><span>Без таймера. Без спешки.<br>Каждый ход можно отменить.</span></div>
+    </aside>
+
+    <section class="game-panel" aria-label="Головоломка">
+      <header class="game-header">
+        <div class="game-level"><span class="level-kicker" id="levelKicker">ЭТЮД 21 / 30</span><h2 id="boardTitle">Первый контакт</h2></div>
+        <div class="stats">
+          <div class="stat"><strong id="moveCount">0</strong><span>ходов</span></div>
+          <div class="stat"><strong id="blockCount">3</strong><span id="blockCountLabel">игровых</span></div>
+          <div class="stat burnt-stat" id="burntStat"><strong id="burntCount">0</strong><span>горелых</span></div>
+        </div>
+      </header>
+      <div class="stage" id="stage">
+        <canvas id="board" tabindex="0" aria-label="Игровое поле" aria-describedby="boardInstructions boardDescription">Для игры нужен браузер с поддержкой Canvas.</canvas>
+        <p class="sr-only" id="boardInstructions">Вверх и вниз: выбрать блок. Влево и вправо: сдвинуть выбранный блок на одну клетку. Z: отменить ход. R: начать уровень заново. H: подсказка. Escape: снять выделение.</p>
+        <p class="sr-only" id="boardDescription"></p>
+        <div class="win-overlay" id="winOverlay" hidden>
+          <div class="win-symbol" aria-hidden="true">✧</div>
+          <p class="eyebrow">ВСЁ НА СВОИХ МЕСТАХ</p>
+          <h3 id="winTitle">Красиво сошлось.</h3>
+          <p id="winDescription"></p>
+          <button class="primary-button" id="nextBtn">Следующий этюд <span aria-hidden="true">→</span></button>
+          <div class="win-secondary"><button class="text-button" id="viewBoardBtn">Посмотреть поле</button><button class="text-button" id="winReplayBtn">Пройти ещё раз</button></div>
+        </div>
+      </div>
+      <div class="mechanic-strip" id="fireMechanic">
+        <span class="mechanic-label"><svg class="flame-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 5 7 6 7 12a7 7 0 0 1-14 0c0-3 2-5 4-7-1 4 2 6 3 3 1-2-1-5 0-8Z" fill="currentColor"/><path d="M12 12c0 3 4 4 2 7-2 2-5-1-3-3Z" fill="#ffdca3"/></svg><span>Огонь → уголь</span></span>
+        <span>Огонь можно двигать. Обжиг только сверху.</span>
+      </div>
+      <div class="mechanic-strip portal-strip" id="portalMechanic" hidden>
+        <span class="mechanic-label"><span class="portal-mini" aria-hidden="true">1</span><span>Телепорт-дверь</span></span>
+        <span id="portalMechanicText">Одинаковые номера — одна пара.</span>
+      </div>
+      <div class="elements-strip" id="elementsMechanic" hidden aria-label="Специальные механики уровня">
+        <span class="element-chip" id="iceChip"><b aria-hidden="true">❄</b> Лёд · два касания</span>
+        <span class="element-chip" id="plantChip"><b aria-hidden="true">♧</b> Растения · хватка</span>
+        <span class="element-chip" id="windChip"><b aria-hidden="true">↑</b> Ветер · подъём</span>
+      </div>
+      <div class="control-section">
+        <button class="result-link" id="showResultBtn" hidden>Уровень решён · Показать результат →</button>
+        <div class="selection-line" id="selectionLine"><span class="selection-dot" id="selectionDot"></span><span id="selectionText">Выберите блок на поле</span></div>
+        <div class="move-controls" aria-label="Перемещение выбранного блока">
+          <button class="move-button" id="leftBtn" aria-label="Передвинуть выбранный блок влево" disabled><span aria-hidden="true">←</span><span>Влево</span></button>
+          <span class="one-cell" aria-hidden="true">на 1<br>клетку</span>
+          <button class="move-button" id="rightBtn" aria-label="Передвинуть выбранный блок вправо" disabled><span>Вправо</span><span aria-hidden="true">→</span></button>
+        </div>
+        <div class="status-message" id="statusMessage" role="status" aria-live="polite">Соедините одинаковые блоки и очистите поле.</div>
+      </div>
+      <footer class="game-toolbar">
+        <button class="tool-button" id="undoBtn" disabled><span class="tool-icon" aria-hidden="true">↶</span><span>Отменить</span><kbd>Z</kbd></button>
+        <button class="tool-button" id="resetBtn"><span class="tool-icon" aria-hidden="true">↻</span><span>Заново</span><kbd>R</kbd></button>
+        <button class="tool-button hint-button" id="hintBtn"><span class="tool-icon" aria-hidden="true">✧</span><span id="hintLabel">Подсказка</span><kbd>H</kbd></button>
+      </footer>
+    </section>
+  </main>
+
+  <footer class="page-footer"><span>ЛОГИКА ВМЕСТО СКОРОСТИ</span><p>Выберите блок и нажмите <kbd>←</kbd> <kbd>→</kbd><span class="footer-separator">/</span>или смахните блок в сторону</p><span class="edition">30 ЭТЮДОВ · V 1.3 / СТИХИИ</span></footer>
+</div>
+
+<dialog id="helpDialog" aria-labelledby="helpTitle">
+  <div class="dialog-header"><span class="eyebrow">КАК ИГРАТЬ</span><button class="icon-button" id="closeHelpBtn" aria-label="Закрыть правила">×</button></div>
+  <h2 id="helpTitle">Всё начинается с одного хода.</h2>
+  <p>Ваша цель — убрать все обычные цветные блоки: соединить одинаковые или обжечь на огне. Лёд, растения, ветер, огонь и горелые блоки могут остаться. Таймера нет.</p>
+  <div class="rules-list">
+    <div><span class="rule-number">01</span><p><strong>Только влево и вправо.</strong> Игрок сдвигает любой подвижный блок на одну свободную клетку. Толкать соседей нельзя. Вертикальное движение происходит автоматически: вниз от гравитации, вверх от ветра.</p></div>
+    <div><span class="rule-number">02</span><p><strong>Цель — убрать цветные блоки.</strong> После завершения движения и реакций исчезают группы из двух и более обычных блоков одного типа, соединённых сторонами. Диагональ не считается. Все специальные блоки могут остаться на поле.</p></div>
+    <div><span class="rule-number">03</span><p><strong>Огонь и уголь.</strong> Обычный блок непосредственно над горящим огнём становится углём. Он сохраняет свою клетку, подвижность и вес, но больше не совпадает и не учитывается в цели уровня. Опасна только верхняя грань огня; сам огонь тоже можно двигать.</p></div>
+    <div><span class="rule-number">04</span><p><strong>Лёд помнит попадания, а не время.</strong> Новое приземление или горизонтальный сдвиг другого блока на лёд даёт трещину: 0/2 → 1/2. Второе попадание разрушает лёд и освобождает клетку. Стоящий сверху блок не наносит повторных ударов. Тот же блок можно убрать и вернуть для второго удара.</p></div>
+    <div><span class="rule-number">05</span><p><strong>На огне лёд тает.</strong> Лёд над горящей верхней гранью огня исчезает, а не превращается в уголь. Замёрзшее растение — это растение, а не ледяной блок.</p></div>
+    <div><span class="rule-number">06</span><p><strong>Растения удерживают соседей.</strong> Незамёрзшее растение не даёт падать блокам рядом с любой из четырёх сторон. Хватка действует только при непосредственном соседстве, не через дверь. Она не запрещает горизонтальные ходы. Удалите контакт — сосед снова сможет упасть.</p></div>
+    <div><span class="rule-number">07</span><p><strong>Лёд замораживает растение.</strong> Контакт с любой стороной льда навсегда замораживает растение: оно отпускает соседей, а другие растения больше не могут удерживать его самого. Оно остаётся твёрдым, подвижным блоком и может лежать на обычной опоре. Заморозка не передаётся от растения к растению.</p></div>
+    <div><span class="rule-number">08</span><p><strong>Растение над огнём загорается.</strong> В этой версии оно превращается в полноценный подвижный огненный блок и теряет хватку. Это работает и для замёрзшего растения. Новый огонь может зажечь растение или обуглить цветной блок над собой.</p></div>
+    <div><span class="rule-number">09</span><p><strong>Ветер поднимает блоки.</strong> Поток идёт строго вверх до первой стены или блока и поднимает этот блок. Если на нём стоят другие блоки, давление поднимает и всю соприкасающуюся стопку. Ветер сильнее хватки растения. В потоке блоки удерживаются наверху; вне потока снова действует гравитация.</p></div>
+    <div><span class="rule-number">10</span><p><strong>Поток временно гасит огонь.</strong> Только огонь, на который непосредственно дует ветер, становится безопасным, не переставая быть твёрдым блоком. С прекращением обдува пламя возвращается. Блок между ветром и огнём закрывает пламя от обдува. Погашенный огонь не обугливает, не плавит и не поджигает.</p></div>
+    <div><span class="rule-number">11</span><p><strong>Сам ветер не трескает лёд.</strong> И при падении, и при горизонтальном сдвиге на лёд ветровой блок не наносит удар. Остальные блоки, в том числе уголь и растения, дают обычную нагрузку. Все эти блоки можно двигать и телепортировать.</p></div>
+    <div><span class="rule-number">12</span><p><strong>Телепорт — дверь, не клетка.</strong> Чтобы перейти, нужно пересечь проём. Нижняя дверь ведёт к верхней, боковая — к противоположной боковой. Ветер может протолкнуть блок через верхнюю дверь к нижнему выходу. Сам воздух через двери не проходит. После выхода действуют местные ветер, растения и гравитация.</p></div>
+    <div><span class="rule-number">13</span><p><strong>Выход должен быть свободен.</strong> Дверь не выталкивает и не заменяет блоки. При переходе сохраняются трещины, заморозка и обугливание. Если движение попадает в бесконечный цикл ветра, падений и переходов, ход отменяется без изменения позиции и счётчика.</p></div>
+    <div><span class="rule-number">14</span><p><strong>Любой ход можно отменить целиком.</strong> Z возвращает положение и все состояния до хода: лёд, растения, пламя, уголь, двери и совпадения. Без огня одиночный цветной блок — тупик; с огнём его ещё можно обуглить. Таймера, жизней и штрафа за раздумья нет.</p></div>
+  </div>
+  <div class="dialog-note"><strong>Управление</strong><p>Мышь или касание: выберите блок, затем нажмите стрелку под полем, соседнюю пустую клетку или смахните в сторону. На клавиатуре: ↑ / ↓ выбирают блок, ← / → двигают. Z — отмена, R — заново, H — подсказка.</p><p>Подсказка ищет решение от текущей позиции и показывает один ход, но не делает его за вас. Общий поиск ограничен 60 000 состояний: достижение лимита не означает проигрыш.</p></div>
+  <button class="primary-button" id="playBtn">Понятно. Начнём <span aria-hidden="true">→</span></button>
+</dialog>
+<script>
+/* Generated by scripts/build.mjs. Edit src/, not this file. */
+(() => {
+'use strict';
+const definitions = {"application/GameController.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameController = void 0;
+const AnimationPlayer_js_1 = require("../presentation/AnimationPlayer.js");
+const BlockAppearance_js_1 = require("../presentation/BlockAppearance.js");
+const CanvasRenderer_js_1 = require("../presentation/CanvasRenderer.js");
+const GameMessages_js_1 = require("../presentation/GameMessages.js");
+const GameView_js_1 = require("../presentation/GameView.js");
+const InputController_js_1 = require("../presentation/InputController.js");
+const RussianText_js_1 = require("../presentation/RussianText.js");
+const UiState_js_1 = require("../presentation/UiState.js");
+const GameSession_js_1 = require("./GameSession.js");
+const HintService_js_1 = require("./HintService.js");
+class GameController {
+    elements;
+    engine;
+    levels;
+    progress;
+    session;
+    ui = new UiState_js_1.UiState();
+    view;
+    renderer;
+    animator;
+    hints;
+    input;
+    scope = new AbortController();
+    reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    resizeObserver = null;
+    generation = 0;
+    started = false;
+    destroyed = false;
+    constructor(elements, engine, levels, progress) {
+        this.elements = elements;
+        this.engine = engine;
+        this.levels = levels;
+        this.progress = progress;
+        const canvas = elements.get('board');
+        const context = canvas.getContext('2d');
+        if (!context)
+            throw new Error('Canvas 2D is unavailable in this browser.');
+        this.session = new GameSession_js_1.GameSession(engine, levels, progress.level);
+        this.view = new GameView_js_1.GameView(elements, this.session, this.ui, engine, levels, progress);
+        this.renderer = new CanvasRenderer_js_1.CanvasRenderer(canvas, context, this.session, this.ui, engine);
+        this.animator = new AnimationPlayer_js_1.AnimationPlayer((frame, value) => { this.ui.animation = { frame, progress: value }; this.renderer.draw(); });
+        this.hints = new HintService_js_1.HintService(engine);
+        this.input = new InputController_js_1.InputController(elements, this.session, this.ui, this);
+    }
+    start() {
+        if (this.started || this.destroyed)
+            return;
+        this.started = true;
+        this.view.createNavigation();
+        this.input.attach();
+        const parent = this.elements.get('board').parentElement;
+        if (typeof ResizeObserver !== 'undefined' && parent) {
+            this.resizeObserver = new ResizeObserver(() => this.renderer.resizeCanvas());
+            this.resizeObserver.observe(parent);
+        }
+        else
+            window.addEventListener('resize', () => this.renderer.resizeCanvas(), { signal: this.scope.signal });
+        this.loadLevel(this.progress.level);
+    }
+    loadLevel(index) {
+        if (this.destroyed || !this.levels.has(index))
+            return;
+        this.session.load(index);
+        this.cancelPending();
+        this.ui.reset();
+        this.view.configureLevel();
+        this.progress.select(index);
+        this.view.updateLevelNavigation();
+        this.view.render();
+        this.renderer.resizeCanvas();
+    }
+    selectBlock(id) {
+        if (this.destroyed || this.ui.busy || !this.session.select(id))
+            return;
+        this.ui.hint = null;
+        const selected = this.session.blocks.find(block => block.id === id);
+        if (!selected)
+            return;
+        const message = GameMessages_js_1.GameMessages.selection(selected, this.session.board);
+        this.setMessage(message.text, message.kind);
+        this.renderer.draw();
+    }
+    cycleSelection(direction) {
+        if (this.destroyed || this.ui.busy || this.session.getStatus().kind !== 'playing')
+            return;
+        const blocks = [...this.session.blocks].sort((a, b) => a.y - b.y || a.x - b.x);
+        let index = blocks.findIndex(block => block.id === this.session.selectedId);
+        index = index < 0 ? direction > 0 ? 0 : blocks.length - 1 : (index + direction + blocks.length) % blocks.length;
+        const block = blocks[index];
+        if (block)
+            this.selectBlock(block.id);
+    }
+    clearSelection() {
+        if (this.destroyed)
+            return;
+        this.session.select(null);
+        this.ui.hint = null;
+        this.refresh();
+    }
+    async requestMove(dx) {
+        if (this.destroyed || this.ui.busy || this.session.getStatus().kind !== 'playing')
+            return false;
+        if (this.session.selectedId === null) {
+            this.setMessage('Выберите блок на поле или с помощью клавиш ↑ / ↓.');
+            return false;
+        }
+        const result = this.session.beginMove(dx);
+        if (!result) {
+            this.setMessage('Проход занят: проверьте соседнюю клетку и выход телепорта. Блоки нельзя проталкивать.');
+            return false;
+        }
+        if (result.rejected) {
+            this.setMessage(result.rejected === 'settle-limit'
+                ? 'Достигнут предел расчёта. Ход не сделан; это не доказательство тупика.'
+                : 'Этот ход создаёт бесконечный цикл движения. Ход не сделан — измените опору, ветер или маршрут.', 'portal');
+            return false;
+        }
+        this.cancelPending();
+        const token = this.generation;
+        this.ui.busy = true;
+        this.ui.message = '';
+        this.ui.messageKind = '';
+        this.view.render();
+        if (!this.reducedMotion.matches) {
+            try {
+                for (const frame of result.trace) {
+                    if (!await this.animator.play(frame) || token !== this.generation)
+                        return false;
+                }
+            }
+            catch (error) {
+                console.error('Animation failed; the committed game state is intact.', error);
+            }
+        }
+        if (token !== this.generation || this.destroyed)
+            return false;
+        this.session.completeMove();
+        this.ui.busy = false;
+        this.ui.animation = null;
+        if (this.session.getStatus().kind === 'won') {
+            this.progress.complete(this.session.levelIndex, this.session.moves);
+            this.view.updateLevelNavigation();
+        }
+        const message = GameMessages_js_1.GameMessages.afterMove(result);
+        this.setMessage(message.text, message.kind);
+        this.renderer.draw();
+        return true;
+    }
+    undo() {
+        if (this.destroyed || this.ui.busy || !this.session.undo())
+            return;
+        this.cancelPending();
+        this.ui.reviewingWin = false;
+        this.setMessage('Ход отменён целиком: трещины, заморозка, огонь, поток, телепортации и совпадения.');
+        this.renderer.draw();
+    }
+    requestHint() { void this.findHint(); }
+    async findHint() {
+        if (this.destroyed || this.ui.busy || this.ui.hintBusy || this.session.getStatus().kind !== 'playing')
+            return;
+        this.hints.cancel();
+        this.ui.hint = null;
+        this.ui.hintBusy = true;
+        const token = this.generation;
+        this.setMessage('Проверяю продолжения от текущей позиции…', 'hint');
+        try {
+            const result = await this.hints.search(this.session.board, this.session.blocks);
+            if (!result || token !== this.generation || this.destroyed)
+                return;
+            this.ui.hintBusy = false;
+            if (result.kind === 'solved' && result.path.length) {
+                const action = result.path[0];
+                this.ui.hint = action;
+                this.session.select(action.id);
+                const block = this.session.blocks.find(item => item.id === action.id) ?? action;
+                this.setMessage(`${BlockAppearance_js_1.BlockAppearance.for(block).name}: ${action.dx < 0 ? 'влево ←' : 'вправо →'}. Отсюда есть решение за ${RussianText_js_1.RussianText.moves(result.path.length)}.`, 'hint');
+            }
+            else if (result.kind === 'unsolvable') {
+                this.session.markUnsolvable();
+                this.setMessage('Все продолжения проверены: решения из этой позиции нет.', 'hint');
+            }
+            else if (result.kind === 'limit')
+                this.setMessage('Достигнут лимит поиска. Это не означает тупик — игру можно продолжать.', 'hint');
+            else
+                this.setMessage('Все игровые блоки уже убраны.', 'hint');
+        }
+        catch (error) {
+            if (token !== this.generation || this.destroyed)
+                return;
+            this.ui.hintBusy = false;
+            console.error('Hint search failed.', error);
+            this.setMessage('Поиск подсказки прерван. Игру можно продолжать.', 'hint');
+        }
+        this.refresh();
+    }
+    reviewResult(review) {
+        if (this.destroyed)
+            return;
+        this.ui.reviewingWin = review;
+        this.refresh();
+    }
+    nextLevel() {
+        const completed = this.progress.completed;
+        const firstUnsolved = this.levels.all.findIndex((_, index) => !Object.hasOwn(completed, index));
+        this.loadLevel(this.session.levelIndex < this.levels.count - 1 ? this.session.levelIndex + 1 : firstUnsolved < 0 ? 0 : firstUnsolved);
+    }
+    snapshot() {
+        const blocks = this.engine.clone(this.session.blocks);
+        return {
+            ...this.session.snapshot(), busy: this.ui.busy, hintBusy: this.ui.hintBusy,
+            completed: this.progress.completed, activeCount: this.engine.activeCount(blocks),
+            burntCount: blocks.filter(block => block.burnt).length,
+            ice: blocks.filter(this.engine.isIce).map(block => ({ id: block.id, x: block.x, y: block.y, hits: block.hits || 0 })),
+            plants: blocks.filter(this.engine.isPlant).map(block => ({ id: block.id, x: block.x, y: block.y, frozen: Boolean(block.frozen) })),
+            wind: blocks.filter(this.engine.isWind).map(block => ({ id: block.id, x: block.x, y: block.y })),
+            extinguishedFires: blocks.filter(block => this.engine.isFire(block) && block.out).map(block => block.id),
+            fires: blocks.filter(this.engine.isFire).map(block => ({ id: block.id, x: block.x, y: block.y })),
+            portals: this.session.board.portals.map(pair => ({ id: pair.id, a: { ...pair.a }, b: { ...pair.b } })),
+            reviewingWin: this.ui.reviewingWin, animationPhase: this.ui.animation?.frame.kind ?? null,
+        };
+    }
+    destroy() {
+        if (this.destroyed)
+            return;
+        this.session.cancelMove();
+        this.cancelPending();
+        this.destroyed = true;
+        this.input.dispose();
+        this.scope.abort();
+        this.resizeObserver?.disconnect();
+        this.resizeObserver = null;
+        if (this.elements.get('helpDialog').open)
+            this.elements.get('helpDialog').close();
+    }
+    cancelPending() {
+        this.generation++;
+        this.hints.cancel();
+        this.animator.cancel();
+        this.input.resetPointer();
+        this.ui.hintBusy = false;
+        this.ui.hint = null;
+        this.ui.animation = null;
+        this.ui.busy = false;
+    }
+    setMessage(text, kind = '') {
+        this.ui.message = text;
+        this.ui.messageKind = kind;
+        this.view.render();
+    }
+    refresh() { this.view.render(); this.renderer.draw(); }
+}
+exports.GameController = GameController;
+
+},
+"application/GameSession.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameSession = void 0;
+class GameSession {
+    engine;
+    levels;
+    currentBoard;
+    currentBlocks;
+    currentLevel;
+    selected = null;
+    moveCount = 0;
+    snapshots = [];
+    deadlockProven = false;
+    pendingBlocks = null;
+    constructor(engine, levels, initialLevel = 0) {
+        this.engine = engine;
+        this.levels = levels;
+        const parsed = this.parse(initialLevel);
+        this.currentBoard = parsed.board;
+        this.currentBlocks = parsed.blocks;
+        this.currentLevel = initialLevel;
+    }
+    get board() { return this.currentBoard; }
+    get blocks() { return this.currentBlocks; }
+    get levelIndex() { return this.currentLevel; }
+    get selectedId() { return this.selected; }
+    get moves() { return this.moveCount; }
+    get historyLength() { return this.snapshots.length; }
+    get provenDeadlock() { return this.deadlockProven; }
+    load(index) {
+        const parsed = this.parse(index);
+        this.currentBoard = parsed.board;
+        this.currentBlocks = parsed.blocks;
+        this.currentLevel = index;
+        this.selected = null;
+        this.moveCount = 0;
+        this.snapshots.length = 0;
+        this.pendingBlocks = null;
+        this.deadlockProven = false;
+    }
+    getStatus() {
+        const result = this.engine.status(this.board, this.blocks);
+        return result.kind === 'playing' && this.deadlockProven ? { kind: 'lost', reason: 'proven' } : result;
+    }
+    select(id) {
+        if (id === null) {
+            this.selected = null;
+            return true;
+        }
+        if (this.pendingBlocks !== null || this.getStatus().kind !== 'playing' || !this.currentBlocks.some(block => block.id === id))
+            return false;
+        this.selected = id;
+        return true;
+    }
+    markUnsolvable() { this.deadlockProven = true; }
+    move(dx) {
+        const result = this.beginMove(dx);
+        if (result && !result.rejected)
+            this.completeMove();
+        return result;
+    }
+    beginMove(dx) {
+        if (this.pendingBlocks !== null || this.selected === null || this.getStatus().kind !== 'playing')
+            return null;
+        const result = this.engine.move(this.board, this.blocks, this.selected, dx, true);
+        if (!result || result.rejected)
+            return result;
+        this.snapshots.push({ blocks: this.engine.clone(this.blocks), selectedId: this.selected, moves: this.moveCount });
+        this.pendingBlocks = this.engine.clone(result.blocks);
+        this.moveCount++;
+        this.deadlockProven = false;
+        return result;
+    }
+    completeMove() {
+        if (this.pendingBlocks === null)
+            return false;
+        this.currentBlocks = this.pendingBlocks;
+        this.pendingBlocks = null;
+        if (!this.currentBlocks.some(block => block.id === this.selected))
+            this.selected = null;
+        return true;
+    }
+    cancelMove() {
+        if (this.pendingBlocks === null)
+            return false;
+        this.pendingBlocks = null;
+        return this.undo();
+    }
+    undo() {
+        if (this.pendingBlocks !== null)
+            return false;
+        const previous = this.snapshots.pop();
+        if (!previous)
+            return false;
+        this.currentBlocks = this.engine.clone(previous.blocks);
+        this.selected = previous.selectedId;
+        this.moveCount = previous.moves;
+        this.deadlockProven = false;
+        return true;
+    }
+    snapshot() {
+        return { levelIndex: this.currentLevel, blocks: this.engine.clone(this.blocks), selectedId: this.selected, moves: this.moves, historyLength: this.snapshots.length, status: this.getStatus() };
+    }
+    parse(index) {
+        const parsed = this.engine.parseLevel(this.levels.get(index));
+        const resolved = this.engine.resolve(parsed.board, parsed.blocks);
+        if (resolved.rejected)
+            throw new Error(`Unstable initial level: ${resolved.rejected}.`);
+        this.engine.assertValid(parsed.board, resolved.blocks);
+        return { board: parsed.board, blocks: resolved.blocks };
+    }
+}
+exports.GameSession = GameSession;
+
+},
+"application/HintService.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HintService = void 0;
+const defaultScheduler = {
+    schedule: (task, delay) => setTimeout(task, delay),
+    cancel: handle => clearTimeout(handle),
+};
+class HintService {
+    engine;
+    scheduler;
+    maxStates;
+    timer = null;
+    generation = 0;
+    pending = null;
+    constructor(engine, scheduler = defaultScheduler, maxStates = 60000) {
+        this.engine = engine;
+        this.scheduler = scheduler;
+        this.maxStates = maxStates;
+    }
+    search(board, blocks) {
+        this.cancel();
+        const token = this.generation;
+        const search = this.engine.createSearch(board, blocks, this.maxStates);
+        return new Promise((resolve, reject) => {
+            this.pending = resolve;
+            const chunk = () => {
+                this.timer = null;
+                if (token !== this.generation)
+                    return;
+                try {
+                    const result = search.step(12);
+                    if (!result) {
+                        this.timer = this.scheduler.schedule(chunk, 0);
+                        return;
+                    }
+                    this.pending = null;
+                    resolve(result);
+                }
+                catch (error) {
+                    this.pending = null;
+                    reject(error);
+                }
+            };
+            this.timer = this.scheduler.schedule(chunk, 20);
+        });
+    }
+    cancel() {
+        this.generation++;
+        if (this.timer !== null)
+            this.scheduler.cancel(this.timer);
+        this.timer = null;
+        const pending = this.pending;
+        this.pending = null;
+        pending?.(null);
+    }
+}
+exports.HintService = HintService;
+
+},
+"domain/BlockRules.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BlockRules = void 0;
+const Grid_js_1 = require("./Grid.js");
+class BlockRules {
+    static clone(blocks) { return blocks.map(b => ({ ...b })); }
+    static isFire(b) { return b.type === 'F'; }
+    static isIce(b) { return b.type === 'I'; }
+    static isPlant(b) { return b.type === 'P'; }
+    static isWind(b) { return b.type === 'W'; }
+    static hasElements(blocks) { return blocks.some(b => 'IPW'.includes(b.type) || b.out); }
+    static liveFire(b) { return BlockRules.isFire(b) && !b.out; }
+    static isActive(b) { return !b.burnt && Grid_js_1.COLOR_TYPES.includes(b.type); }
+    static activeCount(blocks) { return blocks.reduce((n, b) => n + Number(BlockRules.isActive(b)), 0); }
+    static counts(blocks) {
+        const result = {};
+        for (const b of blocks)
+            if (BlockRules.isActive(b))
+                result[b.type] = (result[b.type] || 0) + 1;
+        return result;
+    }
+    static stateKey(blocks) {
+        return blocks.map(b => `${b.burnt ? 'X' : b.type}${BlockRules.isIce(b) && b.hits ? ':1' : ''}${b.frozen ? ':f' : ''}${b.out ? ':o' : ''}:${b.x},${b.y}`).sort().join('|');
+    }
+}
+exports.BlockRules = BlockRules;
+
+},
+"domain/Grid.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Grid = exports.OPPOSITE = exports.DIRECTIONS = exports.COLOR_TYPES = void 0;
+exports.COLOR_TYPES = 'ABCD';
+exports.DIRECTIONS = Object.freeze({ left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] });
+exports.OPPOSITE = Object.freeze({ left: 'right', right: 'left', top: 'bottom', bottom: 'top' });
+class Grid {
+    static cell(x, y, width) { return y * width + x; }
+    static edgeKey(x, y, dx, dy) { return `${x},${y}:${dx},${dy}`; }
+    static inBounds(board, x, y) { return x >= 0 && y >= 0 && x < board.width && y < board.height; }
+    static occupied(board, blocks) { return new Map(blocks.map(b => [Grid.cell(b.x, b.y, board.width), b])); }
+    static destination(board, blocks, b, dx, dy, occ = Grid.occupied(board, blocks)) {
+        const door = board.portalEdges && board.portalEdges.get(Grid.edgeKey(b.x, b.y, dx, dy));
+        const x = door ? door.exit.x : b.x + dx, y = door ? door.exit.y : b.y + dy;
+        if (!Grid.inBounds(board, x, y) || board.walls.has(Grid.cell(x, y, board.width)) || occ.has(Grid.cell(x, y, board.width)))
+            return null;
+        return { x, y, ...(door ? { portal: { ...door, dx, dy, id: b.id } } : {}) };
+    }
+}
+exports.Grid = Grid;
+
+},
+"domain/types.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+
+},
+"engine/PhysicsSystem.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PhysicsSystem = void 0;
+const BlockRules_js_1 = require("../domain/BlockRules.js");
+const Grid_js_1 = require("../domain/Grid.js");
+class PhysicsSystem {
+    maxSteps;
+    constructor(maxSteps = 4096) {
+        this.maxSteps = maxSteps;
+    }
+    gravity(board, input, withTrace = false) {
+        if (BlockRules_js_1.BlockRules.hasElements(input) || input.some(BlockRules_js_1.BlockRules.isFire))
+            return this.settleElements(board, input, withTrace, false);
+        if (!board.portals.length) {
+            const blocks = BlockRules_js_1.BlockRules.clone(input), occ = new Set(board.walls);
+            for (const b of [...blocks].sort((a, b) => b.y - a.y || a.x - b.x)) {
+                while (b.y + 1 < board.height && !occ.has(Grid_js_1.Grid.cell(b.x, b.y + 1, board.width)))
+                    b.y++;
+                occ.add(Grid_js_1.Grid.cell(b.x, b.y, board.width));
+            }
+            return { blocks, trace: withTrace && blocks.some((b, i) => b.y !== input[i].y) ? [{ kind: 'fall', before: BlockRules_js_1.BlockRules.clone(input), after: BlockRules_js_1.BlockRules.clone(blocks) }] : [] };
+        }
+        const blocks = BlockRules_js_1.BlockRules.clone(input), trace = [], seen = new Set();
+        for (let tick = 0; tick < this.maxSteps; tick++) {
+            const key = BlockRules_js_1.BlockRules.stateKey(blocks);
+            if (seen.has(key))
+                return { blocks: BlockRules_js_1.BlockRules.clone(input), trace: [], rejected: 'portal-loop' };
+            seen.add(key);
+            const before = withTrace ? BlockRules_js_1.BlockRules.clone(blocks) : [], occ = Grid_js_1.Grid.occupied(board, blocks), warps = [];
+            let changed = false;
+            for (const b of [...blocks].sort((a, b) => b.y - a.y || a.x - b.x)) {
+                const to = Grid_js_1.Grid.destination(board, blocks, b, 0, 1, occ);
+                if (!to)
+                    continue;
+                occ.delete(Grid_js_1.Grid.cell(b.x, b.y, board.width));
+                if (to.portal)
+                    warps.push(to.portal);
+                b.x = to.x;
+                b.y = to.y;
+                occ.set(Grid_js_1.Grid.cell(b.x, b.y, board.width), b);
+                changed = true;
+            }
+            if (!changed)
+                return { blocks, trace };
+            if (withTrace) {
+                const previous = trace[trace.length - 1];
+                if (!warps.length && previous && previous.kind === 'fall')
+                    previous.after = BlockRules_js_1.BlockRules.clone(blocks);
+                else
+                    trace.push({ kind: warps.length ? 'teleport' : 'fall', before, after: BlockRules_js_1.BlockRules.clone(blocks), ...(warps.length ? { warps } : {}) });
+            }
+        }
+        return { blocks: BlockRules_js_1.BlockRules.clone(input), trace: [], rejected: 'settle-limit' };
+    }
+    fall(board, blocks) {
+        const result = this.gravity(board, blocks);
+        if (result.rejected)
+            throw new Error('Unstable gravity: ' + result.rejected);
+        return result.blocks;
+    }
+    burn(board, input) {
+        const occ = Grid_js_1.Grid.occupied(board, input), burned = [], melted = [], ignited = [];
+        const blocks = [];
+        for (const b of input) {
+            const below = occ.get(Grid_js_1.Grid.cell(b.x, b.y + 1, board.width));
+            if (below && BlockRules_js_1.BlockRules.liveFire(below)) {
+                if (BlockRules_js_1.BlockRules.isActive(b)) {
+                    burned.push(b.id);
+                    blocks.push({ ...b, burnt: true });
+                    continue;
+                }
+                if (BlockRules_js_1.BlockRules.isIce(b)) {
+                    melted.push(b.id);
+                    continue;
+                }
+                if (BlockRules_js_1.BlockRules.isPlant(b)) {
+                    ignited.push(b.id);
+                    blocks.push({ id: b.id, type: 'F', x: b.x, y: b.y });
+                    continue;
+                }
+            }
+            blocks.push({ ...b });
+        }
+        return { blocks, burned, melted, ignited };
+    }
+    windField(board, blocks) {
+        const occ = Grid_js_1.Grid.occupied(board, blocks), exposed = new Set(), lifted = new Set(), cells = new Set();
+        for (const fan of blocks.filter(BlockRules_js_1.BlockRules.isWind)) {
+            for (let y = fan.y - 1; y >= 0; y--) {
+                const k = Grid_js_1.Grid.cell(fan.x, y, board.width);
+                if (board.walls.has(k))
+                    break;
+                cells.add(k);
+                const target = occ.get(k);
+                if (!target)
+                    continue;
+                exposed.add(target.id);
+                for (let yy = y; yy >= 0; yy--) {
+                    const stacked = occ.get(Grid_js_1.Grid.cell(fan.x, yy, board.width));
+                    if (!stacked)
+                        break;
+                    lifted.add(stacked.id);
+                }
+                break;
+            }
+        }
+        return { exposed, lifted, cells };
+    }
+    grippedIds(board, blocks) {
+        const occ = Grid_js_1.Grid.occupied(board, blocks), held = new Set();
+        for (const plant of blocks) {
+            if (!BlockRules_js_1.BlockRules.isPlant(plant) || plant.frozen)
+                continue;
+            for (const [dx, dy] of Object.values(Grid_js_1.DIRECTIONS)) {
+                const other = occ.get(Grid_js_1.Grid.cell(plant.x + dx, plant.y + dy, board.width));
+                if (other && !(BlockRules_js_1.BlockRules.isPlant(other) && other.frozen))
+                    held.add(other.id);
+            }
+        }
+        return held;
+    }
+    iceContacts(board, blocks) {
+        const occ = Grid_js_1.Grid.occupied(board, blocks), contacts = new Map();
+        for (const ice of blocks.filter(BlockRules_js_1.BlockRules.isIce)) {
+            const top = occ.get(Grid_js_1.Grid.cell(ice.x, ice.y - 1, board.width));
+            if (top)
+                contacts.set(ice.id, top.id);
+        }
+        return contacts;
+    }
+    iceImpacts(board, input, oldContacts, movedIds) {
+        const contacts = this.iceContacts(board, input), cracked = [], shattered = [];
+        const byId = new Map(input.map(b => [b.id, b]));
+        const blocks = input.flatMap(b => {
+            if (!BlockRules_js_1.BlockRules.isIce(b))
+                return [{ ...b }];
+            const topId = contacts.get(b.id), top = topId === undefined ? undefined : byId.get(topId);
+            if (!top || BlockRules_js_1.BlockRules.isWind(top) || !movedIds.has(top.id) || oldContacts.get(b.id) === topId)
+                return [{ ...b }];
+            const hits = (b.hits || 0) + 1;
+            if (hits >= 2) {
+                shattered.push(b.id);
+                return [];
+            }
+            cracked.push(b.id);
+            return [{ ...b, hits }];
+        });
+        return { blocks, cracked, shattered };
+    }
+    freezePlants(board, input) {
+        const occ = Grid_js_1.Grid.occupied(board, input), frozen = [];
+        const blocks = input.map(b => {
+            if (BlockRules_js_1.BlockRules.isPlant(b) && !b.frozen && Object.values(Grid_js_1.DIRECTIONS).some(([dx, dy]) => {
+                const other = occ.get(Grid_js_1.Grid.cell(b.x + dx, b.y + dy, board.width));
+                return other && BlockRules_js_1.BlockRules.isIce(other);
+            })) {
+                frozen.push(b.id);
+                return { ...b, frozen: true };
+            }
+            return { ...b };
+        });
+        return { blocks, frozen };
+    }
+    settleElements(board, input, withTrace = false, withMatches = true, contactBefore = input, initiallyMoved = []) {
+        let blocks = BlockRules_js_1.BlockRules.clone(input), oldContacts = this.iceContacts(board, contactBefore);
+        let movedIds = new Set(initiallyMoved);
+        const trace = [], seen = new Set();
+        function frame(kind, before, after, data = {}) {
+            if (withTrace)
+                trace.push({ kind, before: BlockRules_js_1.BlockRules.clone(before), after: BlockRules_js_1.BlockRules.clone(after), ...data });
+        }
+        for (let tick = 0; tick < this.maxSteps; tick++) {
+            for (let wave = 0; wave <= input.length * 4 + 8; wave++) {
+                let changed = false;
+                const field = this.windField(board, blocks), extinguished = [], relit = [];
+                const cooled = blocks.map(b => {
+                    const n = { ...b };
+                    if (BlockRules_js_1.BlockRules.isFire(b)) {
+                        const out = field.exposed.has(b.id);
+                        if (out !== Boolean(b.out))
+                            (out ? extinguished : relit).push(b.id);
+                        if (out)
+                            n.out = true;
+                        else
+                            delete n.out;
+                    }
+                    return n;
+                });
+                if (extinguished.length || relit.length) {
+                    frame('breeze', blocks, cooled, { extinguished, relit });
+                    changed = true;
+                }
+                blocks = cooled;
+                const heat = this.burn(board, blocks);
+                if (heat.burned.length || heat.melted.length || heat.ignited.length) {
+                    frame(heat.melted.length || heat.ignited.length ? 'heat' : 'burn', blocks, heat.blocks, { burned: heat.burned, melted: heat.melted, ignited: heat.ignited });
+                    changed = true;
+                }
+                blocks = heat.blocks;
+                const impacts = this.iceImpacts(board, blocks, oldContacts, movedIds);
+                if (impacts.cracked.length || impacts.shattered.length) {
+                    frame('ice', blocks, impacts.blocks, { cracked: impacts.cracked, shattered: impacts.shattered });
+                    changed = true;
+                }
+                blocks = impacts.blocks;
+                movedIds = new Set();
+                oldContacts = this.iceContacts(board, blocks);
+                const frost = this.freezePlants(board, blocks);
+                if (frost.frozen.length) {
+                    frame('freeze', blocks, frost.blocks, { frozen: frost.frozen });
+                    changed = true;
+                }
+                blocks = frost.blocks;
+                if (!changed)
+                    break;
+            }
+            const key = BlockRules_js_1.BlockRules.stateKey(blocks);
+            if (seen.has(key))
+                return { blocks: BlockRules_js_1.BlockRules.clone(input), trace: [], rejected: BlockRules_js_1.BlockRules.hasElements(input) ? 'physics-loop' : 'portal-loop' };
+            seen.add(key);
+            const before = BlockRules_js_1.BlockRules.clone(blocks), field = this.windField(board, blocks), held = this.grippedIds(board, blocks);
+            const occ = Grid_js_1.Grid.occupied(board, blocks), warps = [], risen = [], fallen = [];
+            oldContacts = this.iceContacts(board, blocks);
+            movedIds = new Set();
+            const advance = (b, dy) => {
+                const to = Grid_js_1.Grid.destination(board, blocks, b, 0, dy, occ);
+                if (!to)
+                    return;
+                occ.delete(Grid_js_1.Grid.cell(b.x, b.y, board.width));
+                if (to.portal)
+                    warps.push(to.portal);
+                b.x = to.x;
+                b.y = to.y;
+                occ.set(Grid_js_1.Grid.cell(b.x, b.y, board.width), b);
+                movedIds.add(b.id);
+                (dy < 0 ? risen : fallen).push(b.id);
+            };
+            for (const b of [...blocks].sort((a, b) => a.y - b.y || a.x - b.x))
+                if (field.lifted.has(b.id))
+                    advance(b, -1);
+            for (const b of [...blocks].sort((a, b) => b.y - a.y || a.x - b.x)) {
+                if (!field.lifted.has(b.id) && !held.has(b.id))
+                    advance(b, 1);
+            }
+            if (movedIds.size) {
+                const kind = warps.length ? 'teleport' : risen.length ? 'lift' : 'fall';
+                const prev = trace[trace.length - 1];
+                if (withTrace && !warps.length && prev && prev.kind === kind && (kind === 'fall' || kind === 'lift'))
+                    prev.after = BlockRules_js_1.BlockRules.clone(blocks);
+                else
+                    frame(kind, before, blocks, { ...(warps.length ? { warps } : {}), risen, fallen });
+                continue;
+            }
+            const groups = withMatches ? this.matchingGroups(board, blocks) : [];
+            if (!groups.length)
+                return { blocks, trace };
+            const removed = new Set(groups.flat()), after = blocks.filter(b => !removed.has(b.id));
+            frame('match', blocks, after, { removed: [...removed], groups });
+            blocks = after;
+        }
+        return { blocks: BlockRules_js_1.BlockRules.clone(input), trace: [], rejected: 'settle-limit' };
+    }
+    matchingGroups(board, blocks) {
+        const occ = Grid_js_1.Grid.occupied(board, blocks), visited = new Set(), groups = [];
+        for (const start of blocks) {
+            if (!BlockRules_js_1.BlockRules.isActive(start) || visited.has(start.id))
+                continue;
+            const group = [], stack = [start];
+            visited.add(start.id);
+            while (stack.length) {
+                const b = stack.pop();
+                if (!b)
+                    break;
+                group.push(b.id);
+                for (const [dx, dy] of Object.values(Grid_js_1.DIRECTIONS)) {
+                    const x = b.x + dx, y = b.y + dy;
+                    if (!Grid_js_1.Grid.inBounds(board, x, y))
+                        continue;
+                    const n = occ.get(Grid_js_1.Grid.cell(x, y, board.width));
+                    if (n && BlockRules_js_1.BlockRules.isActive(n) && n.type === start.type && !visited.has(n.id)) {
+                        visited.add(n.id);
+                        stack.push(n);
+                    }
+                }
+            }
+            if (group.length >= 2)
+                groups.push(group);
+        }
+        return groups;
+    }
+    resolve(board, input, withTrace = false) {
+        if (BlockRules_js_1.BlockRules.hasElements(input) || input.some(BlockRules_js_1.BlockRules.isFire))
+            return this.settleElements(board, input, withTrace);
+        let blocks = BlockRules_js_1.BlockRules.clone(input);
+        const trace = [];
+        while (true) {
+            const settled = this.gravity(board, blocks, withTrace);
+            if (settled.rejected)
+                return { blocks: BlockRules_js_1.BlockRules.clone(input), trace: [], rejected: settled.rejected };
+            if (withTrace)
+                trace.push(...settled.trace);
+            blocks = settled.blocks;
+            const charred = this.burn(board, blocks);
+            if (withTrace && charred.burned.length)
+                trace.push({ kind: 'burn', before: blocks, after: charred.blocks, burned: charred.burned });
+            blocks = charred.blocks;
+            const groups = this.matchingGroups(board, blocks);
+            if (!groups.length)
+                break;
+            const removed = new Set(groups.flat()), remaining = blocks.filter(b => !removed.has(b.id));
+            if (withTrace)
+                trace.push({ kind: 'match', before: blocks, after: remaining, removed: [...removed], groups });
+            blocks = remaining;
+        }
+        return { blocks, trace };
+    }
+}
+exports.PhysicsSystem = PhysicsSystem;
+
+},
+"engine/PuzzleEngine.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PuzzleEngine = void 0;
+const BlockRules_js_1 = require("../domain/BlockRules.js");
+const Grid_js_1 = require("../domain/Grid.js");
+const LevelParser_js_1 = require("../levels/LevelParser.js");
+const PhysicsSystem_js_1 = require("./PhysicsSystem.js");
+const PuzzleSearch_js_1 = require("./PuzzleSearch.js");
+class PuzzleEngine {
+    parser;
+    physics;
+    constructor(parser = new LevelParser_js_1.LevelParser(), physics = new PhysicsSystem_js_1.PhysicsSystem()) {
+        this.parser = parser;
+        this.physics = physics;
+    }
+    clone = BlockRules_js_1.BlockRules.clone;
+    isFire = BlockRules_js_1.BlockRules.isFire;
+    isIce = BlockRules_js_1.BlockRules.isIce;
+    isPlant = BlockRules_js_1.BlockRules.isPlant;
+    isWind = BlockRules_js_1.BlockRules.isWind;
+    isActive = BlockRules_js_1.BlockRules.isActive;
+    activeCount = BlockRules_js_1.BlockRules.activeCount;
+    stateKey = BlockRules_js_1.BlockRules.stateKey;
+    counts = BlockRules_js_1.BlockRules.counts;
+    destination = Grid_js_1.Grid.destination;
+    parseLevel(level) { return this.parser.parse(level); }
+    gravity(board, blocks, withTrace = false) { return this.physics.gravity(board, blocks, withTrace); }
+    fall(board, blocks) { return this.physics.fall(board, blocks); }
+    burn(board, blocks) { return this.physics.burn(board, blocks); }
+    windField(board, blocks) { return this.physics.windField(board, blocks); }
+    grippedIds(board, blocks) { return this.physics.grippedIds(board, blocks); }
+    matchingGroups(board, blocks) { return this.physics.matchingGroups(board, blocks); }
+    resolve(board, blocks, withTrace = false) { return this.physics.resolve(board, blocks, withTrace); }
+    createSearch(board, blocks, maxStates = 60000) { return new PuzzleSearch_js_1.PuzzleSearch(this, board, blocks, maxStates); }
+    solve(board, blocks, maxStates = 60000) {
+        const search = this.createSearch(board, blocks, maxStates);
+        let result = search.result;
+        while (!result)
+            result = search.step(300);
+        return result;
+    }
+    canMove(board, blocks, id, dx) {
+        if (dx !== -1 && dx !== 1)
+            return false;
+        const b = blocks.find(b => b.id === id);
+        return Boolean(b && Grid_js_1.Grid.destination(board, blocks, b, dx, 0));
+    }
+    candidateMoves(board, blocks) {
+        const result = [], occ = Grid_js_1.Grid.occupied(board, blocks);
+        for (const b of blocks)
+            for (const dx of [-1, 1])
+                if (Grid_js_1.Grid.destination(board, blocks, b, dx, 0, occ)) {
+                    result.push({ ...b, dx });
+                }
+        return result;
+    }
+    legalMoves(board, blocks) {
+        const candidates = this.candidateMoves(board, blocks);
+        return board.portals.length || BlockRules_js_1.BlockRules.hasElements(blocks) ? candidates.filter(a => !this.move(board, blocks, a.id, a.dx)?.rejected) : candidates;
+    }
+    move(board, input, id, dx, withTrace = false) {
+        if (dx !== -1 && dx !== 1)
+            return null;
+        const b = input.find(b => b.id === id);
+        if (!b)
+            return null;
+        const to = Grid_js_1.Grid.destination(board, input, b, dx, 0);
+        if (!to)
+            return null;
+        const moved = BlockRules_js_1.BlockRules.clone(input), chosen = moved.find(n => n.id === id);
+        if (!chosen)
+            return null;
+        chosen.x = to.x;
+        chosen.y = to.y;
+        const resolved = BlockRules_js_1.BlockRules.hasElements(input) || input.some(BlockRules_js_1.BlockRules.isFire) ? this.physics.settleElements(board, moved, withTrace, true, input, [id]) : this.physics.resolve(board, moved, withTrace);
+        if (resolved.rejected)
+            return { blocks: BlockRules_js_1.BlockRules.clone(input), trace: [], rejected: resolved.rejected };
+        if (withTrace)
+            resolved.trace.unshift({ kind: to.portal ? 'teleport' : 'slide', before: BlockRules_js_1.BlockRules.clone(input), after: moved, ...(to.portal ? { warps: [to.portal] } : {}) });
+        return resolved;
+    }
+    status(board, blocks) {
+        if (!BlockRules_js_1.BlockRules.activeCount(blocks))
+            return { kind: 'won' };
+        const singles = Object.entries(BlockRules_js_1.BlockRules.counts(blocks)).filter(([, n]) => n === 1).map(([t]) => t);
+        if (singles.length && !blocks.some(BlockRules_js_1.BlockRules.isFire))
+            return { kind: 'lost', reason: 'singleton', types: singles };
+        const candidates = this.candidateMoves(board, blocks);
+        if (!candidates.length)
+            return { kind: 'lost', reason: 'immobile' };
+        if (board.portals.length || BlockRules_js_1.BlockRules.hasElements(blocks)) {
+            let any = false;
+            for (const a of candidates) {
+                const result = this.move(board, blocks, a.id, a.dx);
+                if (result && (!result.rejected || result.rejected === 'settle-limit')) {
+                    any = true;
+                    break;
+                }
+            }
+            if (!any)
+                return { kind: 'lost', reason: 'immobile' };
+        }
+        return { kind: 'playing' };
+    }
+    assertValid(board, blocks) {
+        const occ = new Set(), ids = new Set();
+        for (const b of blocks) {
+            const k = Grid_js_1.Grid.cell(b.x, b.y, board.width);
+            if (!Number.isInteger(b.x) || !Number.isInteger(b.y) || !Grid_js_1.Grid.inBounds(board, b.x, b.y) || board.walls.has(k) || occ.has(k) ||
+                typeof b.type !== 'string' || b.type.length !== 1 || !'ABCDFIPW'.includes(b.type) ||
+                (b.burnt !== undefined && typeof b.burnt !== 'boolean') || (!Grid_js_1.COLOR_TYPES.includes(b.type) && b.burnt) ||
+                (b.hits !== undefined && (!BlockRules_js_1.BlockRules.isIce(b) || !Number.isInteger(b.hits) || b.hits < 0 || b.hits > 1)) ||
+                (b.frozen !== undefined && (!BlockRules_js_1.BlockRules.isPlant(b) || typeof b.frozen !== 'boolean')) ||
+                (b.out !== undefined && (!BlockRules_js_1.BlockRules.isFire(b) || typeof b.out !== 'boolean')) || !Number.isInteger(b.id) || ids.has(b.id))
+                throw new Error('Invalid block state.');
+            occ.add(k);
+            ids.add(b.id);
+        }
+        return true;
+    }
+}
+exports.PuzzleEngine = PuzzleEngine;
+
+},
+"engine/PuzzleSearch.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PuzzleSearch = void 0;
+const BlockRules_js_1 = require("../domain/BlockRules.js");
+class PuzzleSearch {
+    engine;
+    board;
+    maxStates;
+    nodes;
+    seen;
+    cursor = 0;
+    answer = null;
+    incomplete = false;
+    constructor(engine, board, start, maxStates = 60000) {
+        this.engine = engine;
+        this.board = board;
+        this.maxStates = maxStates;
+        if (!Number.isInteger(maxStates) || maxStates < 1)
+            throw new RangeError('maxStates must be a positive integer.');
+        this.nodes = [{ blocks: BlockRules_js_1.BlockRules.clone(start), parent: -1, via: null }];
+        this.seen = new Set([BlockRules_js_1.BlockRules.stateKey(start)]);
+    }
+    get result() { return this.answer; }
+    get explored() { return this.seen.size; }
+    step(budget = 150) {
+        if (!Number.isInteger(budget) || budget < 1)
+            throw new RangeError('budget must be a positive integer.');
+        if (this.answer)
+            return this.answer;
+        for (let n = 0; n < budget; n++) {
+            if (this.cursor >= this.nodes.length) {
+                return this.answer = { kind: this.incomplete ? 'limit' : 'unsolvable', explored: this.explored };
+            }
+            const index = this.cursor++;
+            const current = this.nodes[index];
+            if (!BlockRules_js_1.BlockRules.activeCount(current.blocks))
+                return this.answer = this.finish(index);
+            if (this.hasUnmatchableSingleton(current.blocks))
+                continue;
+            for (const action of this.engine.candidateMoves(this.board, current.blocks)) {
+                const outcome = this.engine.move(this.board, current.blocks, action.id, action.dx);
+                if (!outcome)
+                    continue;
+                if (outcome.rejected) {
+                    if (outcome.rejected === 'settle-limit')
+                        this.incomplete = true;
+                    continue;
+                }
+                const next = outcome.blocks;
+                const key = BlockRules_js_1.BlockRules.stateKey(next);
+                if (this.seen.has(key) || this.hasUnmatchableSingleton(next))
+                    continue;
+                if (this.seen.size >= this.maxStates)
+                    return this.answer = { kind: 'limit', explored: this.explored };
+                this.seen.add(key);
+                this.nodes.push({ blocks: next, parent: index, via: action });
+                if (!BlockRules_js_1.BlockRules.activeCount(next))
+                    return this.answer = this.finish(this.nodes.length - 1);
+            }
+        }
+        return null;
+    }
+    hasUnmatchableSingleton(blocks) {
+        return Object.values(BlockRules_js_1.BlockRules.counts(blocks)).includes(1) && !blocks.some(BlockRules_js_1.BlockRules.isFire);
+    }
+    finish(index) {
+        const path = [];
+        while (this.nodes[index].parent !== -1) {
+            const node = this.nodes[index];
+            if (!node.via)
+                throw new Error('Broken search ancestry.');
+            path.push({ ...node.via });
+            index = node.parent;
+        }
+        return { kind: 'solved', path: path.reverse(), explored: this.explored };
+    }
+}
+exports.PuzzleSearch = PuzzleSearch;
+
+},
+"infrastructure/ProgressRepository.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ProgressRepository = void 0;
+function isRecord(value) {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+class ProgressRepository {
+    storage;
+    levelCount;
+    static KEY = 'sblizhenie.progress.elements.v1';
+    best = {};
+    currentLevel;
+    constructor(storage, levelCount, defaultLevel = 0) {
+        this.storage = storage;
+        this.levelCount = levelCount;
+        this.currentLevel = defaultLevel;
+        this.restore();
+    }
+    get level() { return this.currentLevel; }
+    get completed() { return { ...this.best }; }
+    select(level) {
+        if (!Number.isInteger(level) || level < 0 || level >= this.levelCount)
+            throw new RangeError('Invalid progress level.');
+        this.currentLevel = level;
+        this.save();
+    }
+    complete(level, moves) {
+        if (!Number.isInteger(level) || level < 0 || level >= this.levelCount || !Number.isInteger(moves) || moves < 0)
+            throw new RangeError('Invalid completion record.');
+        this.best[level] = Math.min(this.best[level] ?? Infinity, moves);
+        this.save();
+    }
+    restore() {
+        try {
+            const store = this.storage();
+            const own = store.getItem(ProgressRepository.KEY);
+            const portal = store.getItem('sblizhenie.progress.portals.v1');
+            const saved = JSON.parse(own || portal || store.getItem('sblizhenie.progress.fire.v1') || store.getItem('sblizhenie.progress.v1') || '{}');
+            if (!isRecord(saved))
+                return;
+            if (own && typeof saved.level === 'number' && Number.isInteger(saved.level) && saved.level >= 0 && saved.level < this.levelCount)
+                this.currentLevel = saved.level;
+            if (!isRecord(saved.completed))
+                return;
+            const max = own ? this.levelCount : portal ? 20 : 10;
+            for (const [key, value] of Object.entries(saved.completed)) {
+                const index = Number(key);
+                if (Number.isInteger(index) && index >= 0 && index < Math.min(max, this.levelCount) && typeof value === 'number' && Number.isInteger(value) && value >= 0)
+                    this.best[index] = value;
+            }
+        }
+        catch { }
+    }
+    save() {
+        try {
+            this.storage().setItem(ProgressRepository.KEY, JSON.stringify({ level: this.currentLevel, completed: this.best }));
+        }
+        catch { }
+    }
+}
+exports.ProgressRepository = ProgressRepository;
+
+},
+"levels/LevelParser.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LevelParser = void 0;
+const Grid_js_1 = require("../domain/Grid.js");
+class LevelParser {
+    parse(level) {
+        if (!level || !Array.isArray(level.rows) || level.rows.length < 3 ||
+            level.rows.some(r => typeof r !== 'string'))
+            throw new Error('A level must contain at least three string rows.');
+        const height = level.rows.length, width = level.rows[0].length;
+        if (width < 3 || level.rows.some(r => r.length !== width))
+            throw new Error('Level rows must have equal width, at least three cells.');
+        const walls = new Set(), blocks = [];
+        for (let y = 0; y < height; y++)
+            for (let x = 0; x < width; x++) {
+                const c = level.rows[y][x];
+                if (!'#.ABCDFXIJQPW'.includes(c))
+                    throw new Error('Unknown tile: ' + c);
+                if ((x === 0 || y === 0 || x === width - 1 || y === height - 1) && c !== '#')
+                    throw new Error('The outer boundary must be sealed; portals replace wall edges.');
+                if (c === '#')
+                    walls.add(Grid_js_1.Grid.cell(x, y, width));
+                else if (c === 'X')
+                    blocks.push({ id: blocks.length, type: 'A', burnt: true, x, y });
+                else if (c === 'J')
+                    blocks.push({ id: blocks.length, type: 'I', hits: 1, x, y });
+                else if (c === 'Q')
+                    blocks.push({ id: blocks.length, type: 'P', frozen: true, x, y });
+                else if ('ABCDFIPW'.includes(c))
+                    blocks.push({ id: blocks.length, type: c, x, y });
+            }
+        if (level.portals !== undefined && !Array.isArray(level.portals))
+            throw new Error('portals must be an array.');
+        const board = { width, height, walls, portals: [], portalEdges: new Map() };
+        const ids = new Set();
+        for (const pair of (level.portals || [])) {
+            if (!pair || !pair.a || !pair.b)
+                throw new Error('Every portal requires two endpoints.');
+            const id = String(pair.id ?? board.portals.length + 1);
+            if (!/^[A-Za-z0-9]{1,4}$/.test(id) || ids.has(id))
+                throw new Error('Portal IDs must be unique short alphanumeric labels.');
+            ids.add(id);
+            const ends = [pair.a, pair.b].map(p => {
+                const { x, y, side } = p;
+                if (!Number.isInteger(x) || !Number.isInteger(y) || !Object.hasOwn(Grid_js_1.DIRECTIONS, side) ||
+                    !Grid_js_1.Grid.inBounds(board, x, y) || walls.has(Grid_js_1.Grid.cell(x, y, width)))
+                    throw new Error('Portal endpoint must border an open interior cell.');
+                const [dx, dy] = Grid_js_1.DIRECTIONS[side];
+                if (!Grid_js_1.Grid.inBounds(board, x + dx, y + dy) || !walls.has(Grid_js_1.Grid.cell(x + dx, y + dy, width)))
+                    throw new Error('A portal must be a doorway in a wall, not a floor tile.');
+                return { x, y, side };
+            });
+            if (Grid_js_1.OPPOSITE[ends[0].side] !== ends[1].side)
+                throw new Error('Portal faces must be opposite: bottom/top or left/right.');
+            const saved = { id, a: ends[0], b: ends[1] };
+            board.portals.push(saved);
+            for (let i = 0; i < 2; i++) {
+                const entry = ends[i], exit = ends[1 - i], [dx, dy] = Grid_js_1.DIRECTIONS[entry.side];
+                const key = Grid_js_1.Grid.edgeKey(entry.x, entry.y, dx, dy);
+                if (board.portalEdges.has(key))
+                    throw new Error('Two portals cannot occupy the same edge.');
+                board.portalEdges.set(key, { pair: id, entry, exit });
+            }
+        }
+        return { board, blocks };
+    }
+}
+exports.LevelParser = LevelParser;
+
+},
+"levels/LevelRepository.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LevelRepository = void 0;
+const levels_js_1 = require("./levels.js");
+class LevelRepository {
+    all;
+    constructor(levels = levels_js_1.LEVELS) {
+        if (!levels.length)
+            throw new Error('A campaign must contain at least one level.');
+        this.all = Object.freeze(levels.map((level, index) => {
+            if (!level.title || !level.note || !level.tag)
+                throw new Error(`Level ${index + 1} has incomplete metadata.`);
+            const portals = level.portals?.map(pair => Object.freeze({ ...pair, a: Object.freeze({ ...pair.a }), b: Object.freeze({ ...pair.b }) }));
+            return Object.freeze({
+                ...level, title: level.title, note: level.note, tag: level.tag,
+                rows: Object.freeze([...level.rows]),
+                ...(portals ? { portals: Object.freeze(portals) } : {}),
+                ...(level.solution ? { solution: Object.freeze(level.solution.map(step => Object.freeze({ ...step }))) } : {}),
+            });
+        }));
+    }
+    get count() { return this.all.length; }
+    get defaultIndex() { return Math.max(0, this.all.findIndex(level => level.chapter === 'elements')); }
+    has(index) { return Number.isInteger(index) && index >= 0 && index < this.count; }
+    get(index) {
+        if (!this.has(index))
+            throw new RangeError(`Unknown level: ${index}.`);
+        return this.all[index];
+    }
+}
+exports.LevelRepository = LevelRepository;
+
+},
+"levels/levels.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LEVELS = void 0;
+exports.LEVELS = [
+    {
+        "title": "Первый контакт",
+        "note": "Выберите круг и подвиньте его к такому же. Достаточно соприкосновения сторон.",
+        "tag": "Знакомство",
+        "rows": [
+            "########",
+            "#......#",
+            "#......#",
+            "#......#",
+            "#......#",
+            "#A...A.#",
+            "########"
+        ],
+        "par": 3,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 1,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 3,
+                "y": 5,
+                "type": "A"
+            }
+        ]
+    },
+    {
+        "title": "Два языка",
+        "note": "Цвет и знак обозначают тип блока. Соединяйте круги с кругами, ромбы с ромбами.",
+        "tag": "Два типа",
+        "rows": [
+            "#########",
+            "#.......#",
+            "#.......#",
+            "#.......#",
+            "#.......#",
+            "#A..AB.B#",
+            "#########"
+        ],
+        "par": 3,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 1,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 2,
+                "dx": 1,
+                "x": 5,
+                "y": 5,
+                "type": "B"
+            }
+        ]
+    },
+    {
+        "title": "Сила тяжести",
+        "note": "У блока нет кнопки «вниз». Выведите его за край платформы — остальное сделает гравитация.",
+        "tag": "Гравитация",
+        "rows": [
+            "#########",
+            "#.......#",
+            "#.......#",
+            "#.A.....#",
+            "####....#",
+            "#.......#",
+            "#.....A.#",
+            "#########"
+        ],
+        "par": 3,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 3,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 3,
+                "y": 3,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 4,
+                "y": 6,
+                "type": "A"
+            }
+        ]
+    },
+    {
+        "title": "Разные этажи",
+        "note": "Платформы меняют маршруты. Прежде чем сбрасывать блок, посмотрите, где он остановится.",
+        "tag": "Платформы",
+        "rows": [
+            "##########",
+            "#........#",
+            "#.A......#",
+            "####.....#",
+            "#......B.#",
+            "#.....####",
+            "#.B....A.#",
+            "##########"
+        ],
+        "par": 8,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 2,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 3,
+                "y": 2,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 4,
+                "y": 6,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 5,
+                "y": 6,
+                "type": "A"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 7,
+                "y": 4,
+                "type": "B"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 6,
+                "y": 4,
+                "type": "B"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 5,
+                "y": 6,
+                "type": "B"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 4,
+                "y": 6,
+                "type": "B"
+            }
+        ]
+    },
+    {
+        "title": "Третий не лишний",
+        "note": "Здесь три круга. Соедините все три за один раз: удаление только пары оставит одиночный блок.",
+        "tag": "Группа из трёх",
+        "rows": [
+            "#######",
+            "#.....#",
+            "#A....#",
+            "###...#",
+            "#.....#",
+            "#.A.A.#",
+            "#######"
+        ],
+        "par": 2,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 1,
+                "y": 2,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 2,
+                "type": "A"
+            }
+        ]
+    },
+    {
+        "title": "Убрать опору",
+        "note": "Блок тоже может быть опорой. Уберите нижнюю пару, чтобы запустить цепную реакцию.",
+        "tag": "Цепная реакция",
+        "rows": [
+            "#########",
+            "#.......#",
+            "#.......#",
+            "#.......#",
+            "#.......#",
+            "#...A...#",
+            "#..AB..B#",
+            "#########"
+        ],
+        "par": 2,
+        "solution": [
+            {
+                "id": 2,
+                "dx": 1,
+                "x": 4,
+                "y": 6,
+                "type": "B"
+            },
+            {
+                "id": 2,
+                "dx": 1,
+                "x": 5,
+                "y": 6,
+                "type": "B"
+            }
+        ]
+    },
+    {
+        "title": "Узкий проход",
+        "tag": "Планирование",
+        "note": "В узком пространстве блоки мешают друг другу. Освобождайте путь в правильном порядке.",
+        "rows": [
+            "#########",
+            "#.......#",
+            "#.C.....#",
+            "###....C#",
+            "#.....###",
+            "#..AB...#",
+            "#..##...#",
+            "#..B..A.#",
+            "#########"
+        ],
+        "par": 8,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 2,
+                "type": "C"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 7,
+                "y": 3,
+                "type": "C"
+            },
+            {
+                "id": 3,
+                "dx": 1,
+                "x": 4,
+                "y": 5,
+                "type": "B"
+            },
+            {
+                "id": 2,
+                "dx": 1,
+                "x": 3,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 2,
+                "dx": 1,
+                "x": 4,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 3,
+                "y": 5,
+                "type": "C"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 6,
+                "y": 3,
+                "type": "C"
+            },
+            {
+                "id": 3,
+                "dx": -1,
+                "x": 5,
+                "y": 7,
+                "type": "B"
+            }
+        ]
+    },
+    {
+        "title": "Порядок важен",
+        "tag": "Последовательность",
+        "note": "Не всякое совпадение приближает к решению. Следите, какие блоки останутся после падения.",
+        "rows": [
+            "#########",
+            "#.......#",
+            "#.....A.#",
+            "#..##.B.#",
+            "#.....AB#",
+            "###...###",
+            "#.......#",
+            "#..A.B..#",
+            "#########"
+        ],
+        "par": 10,
+        "solution": [
+            {
+                "id": 0,
+                "dx": -1,
+                "x": 6,
+                "y": 2,
+                "type": "A"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 6,
+                "y": 3,
+                "type": "B"
+            },
+            {
+                "id": 2,
+                "dx": -1,
+                "x": 6,
+                "y": 4,
+                "type": "A"
+            },
+            {
+                "id": 3,
+                "dx": -1,
+                "x": 7,
+                "y": 4,
+                "type": "B"
+            },
+            {
+                "id": 5,
+                "dx": 1,
+                "x": 5,
+                "y": 7,
+                "type": "B"
+            },
+            {
+                "id": 5,
+                "dx": 1,
+                "x": 6,
+                "y": 7,
+                "type": "B"
+            },
+            {
+                "id": 2,
+                "dx": -1,
+                "x": 5,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 5,
+                "y": 7,
+                "type": "B"
+            },
+            {
+                "id": 5,
+                "dx": -1,
+                "x": 7,
+                "y": 7,
+                "type": "B"
+            },
+            {
+                "id": 3,
+                "dx": -1,
+                "x": 6,
+                "y": 4,
+                "type": "B"
+            }
+        ]
+    },
+    {
+        "title": "Четыре знака",
+        "tag": "Четыре типа",
+        "note": "Круг, ромб, треугольник и крест. У каждого свой маршрут — начните с освобождения пространства.",
+        "rows": [
+            "##########",
+            "#........#",
+            "#........#",
+            "####.....#",
+            "#.....ADA#",
+            "#.....####",
+            "#...B....#",
+            "#..##....#",
+            "#CB.CD...#",
+            "##########"
+        ],
+        "par": 11,
+        "solution": [
+            {
+                "id": 0,
+                "dx": -1,
+                "x": 6,
+                "y": 4,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 5,
+                "y": 7,
+                "type": "A"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 7,
+                "y": 4,
+                "type": "D"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 6,
+                "y": 4,
+                "type": "D"
+            },
+            {
+                "id": 2,
+                "dx": -1,
+                "x": 8,
+                "y": 4,
+                "type": "A"
+            },
+            {
+                "id": 2,
+                "dx": -1,
+                "x": 7,
+                "y": 4,
+                "type": "A"
+            },
+            {
+                "id": 2,
+                "dx": -1,
+                "x": 6,
+                "y": 4,
+                "type": "A"
+            },
+            {
+                "id": 3,
+                "dx": -1,
+                "x": 4,
+                "y": 6,
+                "type": "B"
+            },
+            {
+                "id": 3,
+                "dx": -1,
+                "x": 3,
+                "y": 6,
+                "type": "B"
+            },
+            {
+                "id": 4,
+                "dx": 1,
+                "x": 1,
+                "y": 8,
+                "type": "C"
+            },
+            {
+                "id": 4,
+                "dx": 1,
+                "x": 2,
+                "y": 8,
+                "type": "C"
+            }
+        ]
+    },
+    {
+        "title": "Равновесие",
+        "tag": "Финальный этюд",
+        "note": "Смотрите на поле целиком. Отмена хода всегда доступна — здесь важна идея, а не скорость.",
+        "rows": [
+            "##########",
+            "#........#",
+            "#........#",
+            "#..##....#",
+            "#B.....###",
+            "###..BA..#",
+            "#....##..#",
+            "#...B....#",
+            "#A..AC..C#",
+            "##########"
+        ],
+        "par": 10,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 1,
+                "y": 4,
+                "type": "B"
+            },
+            {
+                "id": 4,
+                "dx": 1,
+                "x": 1,
+                "y": 8,
+                "type": "A"
+            },
+            {
+                "id": 6,
+                "dx": 1,
+                "x": 5,
+                "y": 8,
+                "type": "C"
+            },
+            {
+                "id": 5,
+                "dx": 1,
+                "x": 4,
+                "y": 8,
+                "type": "A"
+            },
+            {
+                "id": 4,
+                "dx": 1,
+                "x": 2,
+                "y": 8,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 4,
+                "type": "B"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 5,
+                "y": 5,
+                "type": "B"
+            },
+            {
+                "id": 2,
+                "dx": -1,
+                "x": 6,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 2,
+                "dx": -1,
+                "x": 5,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 6,
+                "dx": 1,
+                "x": 6,
+                "y": 8,
+                "type": "C"
+            }
+        ]
+    },
+    {
+        "title": "Первый ожог",
+        "chapter": "fire",
+        "tag": "Огонь · прямой контакт",
+        "note": "Сдвиньте ромб вправо: он упадёт на огонь и станет горелым, но останется на поле. Затем соедините круги справа. Сам огонь теперь тоже можно двигать.",
+        "rows": [
+            "#########",
+            "#.......#",
+            "#..B....#",
+            "####....#",
+            "#.......#",
+            "#...F...#",
+            "#...#A.A#",
+            "#########"
+        ],
+        "par": 2,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 3,
+                "y": 2,
+                "type": "B"
+            },
+            {
+                "id": 2,
+                "dx": 1,
+                "x": 5,
+                "y": 6,
+                "type": "A"
+            }
+        ]
+    },
+    {
+        "title": "Сдвинуть уголь",
+        "chapter": "fire",
+        "tag": "Огонь · подвижная преграда",
+        "note": "Доставьте оба блока в центральный колодец. Уголь закроет огонь: сдвиньте его в сторону. Можно двигать и сам огонь — он тоже падает без опоры.",
+        "rows": [
+            "#########",
+            "#.......#",
+            "#.B...C.#",
+            "####.####",
+            "#.......#",
+            "#.......#",
+            "#...F...#",
+            "#########"
+        ],
+        "par": 5,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 2,
+                "type": "B"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 3,
+                "y": 2,
+                "type": "B"
+            },
+            {
+                "id": 0,
+                "dx": -1,
+                "x": 4,
+                "y": 5,
+                "type": "B",
+                "burnt": true
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 6,
+                "y": 2,
+                "type": "C"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 5,
+                "y": 2,
+                "type": "C"
+            }
+        ]
+    },
+    {
+        "title": "Угольный мост",
+        "chapter": "fire",
+        "tag": "Огонь · защитная опора",
+        "note": "Горелый блок остаётся опорой и не передаёт огонь. Используйте его, чтобы сохранить цветные блоки для совпадения.",
+        "rows": [
+            "#########",
+            "#.......#",
+            "#.A.....#",
+            "###B....#",
+            "#..#.A..#",
+            "#....#..#",
+            "#...F...#",
+            "#########"
+        ],
+        "par": 3,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 2,
+                "type": "A"
+            },
+            {
+                "id": 1,
+                "dx": 1,
+                "x": 3,
+                "y": 3,
+                "type": "B"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 3,
+                "y": 3,
+                "type": "A"
+            }
+        ]
+    },
+    {
+        "title": "Цена следа",
+        "chapter": "fire",
+        "tag": "Огонь · порядок действий",
+        "note": "Освобождайте огонь от угля и следите, куда падают горелые блоки. Пара кругов внизу должна сохранить возможность встретиться.",
+        "rows": [
+            "#########",
+            "#.......#",
+            "#.B...C.#",
+            "####.####",
+            "#.......#",
+            "#...F...#",
+            "#A.A#...#",
+            "#########"
+        ],
+        "par": 6,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 2,
+                "type": "B"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 3,
+                "y": 2,
+                "type": "B"
+            },
+            {
+                "id": 0,
+                "dx": -1,
+                "x": 4,
+                "y": 4,
+                "type": "B",
+                "burnt": true
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 6,
+                "y": 2,
+                "type": "C"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 5,
+                "y": 2,
+                "type": "C"
+            },
+            {
+                "id": 3,
+                "dx": 1,
+                "x": 1,
+                "y": 6,
+                "type": "A"
+            }
+        ]
+    },
+    {
+        "title": "Огонь в движении",
+        "chapter": "portals",
+        "tag": "Подвижный огонь",
+        "note": "Сначала выберите огонь и сдвиньте его на две клетки влево. Затем направьте ромб вправо с платформы: он упадёт на горячую верхнюю грань.",
+        "rows": [
+            "#########",
+            "#.......#",
+            "#..B....#",
+            "####....#",
+            "#.......#",
+            "#.....F.#",
+            "#########"
+        ],
+        "par": 3,
+        "solution": [
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 6,
+                "y": 5,
+                "type": "F"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 5,
+                "y": 5,
+                "type": "F"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 3,
+                "y": 2,
+                "type": "B"
+            }
+        ]
+    },
+    {
+        "title": "Две камеры",
+        "chapter": "portals",
+        "tag": "По вашему примеру · вертикальная дверь",
+        "note": "Две камеры, как на вашем примере. Нижний проём справа ведёт к верхнему: блок падает в дверь, выходит сверху и продолжает падать. Начните с круга в верхней камере.",
+        "rows": [
+            "#####",
+            "#CA.#",
+            "#DB.#",
+            "#####",
+            "#AC.#",
+            "#BD.#",
+            "#####"
+        ],
+        "portals": [
+            {
+                "id": "1",
+                "a": {
+                    "x": 3,
+                    "y": 5,
+                    "side": "bottom"
+                },
+                "b": {
+                    "x": 3,
+                    "y": 1,
+                    "side": "top"
+                }
+            }
+        ],
+        "par": 9,
+        "solution": [
+            {
+                "id": 1,
+                "dx": 1,
+                "x": 2,
+                "y": 1,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 1,
+                "y": 1,
+                "type": "C"
+            },
+            {
+                "id": 5,
+                "dx": 1,
+                "x": 2,
+                "y": 4,
+                "type": "C"
+            },
+            {
+                "id": 4,
+                "dx": 1,
+                "x": 1,
+                "y": 4,
+                "type": "A"
+            },
+            {
+                "id": 7,
+                "dx": 1,
+                "x": 2,
+                "y": 5,
+                "type": "D"
+            },
+            {
+                "id": 4,
+                "dx": 1,
+                "x": 2,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 6,
+                "dx": 1,
+                "x": 1,
+                "y": 5,
+                "type": "B"
+            },
+            {
+                "id": 7,
+                "dx": -1,
+                "x": 3,
+                "y": 1,
+                "type": "D"
+            },
+            {
+                "id": 6,
+                "dx": 1,
+                "x": 2,
+                "y": 5,
+                "type": "B"
+            }
+        ]
+    },
+    {
+        "title": "За другой стеной",
+        "chapter": "portals",
+        "tag": "Боковая дверь",
+        "note": "Выберите круг у левой стены и нажмите ←. Он пройдёт в дверь и выйдет из правой стены другой камеры. Касание двери без движения сквозь неё ничего не делает.",
+        "rows": [
+            "###########",
+            "#....#....#",
+            "#....#....#",
+            "#A...#.A..#",
+            "###########"
+        ],
+        "portals": [
+            {
+                "id": "1",
+                "a": {
+                    "x": 1,
+                    "y": 3,
+                    "side": "left"
+                },
+                "b": {
+                    "x": 9,
+                    "y": 3,
+                    "side": "right"
+                }
+            }
+        ],
+        "par": 2,
+        "solution": [
+            {
+                "id": 0,
+                "dx": -1,
+                "x": 1,
+                "y": 3,
+                "type": "A"
+            },
+            {
+                "id": 0,
+                "dx": -1,
+                "x": 9,
+                "y": 3,
+                "type": "A"
+            }
+        ]
+    },
+    {
+        "title": "Сначала освободить",
+        "chapter": "portals",
+        "tag": "Занятый выход",
+        "note": "Уголь перекрывает верхний выход. Сдвиньте его влево: нижний круг сразу провалится в открытую дверь. Телепорт никогда не выталкивает и не заменяет чужой блок.",
+        "rows": [
+            "#####",
+            "#..X#",
+            "#A.##",
+            "#####",
+            "#...#",
+            "#..A#",
+            "#####"
+        ],
+        "portals": [
+            {
+                "id": "1",
+                "a": {
+                    "x": 3,
+                    "y": 5,
+                    "side": "bottom"
+                },
+                "b": {
+                    "x": 3,
+                    "y": 1,
+                    "side": "top"
+                }
+            }
+        ],
+        "par": 3,
+        "solution": [
+            {
+                "id": 0,
+                "dx": -1,
+                "x": 3,
+                "y": 1,
+                "type": "A",
+                "burnt": true
+            },
+            {
+                "id": 2,
+                "dx": -1,
+                "x": 3,
+                "y": 1,
+                "type": "A"
+            },
+            {
+                "id": 2,
+                "dx": -1,
+                "x": 2,
+                "y": 1,
+                "type": "A"
+            }
+        ]
+    },
+    {
+        "title": "Доставка огня",
+        "chapter": "portals",
+        "tag": "Огонь + телепорт",
+        "note": "Телепорт переносит и огонь. Сдвиньте его вправо в нижний проём — он окажется в верхней камере. Только после этого сбросьте ромб с платформы.",
+        "rows": [
+            "#######",
+            "#.B...#",
+            "###...#",
+            "#.....#",
+            "#######",
+            "#.....#",
+            "#...F.#",
+            "#######"
+        ],
+        "portals": [
+            {
+                "id": "1",
+                "a": {
+                    "x": 5,
+                    "y": 6,
+                    "side": "bottom"
+                },
+                "b": {
+                    "x": 3,
+                    "y": 1,
+                    "side": "top"
+                }
+            }
+        ],
+        "par": 2,
+        "solution": [
+            {
+                "id": 1,
+                "dx": 1,
+                "x": 4,
+                "y": 6,
+                "type": "F"
+            },
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 2,
+                "y": 1,
+                "type": "B"
+            }
+        ]
+    },
+    {
+        "title": "Два маршрута",
+        "chapter": "portals",
+        "tag": "Две пары дверей",
+        "note": "Одинаковые номера соединяют двери. Проведите нижний круг через проём 1, затем через боковую дверь 2. Ромбы можно соединить в нижней камере.",
+        "rows": [
+            "#########",
+            "#...#...#",
+            "#A..#...#",
+            "#########",
+            "#.......#",
+            "#A..B.B.#",
+            "#########"
+        ],
+        "portals": [
+            {
+                "id": "1",
+                "a": {
+                    "x": 3,
+                    "y": 5,
+                    "side": "bottom"
+                },
+                "b": {
+                    "x": 5,
+                    "y": 1,
+                    "side": "top"
+                }
+            },
+            {
+                "id": "2",
+                "a": {
+                    "x": 5,
+                    "y": 2,
+                    "side": "left"
+                },
+                "b": {
+                    "x": 3,
+                    "y": 2,
+                    "side": "right"
+                }
+            }
+        ],
+        "par": 5,
+        "solution": [
+            {
+                "id": 0,
+                "dx": 1,
+                "x": 1,
+                "y": 2,
+                "type": "A"
+            },
+            {
+                "id": 1,
+                "dx": 1,
+                "x": 1,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 1,
+                "dx": 1,
+                "x": 2,
+                "y": 5,
+                "type": "A"
+            },
+            {
+                "id": 1,
+                "dx": -1,
+                "x": 5,
+                "y": 2,
+                "type": "A"
+            },
+            {
+                "id": 2,
+                "dx": 1,
+                "x": 4,
+                "y": 5,
+                "type": "B"
+            }
+        ]
+    },
+    {
+        "title": "Два касания",
+        "tag": "Лёд · 1/2 → 2/2",
+        "note": "Сдвиньте верхний круг вправо на лёд, затем влево и снова вправо. Первое касание оставляет трещину, второе разрушает опору. Простое ожидание лёд не ломает.",
+        "rows": [
+            "#######",
+            "#.....#",
+            "#.....#",
+            "#.....#",
+            "#.A.#.#",
+            "###IA.#",
+            "#######"
+        ],
+        "chapter": "elements",
+        "par": 3,
+        "solution": [
+            {
+                "id": 0,
+                "type": "A",
+                "x": 2,
+                "y": 4,
+                "dx": 1
+            },
+            {
+                "id": 0,
+                "type": "A",
+                "x": 3,
+                "y": 4,
+                "dx": -1
+            },
+            {
+                "id": 0,
+                "type": "A",
+                "x": 2,
+                "y": 4,
+                "dx": 1
+            }
+        ]
+    },
+    {
+        "title": "Тонкая преграда",
+        "tag": "Огонь + лёд",
+        "note": "Лёд перекрывает путь кругу. Сдвиньте его вправо на огонь: лёд растает, а не станет углём. Затем проведите круг по освободившемуся пути.",
+        "rows": [
+            "#######",
+            "#.....#",
+            "#.....#",
+            "#.....#",
+            "#AI...#",
+            "###F..#",
+            "#######"
+        ],
+        "chapter": "elements",
+        "par": 3,
+        "solution": [
+            {
+                "id": 1,
+                "type": "I",
+                "x": 2,
+                "y": 4,
+                "dx": 1
+            },
+            {
+                "id": 0,
+                "type": "A",
+                "x": 1,
+                "y": 4,
+                "dx": 1
+            },
+            {
+                "id": 0,
+                "type": "A",
+                "x": 2,
+                "y": 4,
+                "dx": 1
+            }
+        ]
+    },
+    {
+        "title": "Живая опора",
+        "tag": "Растения · хватка",
+        "note": "Растение удерживает соседний круг над пустотой. Сдвиньте растение вправо, чтобы разорвать контакт: круг упадёт к своей паре. Хватка мешает падению, но не горизонтальному движению.",
+        "rows": [
+            "#######",
+            "#.....#",
+            "#.....#",
+            "#.#AP.#",
+            "#...#.#",
+            "#..A..#",
+            "#######"
+        ],
+        "chapter": "elements",
+        "par": 1,
+        "solution": [
+            {
+                "id": 1,
+                "type": "P",
+                "x": 4,
+                "y": 3,
+                "dx": 1
+            }
+        ]
+    },
+    {
+        "title": "Холодные объятия",
+        "tag": "Лёд + растения",
+        "note": "Сдвиньте лёд влево, к верхней грани растения. Замёрзшее растение отпустит круг и больше не сможет удерживать соседей. Лёд действует с любой стороны.",
+        "rows": [
+            "#######",
+            "#.....#",
+            "#....I#",
+            "#.#AP##",
+            "#...#.#",
+            "#..A..#",
+            "#######"
+        ],
+        "chapter": "elements",
+        "par": 1,
+        "solution": [
+            {
+                "id": 0,
+                "type": "I",
+                "x": 5,
+                "y": 2,
+                "dx": -1
+            }
+        ]
+    },
+    {
+        "title": "Живой факел",
+        "tag": "Растения + огонь",
+        "note": "Растение перегородило дорогу. Сдвиньте его вправо над огнём: оно станет новым огненным блоком. Теперь круг можно провести к его верхней грани.",
+        "rows": [
+            "#######",
+            "#.....#",
+            "#.AP..#",
+            "####..#",
+            "#...F.#",
+            "#######"
+        ],
+        "chapter": "elements",
+        "par": 3,
+        "solution": [
+            {
+                "id": 1,
+                "type": "P",
+                "x": 3,
+                "y": 2,
+                "dx": 1
+            },
+            {
+                "id": 0,
+                "type": "A",
+                "x": 2,
+                "y": 2,
+                "dx": 1
+            },
+            {
+                "id": 0,
+                "type": "A",
+                "x": 3,
+                "y": 2,
+                "dx": 1
+            }
+        ]
+    },
+    {
+        "title": "Вверх без лестницы",
+        "tag": "Ветер · подъём",
+        "note": "Сдвиньте нижний круг вправо в воздушный поток. Ветер поднимет его к верхней паре. На свободном месте вне потока снова действует обычная гравитация.",
+        "rows": [
+            "#######",
+            "#...A.#",
+            "#...#.#",
+            "#.....#",
+            "#.A...#",
+            "###W..#",
+            "#######"
+        ],
+        "chapter": "elements",
+        "par": 1,
+        "solution": [
+            {
+                "id": 1,
+                "type": "A",
+                "x": 2,
+                "y": 4,
+                "dx": 1
+            }
+        ]
+    },
+    {
+        "title": "Сильнее корней",
+        "tag": "Ветер + растения",
+        "note": "Подведите ветер вправо под зависший круг. Поток разорвёт хватку растения и поднимет круг к паре наверху. Само растение останется на своей платформе.",
+        "rows": [
+            "#######",
+            "#...A.#",
+            "#...#.#",
+            "#..AP.#",
+            "#...#.#",
+            "#.W...#",
+            "#######"
+        ],
+        "chapter": "elements",
+        "par": 1,
+        "solution": [
+            {
+                "id": 0,
+                "type": "A",
+                "x": 4,
+                "y": 1,
+                "dx": -1
+            }
+        ]
+    },
+    {
+        "title": "Невесомый",
+        "tag": "Ветер + лёд",
+        "note": "Сдвиньте ветер вправо на лёд: трещина не появится. Затем сдвиньте нижний круг вправо в подготовленный поток, чтобы соединить его с верхним.",
+        "rows": [
+            "########",
+            "#...A..#",
+            "#.A.#..#",
+            "###....#",
+            "#.W....#",
+            "###I...#",
+            "########"
+        ],
+        "chapter": "elements",
+        "par": 2,
+        "solution": [
+            {
+                "id": 0,
+                "type": "A",
+                "x": 4,
+                "y": 1,
+                "dx": -1
+            },
+            {
+                "id": 1,
+                "type": "A",
+                "x": 2,
+                "y": 2,
+                "dx": 1
+            }
+        ]
+    },
+    {
+        "title": "Временное затишье",
+        "tag": "Ветер + огонь",
+        "note": "Поток держит огонь погашенным, поэтому круг над ним пока цел. Уберите ветер в сторону: пламя восстановится, а круг обуглится. Погашенный огонь остаётся твёрдым блоком.",
+        "rows": [
+            "#######",
+            "#..A..#",
+            "#..F..#",
+            "#.....#",
+            "#.....#",
+            "#..W..#",
+            "#######"
+        ],
+        "chapter": "elements",
+        "par": 1,
+        "solution": [
+            {
+                "id": 2,
+                "type": "W",
+                "x": 3,
+                "y": 5,
+                "dx": -1
+            }
+        ]
+    },
+    {
+        "title": "Воздушная дверь",
+        "tag": "Ветер + двери + растения",
+        "note": "Сдвиньте верхний круг вправо. Ветер протолкнёт его через верхнюю дверь к нижнему выходу. Растение в другой камере удержит прибывший блок, чтобы он не упал обратно в проём.",
+        "rows": [
+            "#######",
+            "#.A...#",
+            "###...#",
+            "#..W..#",
+            "#######",
+            "#.....#",
+            "#.....#",
+            "#.A.P.#",
+            "#######"
+        ],
+        "portals": [
+            {
+                "id": "1",
+                "a": {
+                    "x": 3,
+                    "y": 1,
+                    "side": "top"
+                },
+                "b": {
+                    "x": 3,
+                    "y": 7,
+                    "side": "bottom"
+                }
+            }
+        ],
+        "chapter": "elements",
+        "par": 1,
+        "solution": [
+            {
+                "id": 0,
+                "type": "A",
+                "x": 2,
+                "y": 1,
+                "dx": 1
+            }
+        ]
+    }
+];
+
+},
+"main.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const GameController_js_1 = require("./application/GameController.js");
+const PuzzleEngine_js_1 = require("./engine/PuzzleEngine.js");
+const ProgressRepository_js_1 = require("./infrastructure/ProgressRepository.js");
+const LevelRepository_js_1 = require("./levels/LevelRepository.js");
+const DomElements_js_1 = require("./presentation/DomElements.js");
+try {
+    const elements = new DomElements_js_1.DomElements(document);
+    const levels = new LevelRepository_js_1.LevelRepository();
+    const progress = new ProgressRepository_js_1.ProgressRepository(() => window.localStorage, levels.count, levels.defaultIndex);
+    const app = new GameController_js_1.GameController(elements, new PuzzleEngine_js_1.PuzzleEngine(), levels, progress);
+    app.start();
+    window.Sblizhenie = Object.freeze({
+        loadLevel: (index) => app.loadLevel(index),
+        selectBlock: (id) => app.selectBlock(id),
+        move: (direction) => app.requestMove(direction),
+        undo: () => app.undo(),
+        hint: () => app.requestHint(),
+        snapshot: () => app.snapshot(),
+        destroy: () => { app.destroy(); delete window.Sblizhenie; },
+    });
+}
+catch (error) {
+    const status = document.getElementById('statusMessage');
+    if (status) {
+        status.textContent = '\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c \u0438\u0433\u0440\u0443. \u041f\u0440\u043e\u0432\u0435\u0440\u044c\u0442\u0435 \u043a\u043e\u043d\u0441\u043e\u043b\u044c \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430.';
+        status.classList.add('lost');
+    }
+    console.error(error);
+}
+
+},
+"presentation/AnimationPlayer.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AnimationPlayer = void 0;
+const browserClock = {
+    now: () => performance.now(),
+    request: callback => requestAnimationFrame(callback),
+    cancel: handle => cancelAnimationFrame(handle),
+};
+class AnimationPlayer {
+    onFrame;
+    clock;
+    handle = null;
+    pending = null;
+    generation = 0;
+    constructor(onFrame, clock = browserClock) {
+        this.onFrame = onFrame;
+        this.clock = clock;
+    }
+    play(frame) {
+        this.cancel();
+        const token = this.generation;
+        const duration = this.duration(frame);
+        const start = this.clock.now();
+        return new Promise((resolve, reject) => {
+            this.pending = resolve;
+            const tick = (now) => {
+                this.handle = null;
+                if (token !== this.generation)
+                    return;
+                const progress = Math.min(1, Math.max(0, (now - start) / duration));
+                try {
+                    this.onFrame(frame, progress);
+                }
+                catch (error) {
+                    this.pending = null;
+                    reject(error);
+                    return;
+                }
+                if (progress < 1)
+                    this.handle = this.clock.request(tick);
+                else {
+                    this.pending = null;
+                    resolve(true);
+                }
+            };
+            tick(start);
+        });
+    }
+    cancel() {
+        this.generation++;
+        if (this.handle !== null)
+            this.clock.cancel(this.handle);
+        this.handle = null;
+        const pending = this.pending;
+        this.pending = null;
+        pending?.(false);
+    }
+    duration(frame) {
+        if (frame.kind === 'fall' || frame.kind === 'lift') {
+            const before = new Map(frame.before.map(block => [block.id, block]));
+            const distance = Math.max(0, ...frame.after.map(block => Math.abs(block.y - (before.get(block.id)?.y ?? block.y))));
+            return Math.min(430, 130 + distance * 55);
+        }
+        if (['heat', 'ice', 'freeze', 'breeze'].includes(frame.kind))
+            return 290;
+        return frame.kind === 'teleport' ? 370 : frame.kind === 'slide' ? 130 : frame.kind === 'match' ? 235 : frame.kind === 'burn' ? 360 : 180;
+    }
+}
+exports.AnimationPlayer = AnimationPlayer;
+
+},
+"presentation/BlockAppearance.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BlockAppearance = void 0;
+const BlockRules_js_1 = require("../domain/BlockRules.js");
+class BlockAppearance {
+    static colors = {
+        A: { color: '#eea58e', name: 'Круг', plural: 'круги', description: 'коралловый круг' },
+        B: { color: '#a9d2c7', name: 'Ромб', plural: 'ромбы', description: 'мятный ромб' },
+        C: { color: '#b9b3dc', name: 'Треугольник', plural: 'треугольники', description: 'сиреневый треугольник' },
+        D: { color: '#e3c786', name: 'Крест', plural: 'кресты', description: 'песочный крест' }
+    };
+    static BURNT = { color: '#686a70', name: 'Горелый блок', description: 'горелый блок, не участвует в совпадениях' };
+    static FIRE = { color: '#efb47f', name: 'Огонь', description: 'подвижный огненный блок, обжигает только сверху' };
+    static ICE = { color: '#9bd9ec', name: 'Лёд · целый', description: 'лёд, выдержит два новых попадания сверху' };
+    static CRACKED = { color: '#85c5df', name: 'Лёд · 1/2', description: 'треснувший лёд, ещё одно попадание разрушит его' };
+    static PLANT = { color: '#a9c889', name: 'Растение', description: 'растение, удерживает соседние блоки от падения' };
+    static FROZEN = { color: '#adcfdc', name: 'Замёрзшее растение', description: 'замёрзшее растение, не держит соседей и само не удерживается' };
+    static WIND = { color: '#c7dfdd', name: 'Ветер', description: 'ветер, поднимает блоки над собой и гасит открытое пламя в потоке' };
+    static DAMPED = { color: '#9eaaa9', name: 'Огонь · погашен', description: 'временно погашенный огонь, загорится снова без потока' };
+    static for(b) {
+        return BlockRules_js_1.BlockRules.isFire(b) ? b.out ? BlockAppearance.DAMPED : BlockAppearance.FIRE : BlockRules_js_1.BlockRules.isIce(b) ? b.hits ? BlockAppearance.CRACKED : BlockAppearance.ICE :
+            BlockRules_js_1.BlockRules.isPlant(b) ? b.frozen ? BlockAppearance.FROZEN : BlockAppearance.PLANT : BlockRules_js_1.BlockRules.isWind(b) ? BlockAppearance.WIND : b.burnt ? BlockAppearance.BURNT : BlockAppearance.colors[b.type];
+    }
+}
+exports.BlockAppearance = BlockAppearance;
+
+},
+"presentation/CanvasRenderer.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CanvasRenderer = void 0;
+const BlockAppearance_js_1 = require("./BlockAppearance.js");
+class CanvasRenderer {
+    canvas;
+    ctx;
+    session;
+    ui;
+    engine;
+    static TILE = 64;
+    constructor(canvas, ctx, session, ui, engine) {
+        this.canvas = canvas;
+        this.ctx = ctx;
+        this.session = session;
+        this.ui = ui;
+        this.engine = engine;
+    }
+    roundRect(x, y, w, h, r) {
+        const radius = Math.min(r, w / 2, h / 2);
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + radius, y);
+        this.ctx.arcTo(x + w, y, x + w, y + h, radius);
+        this.ctx.arcTo(x + w, y + h, x, y + h, radius);
+        this.ctx.arcTo(x, y + h, x, y, radius);
+        this.ctx.arcTo(x, y, x + w, y, radius);
+        this.ctx.closePath();
+    }
+    shade(hex, amount) {
+        const value = parseInt(hex.slice(1), 16);
+        return `rgb(${Math.max(0, (value >> 16) + amount)},${Math.max(0, ((value >> 8) & 255) + amount)},${Math.max(0, (value & 255) + amount)})`;
+    }
+    drawWall(x, y) {
+        const px = x * CanvasRenderer.TILE, py = y * CanvasRenderer.TILE;
+        const boundary = x === 0 || y === 0 || x === this.session.board.width - 1 || y === this.session.board.height - 1;
+        const gradient = this.ctx.createLinearGradient(px, py, px, py + CanvasRenderer.TILE);
+        gradient.addColorStop(0, boundary ? '#2b3740' : '#3b4850');
+        gradient.addColorStop(1, boundary ? '#253039' : '#313e47');
+        this.ctx.fillStyle = gradient;
+        this.roundRect(px + 2, py + 2, CanvasRenderer.TILE - 4, CanvasRenderer.TILE - 4, 6);
+        this.ctx.fill();
+        this.ctx.strokeStyle = boundary ? '#37454e' : '#506067';
+        this.ctx.lineWidth = 1;
+        this.ctx.beginPath();
+        this.ctx.moveTo(px + 9, py + 3.5);
+        this.ctx.lineTo(px + CanvasRenderer.TILE - 9, py + 3.5);
+        this.ctx.stroke();
+        this.ctx.fillStyle = boundary ? '#64747b22' : '#81949533';
+        this.ctx.beginPath();
+        this.ctx.arc(px + CanvasRenderer.TILE / 2, py + CanvasRenderer.TILE / 2, 1.2, 0, Math.PI * 2);
+        this.ctx.fill();
+    }
+    drawFire(x, y, out = false) {
+        const px = x * CanvasRenderer.TILE, py = y * CanvasRenderer.TILE;
+        this.ctx.save();
+        this.ctx.translate(px, py);
+        if (out) {
+            this.ctx.fillStyle = '#364448';
+            this.roundRect(3, 3, 58, 58, 8);
+            this.ctx.fill();
+            this.ctx.strokeStyle = '#8ca2a5';
+            this.ctx.lineWidth = 1;
+            this.roundRect(3.5, 3.5, 57, 57, 8);
+            this.ctx.stroke();
+            this.ctx.strokeStyle = '#b8c8c5';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.moveTo(31, 18);
+            this.ctx.bezierCurveTo(43, 33, 45, 44, 33, 44);
+            this.ctx.bezierCurveTo(20, 46, 21, 33, 25, 30);
+            this.ctx.lineTo(29, 36);
+            this.ctx.bezierCurveTo(35, 32, 27, 24, 31, 18);
+            this.ctx.stroke();
+            this.ctx.strokeStyle = '#bfe3e5';
+            this.ctx.lineWidth = 1.5;
+            for (let i = 0; i < 3; i++) {
+                this.ctx.beginPath();
+                this.ctx.moveTo(13 + i * 4, 9 + i * 5);
+                this.ctx.lineTo(36 + i * 4, 9 + i * 5);
+                this.ctx.stroke();
+            }
+            this.ctx.fillStyle = '#b4c9c8';
+            this.ctx.font = 'bold 8px Arial';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText('ПАУЗА', 32, 55);
+            this.ctx.restore();
+            return;
+        }
+        const glow = this.ctx.createRadialGradient(32, 17, 4, 32, 25, 42);
+        glow.addColorStop(0, '#f3954430');
+        glow.addColorStop(1, '#f3954400');
+        this.ctx.fillStyle = glow;
+        this.ctx.fillRect(-10, -10, 84, 84);
+        const base = this.ctx.createLinearGradient(0, 2, 0, 62);
+        base.addColorStop(0, '#5b3d2d');
+        base.addColorStop(1, '#342a27');
+        this.ctx.fillStyle = base;
+        this.roundRect(3, 3, 58, 58, 8);
+        this.ctx.fill();
+        this.ctx.lineWidth = 1;
+        this.ctx.strokeStyle = '#b77243';
+        this.roundRect(3.5, 3.5, 57, 57, 8);
+        this.ctx.stroke();
+        this.ctx.shadowColor = '#ec9146';
+        this.ctx.shadowBlur = 10;
+        this.ctx.fillStyle = '#ffc780';
+        this.roundRect(8, 3, 48, 3, 1.5);
+        this.ctx.fill();
+        this.ctx.shadowBlur = 0;
+        this.ctx.fillStyle = '#ee9956';
+        this.ctx.beginPath();
+        this.ctx.moveTo(32, 12);
+        this.ctx.bezierCurveTo(34, 23, 46, 24, 45, 35);
+        this.ctx.bezierCurveTo(44, 49, 22, 51, 20, 37);
+        this.ctx.bezierCurveTo(18, 29, 24, 24, 26, 21);
+        this.ctx.bezierCurveTo(24, 29, 28, 30, 30, 25);
+        this.ctx.bezierCurveTo(32, 22, 29, 18, 32, 12);
+        this.ctx.fill();
+        this.ctx.fillStyle = '#ffe0a0';
+        this.ctx.beginPath();
+        this.ctx.moveTo(33, 29);
+        this.ctx.bezierCurveTo(34, 36, 40, 37, 36, 43);
+        this.ctx.bezierCurveTo(32, 48, 27, 43, 28, 39);
+        this.ctx.bezierCurveTo(28, 35, 31, 34, 33, 29);
+        this.ctx.fill();
+        this.ctx.strokeStyle = '#ad7850';
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(21, 52);
+        this.ctx.lineTo(43, 52);
+        this.ctx.moveTo(25, 49);
+        this.ctx.lineTo(21, 52);
+        this.ctx.lineTo(25, 55);
+        this.ctx.moveTo(39, 49);
+        this.ctx.lineTo(43, 52);
+        this.ctx.lineTo(39, 55);
+        this.ctx.stroke();
+        this.ctx.restore();
+    }
+    drawCharcoalGlyph() {
+        this.ctx.save();
+        this.ctx.lineJoin = 'round';
+        this.ctx.lineCap = 'round';
+        this.ctx.strokeStyle = '#292c32';
+        this.ctx.lineWidth = 2.5;
+        this.ctx.beginPath();
+        this.ctx.moveTo(-12, -16);
+        this.ctx.lineTo(-4, -7);
+        this.ctx.lineTo(-7, 0);
+        this.ctx.lineTo(3, 6);
+        this.ctx.lineTo(1, 17);
+        this.ctx.moveTo(-7, 0);
+        this.ctx.lineTo(-17, 5);
+        this.ctx.moveTo(3, 6);
+        this.ctx.lineTo(13, 0);
+        this.ctx.lineTo(16, -13);
+        this.ctx.stroke();
+        this.ctx.strokeStyle = '#ada59a88';
+        this.ctx.lineWidth = 1.2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(-9, -16);
+        this.ctx.lineTo(-2, -8);
+        this.ctx.moveTo(7, 9);
+        this.ctx.lineTo(14, 4);
+        this.ctx.stroke();
+        this.ctx.fillStyle = '#b2a897';
+        this.ctx.fillRect(-14, 12, 3, 2);
+        this.ctx.fillRect(11, -17, 2, 2);
+        this.ctx.restore();
+    }
+    drawBurnFrame(frame, p) {
+        const burned = new Set(frame.burned), old = new Map(frame.before.map(b => [b.id, b]));
+        for (const b of frame.after) {
+            this.drawBlock(b);
+            if (!burned.has(b.id))
+                continue;
+            this.drawBlock(old.get(b.id) ?? b, 1 - p);
+            const cx = (b.x + .5) * CanvasRenderer.TILE, cy = (b.y + .5) * CanvasRenderer.TILE;
+            this.ctx.save();
+            this.ctx.globalAlpha = Math.sin(Math.PI * p) * .8;
+            this.ctx.strokeStyle = '#ffc177';
+            this.ctx.lineWidth = 2;
+            this.ctx.shadowColor = '#ef9047';
+            this.ctx.shadowBlur = 15;
+            this.roundRect(cx - 27, cy - 27, 54, 54, 10);
+            this.ctx.stroke();
+            this.ctx.shadowBlur = 0;
+            for (let i = 0; i < 5; i++) {
+                this.ctx.fillStyle = i % 2 ? '#de965c' : '#d3c1a6';
+                this.ctx.beginPath();
+                this.ctx.arc(cx - 19 + i * 9 + Math.sin(i + p * 3) * 3, cy - 12 - p * (20 + i * 3), 1 + (i % 2) * .5, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+            this.ctx.restore();
+        }
+    }
+    drawGlyph(type, x, y) {
+        this.ctx.save();
+        this.ctx.translate(x, y);
+        this.ctx.strokeStyle = '#283d3b';
+        this.ctx.fillStyle = '#283d3b';
+        this.ctx.lineWidth = 2.7;
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+        this.ctx.beginPath();
+        if (type === 'A') {
+            this.ctx.arc(0, 0, 10, 0, Math.PI * 2);
+            this.ctx.stroke();
+        }
+        else if (type === 'B') {
+            this.ctx.moveTo(0, -12);
+            this.ctx.lineTo(11, 0);
+            this.ctx.lineTo(0, 12);
+            this.ctx.lineTo(-11, 0);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        else if (type === 'C') {
+            this.ctx.moveTo(0, -12);
+            this.ctx.lineTo(12, 9);
+            this.ctx.lineTo(-12, 9);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        else {
+            this.ctx.lineWidth = 4;
+            this.ctx.moveTo(-10, 0);
+            this.ctx.lineTo(10, 0);
+            this.ctx.moveTo(0, -10);
+            this.ctx.lineTo(0, 10);
+            this.ctx.stroke();
+        }
+        this.ctx.restore();
+    }
+    drawBlock(block, alpha = 1, scale = 1) {
+        if (this.engine.isFire(block)) {
+            this.ctx.save();
+            this.ctx.globalAlpha = alpha;
+            this.ctx.translate((block.x + .5) * CanvasRenderer.TILE, (block.y + .5) * CanvasRenderer.TILE);
+            this.ctx.scale(scale, scale);
+            this.drawFire(-.5, -.5, block.out);
+            if (block.id === this.session.selectedId) {
+                this.ctx.strokeStyle = '#f8e4c7';
+                this.ctx.lineWidth = 1.6;
+                this.roundRect(-31, -31, 62, 62, 11);
+                this.ctx.stroke();
+            }
+            this.ctx.restore();
+            return;
+        }
+        const cx = (block.x + .5) * CanvasRenderer.TILE, cy = (block.y + .5) * CanvasRenderer.TILE;
+        this.ctx.save();
+        this.ctx.globalAlpha = alpha;
+        this.ctx.translate(cx, cy);
+        this.ctx.scale(scale, scale);
+        const size = CanvasRenderer.TILE - 12, pos = -size / 2, color = BlockAppearance_js_1.BlockAppearance.for(block).color;
+        this.ctx.shadowColor = '#00000045';
+        this.ctx.shadowBlur = 6;
+        this.ctx.shadowOffsetY = 4;
+        const gradient = this.ctx.createLinearGradient(0, pos, 0, pos + size);
+        gradient.addColorStop(0, color);
+        gradient.addColorStop(1, this.shade(color, -21));
+        this.ctx.fillStyle = gradient;
+        this.roundRect(pos, pos, size, size, 10);
+        this.ctx.fill();
+        this.ctx.shadowBlur = 0;
+        this.ctx.shadowOffsetY = 0;
+        this.ctx.strokeStyle = '#ffffff33';
+        this.ctx.lineWidth = 1;
+        this.roundRect(pos + .5, pos + .5, size - 1, size - 1, 9);
+        this.ctx.stroke();
+        this.ctx.strokeStyle = '#ffffff40';
+        this.ctx.lineWidth = 2;
+        this.ctx.lineCap = 'round';
+        this.ctx.beginPath();
+        this.ctx.moveTo(pos + 10, pos + 7);
+        this.ctx.lineTo(pos + 18, pos + 7);
+        this.ctx.stroke();
+        if (block.burnt)
+            this.drawCharcoalGlyph();
+        else if (this.engine.isIce(block) || this.engine.isPlant(block) || this.engine.isWind(block))
+            this.drawElementGlyph(block);
+        else
+            this.drawGlyph(block.type, 0, 0);
+        if (block.id === this.session.selectedId) {
+            this.ctx.strokeStyle = '#e2ecd8';
+            this.ctx.lineWidth = 1.6;
+            this.roundRect(pos - 4, pos - 4, size + 8, size + 8, 13);
+            this.ctx.stroke();
+        }
+        this.ctx.restore();
+    }
+    drawElementGlyph(block) {
+        this.ctx.save();
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+        this.ctx.lineWidth = 2;
+        if (this.engine.isIce(block)) {
+            this.ctx.strokeStyle = '#245b78';
+            this.ctx.fillStyle = '#d5f1f366';
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, -17);
+            this.ctx.lineTo(13, -9);
+            this.ctx.lineTo(13, 6);
+            this.ctx.lineTo(0, 13);
+            this.ctx.lineTo(-13, 6);
+            this.ctx.lineTo(-13, -9);
+            this.ctx.closePath();
+            this.ctx.fill();
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, -17);
+            this.ctx.lineTo(0, 13);
+            this.ctx.moveTo(-13, -9);
+            this.ctx.lineTo(13, 6);
+            this.ctx.moveTo(13, -9);
+            this.ctx.lineTo(-13, 6);
+            this.ctx.stroke();
+            if (block.hits) {
+                this.ctx.strokeStyle = '#eefbff';
+                this.ctx.lineWidth = 4;
+                this.ctx.beginPath();
+                this.ctx.moveTo(8, -23);
+                this.ctx.lineTo(3, -11);
+                this.ctx.lineTo(10, -4);
+                this.ctx.lineTo(-3, 5);
+                this.ctx.lineTo(-7, 17);
+                this.ctx.stroke();
+                this.ctx.strokeStyle = '#326786';
+                this.ctx.lineWidth = 1.5;
+                this.ctx.stroke();
+            }
+            this.ctx.fillStyle = '#19455d';
+            this.ctx.font = 'bold 8px Arial';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(block.hits ? '1 / 2' : '0 / 2', 0, 22);
+        }
+        else if (this.engine.isPlant(block)) {
+            this.ctx.strokeStyle = block.frozen ? '#3f788e' : '#3f6139';
+            this.ctx.fillStyle = block.frozen ? '#deedf3' : '#5e844b';
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, 17);
+            this.ctx.bezierCurveTo(3, 5, -2, -4, 2, -16);
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.moveTo(1, -4);
+            this.ctx.bezierCurveTo(0, -17, 11, -18, 16, -17);
+            this.ctx.bezierCurveTo(18, -7, 9, -2, 1, -4);
+            this.ctx.fill();
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.moveTo(1, 8);
+            this.ctx.bezierCurveTo(-11, 8, -15, 2, -15, -7);
+            this.ctx.bezierCurveTo(-4, -8, 0, -2, 1, 8);
+            this.ctx.fill();
+            this.ctx.stroke();
+            if (block.frozen) {
+                this.ctx.strokeStyle = '#f1fbff';
+                this.ctx.lineWidth = 1.7;
+                for (let i = 0; i < 3; i++) {
+                    const a = i * Math.PI / 3, cx = 15, cy = 14;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(cx - 6 * Math.cos(a), cy - 6 * Math.sin(a));
+                    this.ctx.lineTo(cx + 6 * Math.cos(a), cy + 6 * Math.sin(a));
+                    this.ctx.stroke();
+                }
+                this.ctx.strokeStyle = '#edf9fd66';
+                this.roundRect(-23, -23, 46, 46, 8);
+                this.ctx.stroke();
+            }
+        }
+        else {
+            this.ctx.strokeStyle = '#426e77';
+            this.ctx.lineWidth = 2.2;
+            for (let i = 0; i < 3; i++) {
+                const x = (i - 1) * 12, y = i === 1 ? -17 : -9;
+                this.ctx.beginPath();
+                this.ctx.moveTo(x, 16);
+                this.ctx.bezierCurveTo(x + 5, 7, x - 5, 4, x, y);
+                this.ctx.lineTo(x - 4, y + 5);
+                this.ctx.moveTo(x, y);
+                this.ctx.lineTo(x + 4, y + 5);
+                this.ctx.stroke();
+            }
+            this.ctx.strokeStyle = '#648e97';
+            this.ctx.lineWidth = 1.4;
+            this.ctx.beginPath();
+            this.ctx.moveTo(-17, 22);
+            this.ctx.lineTo(17, 22);
+            this.ctx.stroke();
+        }
+        this.ctx.restore();
+    }
+    drawFields(state) {
+        const field = this.engine.windField(this.session.board, state), occ = new Map(state.map(b => [b.y * this.session.board.width + b.x, b]));
+        this.ctx.save();
+        for (const k of field.cells) {
+            if (occ.has(k))
+                continue;
+            const x = k % this.session.board.width, y = Math.floor(k / this.session.board.width), cx = (x + .5) * CanvasRenderer.TILE, cy = (y + .5) * CanvasRenderer.TILE;
+            this.ctx.fillStyle = '#b9e0e309';
+            this.ctx.fillRect(x * CanvasRenderer.TILE + 7, y * CanvasRenderer.TILE, 50, CanvasRenderer.TILE);
+            this.ctx.strokeStyle = '#a3d9df35';
+            this.ctx.lineWidth = 1.3;
+            for (const offset of [-13, 13]) {
+                this.ctx.beginPath();
+                this.ctx.moveTo(cx + offset, cy + 24);
+                this.ctx.lineTo(cx + offset, cy - 24);
+                this.ctx.stroke();
+            }
+            this.ctx.strokeStyle = '#bfe4e45c';
+            this.ctx.beginPath();
+            this.ctx.moveTo(cx - 5, cy + 1);
+            this.ctx.lineTo(cx, cy - 5);
+            this.ctx.lineTo(cx + 5, cy + 1);
+            this.ctx.stroke();
+        }
+        for (const plant of state) {
+            if (!this.engine.isPlant(plant) || plant.frozen)
+                continue;
+            const cx = (plant.x + .5) * CanvasRenderer.TILE, cy = (plant.y + .5) * CanvasRenderer.TILE;
+            for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+                const next = occ.get((plant.y + dy) * this.session.board.width + plant.x + dx);
+                if (!next || (this.engine.isPlant(next) && next.frozen))
+                    continue;
+                this.ctx.strokeStyle = '#9fbe8299';
+                this.ctx.lineWidth = 3;
+                this.ctx.beginPath();
+                this.ctx.moveTo(cx + dx * 22, cy + dy * 22);
+                this.ctx.quadraticCurveTo(cx + dx * 32 - dy * 5, cy + dy * 32 + dx * 5, cx + dx * 44, cy + dy * 44);
+                this.ctx.stroke();
+                this.ctx.fillStyle = '#a9c889';
+                this.ctx.beginPath();
+                this.ctx.ellipse(cx + dx * 32, cy + dy * 32, 4, 2, dx ? -.5 : .8, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+        }
+        this.ctx.restore();
+    }
+    drawElementFrame(frame, p) {
+        const prior = new Map(frame.before.map(b => [b.id, b])), afterIds = new Set(frame.after.map(b => b.id));
+        const affected = new Set(['burned', 'melted', 'ignited', 'cracked', 'shattered', 'frozen', 'extinguished', 'relit'].flatMap(k => frame[k] || []));
+        for (const block of frame.after) {
+            this.drawBlock(block);
+            if (affected.has(block.id) && prior.has(block.id))
+                this.drawBlock(prior.get(block.id) ?? block, 1 - p);
+        }
+        for (const block of frame.before) {
+            if (!afterIds.has(block.id))
+                this.drawBlock(block, 1 - p, 1 - .3 * p);
+            if (!affected.has(block.id))
+                continue;
+            const cx = (block.x + .5) * CanvasRenderer.TILE, cy = (block.y + .5) * CanvasRenderer.TILE;
+            this.ctx.save();
+            this.ctx.globalAlpha = Math.sin(p * Math.PI) * .85;
+            this.ctx.strokeStyle = frame.kind === 'heat' ? '#f2c08b' : frame.kind === 'freeze' ? '#cfecf9' : '#b6e4ed';
+            this.ctx.lineWidth = 1.7;
+            this.roundRect(cx - 29, cy - 29, 58, 58, 11);
+            this.ctx.stroke();
+            this.ctx.fillStyle = this.ctx.strokeStyle;
+            for (let i = 0; i < 6; i++) {
+                const a = Math.PI * 2 * i / 6 + block.id, r = 19 + 22 * p;
+                this.ctx.beginPath();
+                this.ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r, 2 * (1 - p) + .5, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+            this.ctx.restore();
+        }
+    }
+    drawArrow(x, y, dx, highlighted) {
+        this.ctx.save();
+        this.ctx.translate((x + .5) * CanvasRenderer.TILE, (y + .5) * CanvasRenderer.TILE);
+        this.ctx.fillStyle = highlighted ? '#b9d7ad28' : '#b9d7ad0b';
+        this.ctx.strokeStyle = highlighted ? '#b9d7ad66' : '#b9d7ad18';
+        this.ctx.lineWidth = 1;
+        this.roundRect(-19, -19, 38, 38, 9);
+        this.ctx.fill();
+        this.ctx.stroke();
+        this.ctx.strokeStyle = highlighted ? '#c6dfb8' : '#899d81';
+        this.ctx.lineWidth = 1.7;
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+        this.ctx.beginPath();
+        this.ctx.moveTo(-8 * dx, 0);
+        this.ctx.lineTo(8 * dx, 0);
+        this.ctx.moveTo(3 * dx, -5);
+        this.ctx.lineTo(8 * dx, 0);
+        this.ctx.lineTo(3 * dx, 5);
+        this.ctx.stroke();
+        this.ctx.restore();
+    }
+    drawPortal(end, label, index) {
+        const dirs = { left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] };
+        const [dx, dy] = dirs[end.side];
+        const x = (end.x + .5 + dx * .5) * CanvasRenderer.TILE, y = (end.y + .5 + dy * .5) * CanvasRenderer.TILE;
+        const colors = ['#91dedb', '#c6abf1', '#f0c58e', '#a8d794'];
+        const color = colors[index % colors.length];
+        const angle = { bottom: 0, top: Math.PI, left: Math.PI / 2, right: -Math.PI / 2 }[end.side];
+        this.ctx.save();
+        this.ctx.translate(x, y);
+        this.ctx.rotate(angle);
+        this.ctx.fillStyle = '#131d26';
+        this.ctx.fillRect(-28, -3, 56, 31);
+        const light = this.ctx.createLinearGradient(0, -15, 0, 20);
+        light.addColorStop(0, color + '00');
+        light.addColorStop(.45, color + '26');
+        light.addColorStop(1, color + '00');
+        this.ctx.fillStyle = light;
+        this.ctx.fillRect(-28, -15, 56, 35);
+        this.ctx.shadowBlur = 10;
+        this.ctx.shadowColor = color;
+        this.ctx.strokeStyle = color;
+        this.ctx.lineWidth = 2.3;
+        this.ctx.lineJoin = 'round';
+        this.ctx.beginPath();
+        this.ctx.moveTo(-25, 0);
+        for (let k = 1; k <= 10; k++)
+            this.ctx.lineTo(-25 + k * 5, k === 10 ? 0 : k % 2 ? -3 : 3);
+        this.ctx.stroke();
+        this.ctx.shadowBlur = 0;
+        for (const sign of [-1, 1]) {
+            this.ctx.fillStyle = color;
+            this.roundRect(sign * 28 - 2, -7, 4, 14, 2);
+            this.ctx.fill();
+            this.ctx.fillStyle = '#f0f6f1';
+            this.ctx.beginPath();
+            this.ctx.arc(sign * 28, 0, 2, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
+        this.ctx.restore();
+        this.ctx.save();
+        this.ctx.translate(x + dx * 18, y + dy * 18);
+        this.ctx.fillStyle = '#142029';
+        this.ctx.strokeStyle = color + '88';
+        this.ctx.lineWidth = 1;
+        this.ctx.beginPath();
+        this.ctx.arc(0, 0, 9, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.stroke();
+        this.ctx.fillStyle = color;
+        this.ctx.font = 'bold 11px "Segoe UI",Arial,sans-serif';
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillText(label, 0, .5);
+        this.ctx.restore();
+    }
+    drawTeleportFrame(frame, p) {
+        const old = new Map(frame.before.map(b => [b.id, b]));
+        const warps = new Map((frame.warps ?? []).map(w => [w.id, w]));
+        const dirs = { left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] };
+        for (const b of frame.after) {
+            const prior = old.get(b.id) || b, warp = warps.get(b.id);
+            if (!warp) {
+                const e = p * p;
+                this.drawBlock({ ...b, x: prior.x + (b.x - prior.x) * e, y: prior.y + (b.y - prior.y) * e });
+            }
+            else if (p < .5) {
+                const q = p * 2;
+                this.drawBlock({ ...prior, x: prior.x + warp.dx * .38 * q, y: prior.y + warp.dy * .38 * q }, 1 - q, 1 - .35 * q);
+            }
+            else {
+                const q = (p - .5) * 2, [dx, dy] = dirs[warp.exit.side];
+                this.drawBlock({ ...b, x: b.x + dx * .38 * (1 - q), y: b.y + dy * .38 * (1 - q) }, q, .65 + .35 * q);
+            }
+        }
+    }
+    draw() {
+        if (!this.session.board || !this.canvas.width)
+            return;
+        const width = this.session.board.width * CanvasRenderer.TILE, height = this.session.board.height * CanvasRenderer.TILE;
+        this.ctx.setTransform(this.canvas.width / width, 0, 0, this.canvas.height / height, 0, 0);
+        this.ctx.clearRect(0, 0, width, height);
+        this.ctx.fillStyle = '#151c23';
+        this.ctx.fillRect(0, 0, width, height);
+        for (let y = 0; y < this.session.board.height; y++) {
+            for (let x = 0; x < this.session.board.width; x++) {
+                if (this.session.board.walls.has(y * this.session.board.width + x))
+                    this.drawWall(x, y);
+                else {
+                    this.ctx.strokeStyle = '#53647112';
+                    this.ctx.lineWidth = .7;
+                    this.ctx.strokeRect(x * CanvasRenderer.TILE + .5, y * CanvasRenderer.TILE + .5, CanvasRenderer.TILE - 1, CanvasRenderer.TILE - 1);
+                    this.ctx.fillStyle = '#71818b27';
+                    this.ctx.beginPath();
+                    this.ctx.arc((x + .5) * CanvasRenderer.TILE, (y + .5) * CanvasRenderer.TILE, 1, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+            }
+        }
+        this.session.board.portals.forEach((pair, index) => { this.drawPortal(pair.a, pair.id, index); this.drawPortal(pair.b, pair.id, index); });
+        if (this.session.levelIndex === 0 && this.session.moves === 0 && !this.ui.busy && this.session.selectedId === null) {
+            this.ctx.save();
+            this.ctx.textAlign = 'center';
+            this.ctx.fillStyle = '#a7b3a3';
+            this.ctx.font = '22px Georgia, serif';
+            this.ctx.fillText('Никуда не спешите.', width / 2, CanvasRenderer.TILE * 2.8);
+            this.ctx.fillStyle = '#6f8188';
+            this.ctx.font = '11px "Segoe UI", Arial, sans-serif';
+            this.ctx.fillText('Выберите круг. Затем сделайте первый ход.', width / 2, CanvasRenderer.TILE * 3.2);
+            this.ctx.restore();
+        }
+        this.drawFields(this.ui.animation ? this.ui.animation.frame.before : this.session.blocks);
+        if (!this.ui.animation) {
+            const selected = this.session.blocks.find(b => b.id === this.session.selectedId);
+            if (selected && this.session.getStatus().kind === 'playing') {
+                for (const dx of [-1, 1]) {
+                    const to = this.engine.destination(this.session.board, this.session.blocks, selected, dx, 0);
+                    if (to)
+                        this.drawArrow(to.x, to.y, dx, Boolean(this.ui.hint && this.ui.hint.dx === dx));
+                }
+            }
+            this.session.blocks.forEach(b => this.drawBlock(b));
+            return;
+        }
+        const { frame, progress: p } = this.ui.animation;
+        if (frame.kind === 'teleport') {
+            this.drawTeleportFrame(frame, p);
+        }
+        else if (['heat', 'ice', 'freeze', 'breeze'].includes(frame.kind)) {
+            this.drawElementFrame(frame, p);
+        }
+        else if (frame.kind === 'burn') {
+            this.drawBurnFrame(frame, p);
+        }
+        else if (frame.kind === 'match') {
+            const removed = new Set(frame.removed);
+            for (const b of frame.before) {
+                const gone = removed.has(b.id);
+                this.drawBlock(b, gone ? 1 - p : 1, gone ? 1 - p * .35 : 1);
+                if (gone) {
+                    this.ctx.save();
+                    this.ctx.globalAlpha = (1 - p) * .8;
+                    this.ctx.fillStyle = BlockAppearance_js_1.BlockAppearance.for(b).color;
+                    const cx = (b.x + .5) * CanvasRenderer.TILE, cy = (b.y + .5) * CanvasRenderer.TILE;
+                    for (let i = 0; i < 6; i++) {
+                        const angle = Math.PI * 2 * i / 6 + b.id;
+                        const distance = 16 + p * 25, size = (1 - p) * 3;
+                        this.ctx.beginPath();
+                        this.ctx.arc(cx + Math.cos(angle) * distance, cy + Math.sin(angle) * distance, size, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    }
+                    this.ctx.restore();
+                }
+            }
+        }
+        else {
+            const before = new Map(frame.before.map(b => [b.id, b]));
+            const ease = frame.kind === 'fall' || frame.kind === 'lift' ? p * p : 1 - Math.pow(1 - p, 3);
+            for (const b of frame.after) {
+                const old = before.get(b.id) || b;
+                this.drawBlock({ ...b, x: old.x + (b.x - old.x) * ease, y: old.y + (b.y - old.y) * ease });
+            }
+        }
+    }
+    resizeCanvas() {
+        if (!this.session.board)
+            return;
+        const width = this.canvas.getBoundingClientRect().width;
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        this.canvas.width = Math.max(1, Math.round(width * ratio));
+        this.canvas.height = Math.max(1, Math.round(width * this.session.board.height / this.session.board.width * ratio));
+        this.draw();
+    }
+}
+exports.CanvasRenderer = CanvasRenderer;
+
+},
+"presentation/DomElements.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DomElements = void 0;
+const TAGS = {
+    "brand": "a",
+    "helpBtn": "button",
+    "progressText": "span",
+    "levelGrid": "div",
+    "fireLevelGrid": "div",
+    "portalLevelGrid": "div",
+    "elementLevelGrid": "div",
+    "progressBar": "span",
+    "lessonTag": "span",
+    "lessonTitle": "h2",
+    "lessonNote": "p",
+    "levelKicker": "span",
+    "boardTitle": "h2",
+    "moveCount": "strong",
+    "blockCount": "strong",
+    "blockCountLabel": "span",
+    "burntStat": "div",
+    "burntCount": "strong",
+    "stage": "div",
+    "board": "canvas",
+    "boardInstructions": "p",
+    "boardDescription": "p",
+    "winOverlay": "div",
+    "winTitle": "h3",
+    "winDescription": "p",
+    "nextBtn": "button",
+    "viewBoardBtn": "button",
+    "winReplayBtn": "button",
+    "fireMechanic": "div",
+    "portalMechanic": "div",
+    "portalMechanicText": "span",
+    "elementsMechanic": "div",
+    "iceChip": "span",
+    "plantChip": "span",
+    "windChip": "span",
+    "showResultBtn": "button",
+    "selectionLine": "div",
+    "selectionDot": "span",
+    "selectionText": "span",
+    "leftBtn": "button",
+    "rightBtn": "button",
+    "statusMessage": "div",
+    "undoBtn": "button",
+    "resetBtn": "button",
+    "hintBtn": "button",
+    "hintLabel": "span",
+    "helpDialog": "dialog",
+    "closeHelpBtn": "button",
+    "helpTitle": "h2",
+    "playBtn": "button"
+};
+class DomElements {
+    nodes = new Map();
+    constructor(document) {
+        for (const id of Object.keys(TAGS)) {
+            const node = document.getElementById(id);
+            if (!node || node.tagName.toLowerCase() !== TAGS[id])
+                throw new Error(`Missing or invalid <${TAGS[id]}>#${id}.`);
+            this.nodes.set(id, node);
+        }
+    }
+    get(id) {
+        const node = this.nodes.get(id);
+        if (!node)
+            throw new Error(`Missing element: ${id}.`);
+        return node;
+    }
+}
+exports.DomElements = DomElements;
+
+},
+"presentation/GameMessages.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameMessages = void 0;
+const BlockRules_js_1 = require("../domain/BlockRules.js");
+const RussianText_js_1 = require("./RussianText.js");
+class GameMessages {
+    static selection(selected, board) {
+        const text = BlockRules_js_1.BlockRules.isIce(selected) ? (selected.hits ? 'Лёд: 1/2. Следующее новое попадание сверху разрушит его. Ветер не оставляет трещин.' : 'Лёд: 0/2. Новое попадание сверху даст трещину. Стоящий блок не наносит повторный удар.') :
+            BlockRules_js_1.BlockRules.isPlant(selected) ? (selected.frozen ? 'Растение замёрзло: больше не держит соседей, и другие растения не могут удержать его.' : 'Растение держит соседей с четырёх сторон. Лёд замораживает его, огонь снизу превращает в факел.') :
+                BlockRules_js_1.BlockRules.isWind(selected) ? 'Ветер поднимает блоки над собой, разрывает хватку и гасит пламя в потоке. Не трескает лёд.' :
+                    BlockRules_js_1.BlockRules.isFire(selected) && selected.out ? 'Пламя погашено потоком. Без ветра огонь загорится снова; сам блок остаётся подвижным.' :
+                        BlockRules_js_1.BlockRules.isFire(selected) ? 'Огонь выбран: двигайте ← / →. Он падает, проходит в телепорт и обжигает только сверху.' : selected.burnt ? 'Уголь можно сдвигать и телепортировать. Он служит опорой, но не образует совпадений.' : board.portals.length ? 'Пересеките проём в направлении движения. Цвет и состояние блока сохранятся.' : 'Совпадение считается по сторонам, не по диагонали.';
+        const kind = BlockRules_js_1.BlockRules.isIce(selected) || BlockRules_js_1.BlockRules.isPlant(selected) || BlockRules_js_1.BlockRules.isWind(selected) ? 'element' : BlockRules_js_1.BlockRules.isFire(selected) || selected.burnt ? 'fire' : board.portals.length ? 'portal' : '';
+        return { text, kind };
+    }
+    static afterMove(result) {
+        let text = '';
+        let kind = '';
+        const matches = result.trace.filter(f => f.kind === 'match');
+        const removed = matches.reduce((sum, f) => sum + (f.removed?.length ?? 0), 0);
+        const teleports = result.trace.filter(f => f.kind === 'teleport').reduce((n, f) => n + (f.warps?.length ?? 0), 0);
+        const burned = result.trace.filter(f => f.burned).reduce((sum, f) => sum + (f.burned?.length ?? 0), 0);
+        text = burned ? `${burned} ${RussianText_js_1.RussianText.plural(burned, ['блок обуглился', 'блока обуглились', 'блоков обуглились'])}, но ${burned === 1 ? 'остался' : 'остались'} на поле.${removed ? ` Совпадения убрали ещё ${removed}.` : ' Уголь можно сдвинуть.'}` : matches.length > 1 ? `Цепная реакция: ${matches.length} ${RussianText_js_1.RussianText.plural(matches.length, ['совпадение', 'совпадения', 'совпадений'])} за один ход.` : removed ? `Совпадение! ${removed} ${RussianText_js_1.RussianText.plural(removed, ['блок исчез', 'блока исчезли', 'блоков исчезли'])}.` : 'Посмотрите, что изменилось. Следующий ход — когда будете готовы.';
+        const events = [];
+        const total = (key) => result.trace.reduce((n, f) => n + (f[key]?.length || 0), 0);
+        if (total('cracked'))
+            events.push('Лёд треснул: 1/2.');
+        if (total('shattered'))
+            events.push('Лёд раскололся.');
+        if (total('melted'))
+            events.push('Лёд растаял.');
+        if (total('frozen'))
+            events.push('Растение замёрзло и отпустило соседей.');
+        if (total('ignited'))
+            events.push('Растение стало огненным блоком.');
+        if (total('extinguished'))
+            events.push('Ветер временно погасил пламя.');
+        if (total('relit'))
+            events.push('Без потока пламя восстановилось.');
+        if (events.length)
+            text = events.join(' ') + (removed ? ` Убрано совпадениями: ${removed}.` : burned ? ` Обуглилось: ${burned}.` : '');
+        if (teleports)
+            text = `Переходов через дверь: ${teleports}. ` + text;
+        kind = events.length ? 'element' : burned ? 'fire' : teleports ? 'portal' : removed ? 'hint' : '';
+        return { text, kind };
+    }
+}
+exports.GameMessages = GameMessages;
+
+},
+"presentation/GameView.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameView = void 0;
+const BlockAppearance_js_1 = require("./BlockAppearance.js");
+const RussianText_js_1 = require("./RussianText.js");
+class GameView {
+    elements;
+    session;
+    ui;
+    engine;
+    levels;
+    progress;
+    constructor(elements, session, ui, engine, levels, progress) {
+        this.elements = elements;
+        this.session = session;
+        this.ui = ui;
+        this.engine = engine;
+        this.levels = levels;
+        this.progress = progress;
+    }
+    get canvas() { return this.elements.get('board'); }
+    createNavigation() {
+        for (const id of ['levelGrid', 'fireLevelGrid', 'portalLevelGrid', 'elementLevelGrid'])
+            this.elements.get(id).replaceChildren();
+        for (let i = 0; i < this.levels.count; i++) {
+            const level = this.levels.get(i), button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'level-button';
+            button.dataset.level = String(i);
+            button.textContent = String(i + 1).padStart(2, '0');
+            button.title = level.title;
+            if (level.chapter)
+                button.classList.add(level.chapter === 'portals' ? 'portal-level' : level.chapter === 'elements' ? 'element-level' : 'fire-level');
+            this.elements.get(level.chapter === 'elements' ? 'elementLevelGrid' : level.chapter === 'portals' ? 'portalLevelGrid' : level.chapter === 'fire' ? 'fireLevelGrid' : 'levelGrid').append(button);
+        }
+    }
+    updateLevelNavigation() {
+        [...document.querySelectorAll('.level-button')].forEach((button, index) => {
+            const done = Object.prototype.hasOwnProperty.call(this.progress.completed, index);
+            button.classList.toggle('active', index === this.session.levelIndex);
+            button.classList.toggle('completed', done);
+            if (index === this.session.levelIndex)
+                button.setAttribute('aria-current', 'step');
+            else
+                button.removeAttribute('aria-current');
+            button.setAttribute('aria-label', `Уровень ${index + 1}: ${this.levels.all[index].title}${done ? '. Пройден' : ''}`);
+        });
+        const count = Object.keys(this.progress.completed).length;
+        this.elements.get('progressText').textContent = `${count} / ${this.levels.all.length}`;
+        this.elements.get('progressBar').style.width = `${100 * count / this.levels.all.length}%`;
+    }
+    render() {
+        if (!this.session.board)
+            return;
+        const status = this.session.getStatus();
+        const selected = this.session.blocks.find(b => b.id === this.session.selectedId);
+        this.elements.get('moveCount').textContent = String(this.session.moves);
+        const active = this.engine.activeCount(this.session.blocks), burnt = this.session.blocks.filter(b => b.burnt).length, hasFire = this.session.blocks.some(this.engine.isFire);
+        this.elements.get('blockCount').textContent = String(active);
+        this.elements.get('burntCount').textContent = String(burnt);
+        this.elements.get('burntStat').hidden = !hasFire && !burnt;
+        this.elements.get('blockCountLabel').textContent = 'цветных';
+        this.elements.get('leftBtn').disabled = this.ui.busy || status.kind !== 'playing' || !selected || !this.engine.canMove(this.session.board, this.session.blocks, this.session.selectedId, -1);
+        this.elements.get('rightBtn').disabled = this.ui.busy || status.kind !== 'playing' || !selected || !this.engine.canMove(this.session.board, this.session.blocks, this.session.selectedId, 1);
+        this.elements.get('undoBtn').disabled = this.ui.busy || this.session.historyLength === 0;
+        this.elements.get('hintBtn').disabled = this.ui.busy || this.ui.hintBusy || status.kind !== 'playing';
+        this.elements.get('hintLabel').textContent = this.ui.hintBusy ? 'Ищу ход…' : 'Подсказка';
+        const dot = this.elements.get('selectionDot');
+        dot.style.backgroundColor = selected ? BlockAppearance_js_1.BlockAppearance.for(selected).color : 'transparent';
+        dot.style.borderColor = selected ? BlockAppearance_js_1.BlockAppearance.for(selected).color : '#708089';
+        this.elements.get('selectionText').textContent = this.ui.busy ? 'Блоки находят своё место…' : selected && status.kind === 'playing' ? `${BlockAppearance_js_1.BlockAppearance.for(selected).name} выбран · двигайте стрелками` : status.kind === 'won' ? 'Все игровые блоки убраны' : 'Выберите блок на поле';
+        const statusEl = this.elements.get('statusMessage');
+        let text = this.ui.message, kind = this.ui.messageKind;
+        if (!this.ui.busy && status.kind === 'lost') {
+            text = status.reason === 'singleton' ? 'Остался блок без пары. Отмените ход и попробуйте другой путь.' : status.reason === 'proven' ? 'Из этой позиции не убрать все игровые блоки. Отмените ход.' : 'Все блоки заблокированы. Отмените ход и попробуйте другой путь.';
+            kind = 'lost';
+        }
+        else if (!this.ui.busy && status.kind === 'won') {
+            text = 'Цветных блоков не осталось. Уголь и специальные блоки могут остаться — уровень решён.';
+            kind = 'hint';
+        }
+        statusEl.textContent = text;
+        statusEl.className = `status-message ${kind}`;
+        const descriptions = this.session.blocks.map(b => `${BlockAppearance_js_1.BlockAppearance.for(b).description}: столбец ${b.x + 1}, строка ${b.y + 1}${b.id === this.session.selectedId ? ', выбран' : ''}`);
+        const sideNames = { top: 'сверху', bottom: 'снизу', left: 'слева', right: 'справа' };
+        for (const pair of this.session.board.portals)
+            descriptions.push(`Двери ${pair.id}: ${sideNames[pair.a.side]} у клетки ${pair.a.x + 1}, ${pair.a.y + 1}; ${sideNames[pair.b.side]} у клетки ${pair.b.x + 1}, ${pair.b.y + 1}. Занятый выход блокирует проход`);
+        this.elements.get('boardDescription').textContent = descriptions.join('. ') || 'Поле очищено.';
+        const won = !this.ui.busy && status.kind === 'won';
+        this.elements.get('winOverlay').hidden = !won || this.ui.reviewingWin;
+        this.elements.get('showResultBtn').hidden = !won || !this.ui.reviewingWin;
+        if (won) {
+            const allDone = Object.keys(this.progress.completed).length === this.levels.all.length;
+            this.elements.get('winTitle').textContent = allDone ? 'Все этюды решены.' : 'Красиво сошлось.';
+            this.elements.get('winDescription').textContent = `Решение за ${RussianText_js_1.RussianText.moves(this.session.moves)}.${burnt ? ` На поле ${burnt} ${RussianText_js_1.RussianText.plural(burnt, ['горелый блок', 'горелых блока', 'горелых блоков'])} — это не мешает победе.` : allDone ? ' Можно вернуться к любому уровню.' : ' Ещё одна маленькая победа.'}`;
+            this.elements.get('nextBtn').replaceChildren(document.createTextNode(this.session.levelIndex < this.levels.all.length - 1 ? 'Следующий этюд ' : allDone ? 'К первому этюду ' : 'К непройденному '));
+            const arrow = document.createElement('span');
+            arrow.textContent = '→';
+            arrow.setAttribute('aria-hidden', 'true');
+            this.elements.get('nextBtn').append(arrow);
+        }
+    }
+    configureLevel() {
+        const index = this.session.levelIndex;
+        const hasFire = this.session.blocks.some(this.engine.isFire), hasPortals = this.session.board.portals.length > 0;
+        const hasElements = this.session.blocks.some(b => this.engine.isIce(b) || this.engine.isPlant(b) || this.engine.isWind(b));
+        this.ui.message = hasElements ? 'Уберите все цветные блоки. Лёд, растения, ветер и огонь могут остаться.' : hasPortals ? 'Проходите сквозь двери с одинаковым номером. Гравитация всегда направлена вниз.' : hasFire ? 'Огонь теперь можно двигать. Он падает и обжигает только сверху.' : 'Соедините одинаковые блоки и очистите поле.';
+        this.ui.messageKind = hasElements ? 'element' : hasPortals ? 'portal' : hasFire ? 'fire' : '';
+        document.body.classList.toggle('fire-mode', hasFire);
+        document.body.classList.toggle('portal-mode', hasPortals);
+        document.body.classList.toggle('element-mode', hasElements);
+        this.elements.get('elementsMechanic').hidden = !hasElements;
+        this.elements.get('iceChip').hidden = !this.session.blocks.some(this.engine.isIce);
+        this.elements.get('plantChip').hidden = !this.session.blocks.some(this.engine.isPlant);
+        this.elements.get('windChip').hidden = !this.session.blocks.some(this.engine.isWind);
+        this.elements.get('fireMechanic').hidden = !hasFire;
+        this.elements.get('portalMechanic').hidden = !hasPortals;
+        this.elements.get('portalMechanicText').textContent = this.session.board.portals.length > 1 ? 'Две пары дверей. Ориентируйтесь по номерам.' : hasElements ? 'Дверь переносит и при подъёме ветром.' : 'Вниз → из верхней двери. Вбок → с другой стороны.';
+        const level = this.levels.all[index];
+        this.elements.get('boardTitle').textContent = level.title;
+        this.elements.get('lessonTitle').textContent = level.title;
+        this.elements.get('lessonTag').textContent = level.tag;
+        this.elements.get('lessonNote').textContent = level.note;
+        this.elements.get('levelKicker').textContent = `ЭТЮД ${String(index + 1).padStart(2, '0')} / ${this.levels.all.length}`;
+        this.canvas.style.aspectRatio = `${this.session.board.width} / ${this.session.board.height}`;
+        this.canvas.style.width = `min(100%, ${480 * this.session.board.width / this.session.board.height}px)`;
+        this.canvas.setAttribute('aria-label', `Игровое поле. Уровень ${index + 1}: ${level.title}. ${this.session.board.width} на ${this.session.board.height} клеток.`);
+    }
+}
+exports.GameView = GameView;
+
+},
+"presentation/InputController.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.InputController = void 0;
+class InputController {
+    elements;
+    session;
+    ui;
+    actions;
+    scope = new AbortController();
+    pointerStart = null;
+    attached = false;
+    constructor(elements, session, ui, actions) {
+        this.elements = elements;
+        this.session = session;
+        this.ui = ui;
+        this.actions = actions;
+    }
+    get canvas() { return this.elements.get('board'); }
+    attach() {
+        if (this.attached)
+            return;
+        this.attached = true;
+        const options = { signal: this.scope.signal };
+        const canvas = this.canvas;
+        canvas.addEventListener('pointerdown', event => this.pointerDown(event), options);
+        canvas.addEventListener('pointerup', event => this.pointerUp(event), options);
+        canvas.addEventListener('pointercancel', () => this.resetPointer(), options);
+        canvas.addEventListener('lostpointercapture', () => { this.pointerStart = null; }, options);
+        this.elements.get('leftBtn').addEventListener('click', () => { void this.actions.requestMove(-1); }, options);
+        this.elements.get('rightBtn').addEventListener('click', () => { void this.actions.requestMove(1); }, options);
+        this.elements.get('undoBtn').addEventListener('click', () => this.actions.undo(), options);
+        this.elements.get('resetBtn').addEventListener('click', () => this.actions.loadLevel(this.session.levelIndex), options);
+        this.elements.get('hintBtn').addEventListener('click', () => this.actions.requestHint(), options);
+        this.elements.get('winReplayBtn').addEventListener('click', () => this.actions.loadLevel(this.session.levelIndex), options);
+        this.elements.get('viewBoardBtn').addEventListener('click', () => this.actions.reviewResult(true), options);
+        this.elements.get('showResultBtn').addEventListener('click', () => this.actions.reviewResult(false), options);
+        this.elements.get('brand').addEventListener('click', event => { event.preventDefault(); this.actions.loadLevel(0); }, options);
+        this.elements.get('nextBtn').addEventListener('click', () => this.actions.nextLevel(), options);
+        for (const id of ['levelGrid', 'fireLevelGrid', 'portalLevelGrid', 'elementLevelGrid']) {
+            const grid = this.elements.get(id);
+            grid.addEventListener('click', event => {
+                const button = event.target instanceof Element ? event.target.closest('button[data-level]') : null;
+                if (button instanceof HTMLButtonElement && grid.contains(button))
+                    this.actions.loadLevel(Number(button.dataset.level));
+            }, options);
+        }
+        const help = this.elements.get('helpDialog');
+        this.elements.get('helpBtn').addEventListener('click', () => {
+            if (!help.open)
+                help.showModal();
+        }, options);
+        this.elements.get('closeHelpBtn').addEventListener('click', () => help.close(), options);
+        this.elements.get('playBtn').addEventListener('click', () => { help.close(); canvas.focus({ preventScroll: true }); }, options);
+        help.addEventListener('click', event => {
+            if (event.target !== help)
+                return;
+            const rect = help.getBoundingClientRect();
+            if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)
+                help.close();
+        }, options);
+        window.addEventListener('keydown', event => this.keyDown(event), options);
+    }
+    resetPointer() {
+        const pointer = this.pointerStart;
+        this.pointerStart = null;
+        if (pointer) {
+            try {
+                this.canvas.releasePointerCapture(pointer.id);
+            }
+            catch { }
+        }
+    }
+    dispose() { this.resetPointer(); this.scope.abort(); }
+    isPlaying() { return !this.ui.busy && this.session.getStatus().kind === 'playing'; }
+    eventCell(event) {
+        const rect = this.canvas.getBoundingClientRect();
+        return { x: Math.floor((event.clientX - rect.left) / rect.width * this.session.board.width), y: Math.floor((event.clientY - rect.top) / rect.height * this.session.board.height) };
+    }
+    pointerDown(event) {
+        if (!event.isPrimary || event.button !== 0 || !this.isPlaying())
+            return;
+        event.preventDefault();
+        this.canvas.focus({ preventScroll: true });
+        const pos = this.eventCell(event);
+        const target = this.session.blocks.find(block => block.x === pos.x && block.y === pos.y);
+        if (target)
+            this.actions.selectBlock(target.id);
+        this.pointerStart = { clientX: event.clientX, clientY: event.clientY, id: event.pointerId, onBlock: Boolean(target) };
+        try {
+            this.canvas.setPointerCapture(event.pointerId);
+        }
+        catch { }
+    }
+    pointerUp(event) {
+        if (!this.pointerStart || event.pointerId !== this.pointerStart.id)
+            return;
+        const start = this.pointerStart;
+        this.resetPointer();
+        if (!this.isPlaying())
+            return;
+        const dx = event.clientX - start.clientX, dy = event.clientY - start.clientY;
+        if (Math.abs(dx) >= 16 && Math.abs(dx) > Math.abs(dy) * 1.2 && start.onBlock) {
+            void this.actions.requestMove(dx < 0 ? -1 : 1);
+            return;
+        }
+        if (Math.abs(dx) > 12 || Math.abs(dy) > 12)
+            return;
+        const pos = this.eventCell(event);
+        const target = this.session.blocks.find(block => block.x === pos.x && block.y === pos.y);
+        if (target) {
+            this.actions.selectBlock(target.id);
+            return;
+        }
+        const selected = this.session.blocks.find(block => block.id === this.session.selectedId);
+        if (selected && pos.y === selected.y && Math.abs(pos.x - selected.x) === 1) {
+            void this.actions.requestMove(pos.x < selected.x ? -1 : 1);
+            return;
+        }
+        this.actions.clearSelection();
+    }
+    keyDown(event) {
+        const target = event.target;
+        if (this.elements.get('helpDialog').open || event.altKey || event.ctrlKey || event.metaKey || event.repeat || (target instanceof HTMLElement && (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable)))
+            return;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            event.preventDefault();
+            void this.actions.requestMove(event.key === 'ArrowLeft' ? -1 : 1);
+        }
+        else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            event.preventDefault();
+            this.actions.cycleSelection(event.key === 'ArrowDown' ? 1 : -1);
+        }
+        else if (event.code === 'KeyZ') {
+            event.preventDefault();
+            this.actions.undo();
+        }
+        else if (event.code === 'KeyR') {
+            event.preventDefault();
+            this.actions.loadLevel(this.session.levelIndex);
+        }
+        else if (event.code === 'KeyH') {
+            event.preventDefault();
+            this.actions.requestHint();
+        }
+        else if (event.key === 'Escape')
+            this.actions.clearSelection();
+    }
+}
+exports.InputController = InputController;
+
+},
+"presentation/RussianText.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RussianText = void 0;
+class RussianText {
+    static plural(n, forms) {
+        const a = Math.abs(n) % 100, b = a % 10;
+        return forms[a > 10 && a < 20 ? 2 : b === 1 ? 0 : b >= 2 && b <= 4 ? 1 : 2];
+    }
+    static moves(n) { return `${n} ${RussianText.plural(n, ['\u0445\u043e\u0434', '\u0445\u043e\u0434\u0430', '\u0445\u043e\u0434\u043e\u0432'])}`; }
+}
+exports.RussianText = RussianText;
+
+},
+"presentation/UiState.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UiState = void 0;
+class UiState {
+    busy = false;
+    hintBusy = false;
+    reviewingWin = false;
+    hint = null;
+    animation = null;
+    message = '';
+    messageKind = '';
+    reset() {
+        this.busy = this.hintBusy = this.reviewingWin = false;
+        this.hint = this.animation = null;
+        this.message = '';
+        this.messageKind = '';
+    }
+}
+exports.UiState = UiState;
+
+}};
+const cache = Object.create(null);
+function load(id) {
+  if (cache[id]) return cache[id].exports;
+  if (!Object.hasOwn(definitions, id)) throw new Error('Unknown module: ' + id);
+  const module = { exports: {} };
+  cache[id] = module;
+  definitions[id](module, module.exports, specifier => {
+    if (!specifier.startsWith('.')) throw new Error('Only relative imports are supported: ' + specifier);
+    const segments = id.split('/'); segments.pop();
+    for (const part of specifier.split('/')) {
+      if (part === '..') segments.pop(); else if (part !== '.' && part !== '') segments.push(part);
+    }
+    return load(segments.join('/'));
+  });
+  return module.exports;
+}
+load('main.js');
+})();
+
+</script>
+</body>
+</html>
