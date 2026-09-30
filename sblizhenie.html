@@ -2,288 +2,279 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#151b21">
-<meta name="description" content="Логическая головоломка с двумя коллекциями: 300 новых и 260 классических уровней из исходных .dat-файлов.">
-<title>Сближение — стихии</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#12191f">
+<meta name="description" content="Сближение — мобильная версия классической коллекции из 260 уровней.">
+<title>Сближение — классика</title>
 <style>
-:root {color-scheme:dark;--bg:#141a20;--panel:#1b222a;--panel-deep:#151c23;--text:#e9eee9;--muted:#8c9b9e;--soft:#606f77;--line:#303b43;--accent:#b9d7ad;--coral:#eea58e;--mint:#a9d2c7;--lilac:#b9b3dc;--gold:#e3c786;--danger:#edab92;--radius:22px;font-family:"Segoe UI",Arial,sans-serif;font-synthesis:none;}
-* {box-sizing:border-box;}[hidden]{display:none!important;}body{margin:0;background:radial-gradient(ellipse at 8% 0%,#26312d55,transparent 45%),var(--bg);color:var(--text);min-height:100vh;}button,a,canvas{-webkit-tap-highlight-color:transparent;}button{font:inherit;cursor:pointer;color:inherit;}button:disabled{cursor:default;}button:focus-visible,a:focus-visible,canvas:focus-visible{outline:2px solid var(--accent);outline-offset:5px;}button{transition:background .18s,border-color .18s,transform .18s,opacity .18s;}button:not(:disabled):active{transform:translateY(1px);}a{text-decoration:none;color:inherit;}h1,h2,h3,p{margin:0;}.app-shell{max-width:1264px;padding:0 54px;margin:auto;}.site-header{height:104px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);}.brand{display:flex;align-items:center;gap:13px;font-size:26px;font-weight:650;letter-spacing:-1px;}.brand-dot{color:var(--accent);}.brand-mark{display:flex;gap:3px;transform:rotate(-8deg);}.brand-mark i{width:15px;height:19px;background:var(--accent);border-radius:4px;display:block;}.brand-mark i:last-child{background:transparent;border:1.5px solid var(--accent);transform:translateY(4px);}.header-right{display:flex;align-items:center;gap:25px;}.quiet-label{color:var(--muted);font-size:12px;display:flex;align-items:center;gap:8px;}.quiet-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px #b9d7ad0a;}.icon-button{border:1px solid var(--line);background:transparent;width:33px;height:33px;border-radius:50%;font-size:16px;}.icon-button:hover{background:#ffffff0b;border-color:var(--soft);}.workspace{display:grid;grid-template-columns:300px minmax(0,1fr);gap:65px;padding:45px 0 32px;align-items:start;}.sidebar{padding-top:10px;}.eyebrow{font-size:9px;letter-spacing:1.55px;font-weight:600;color:var(--muted);}.intro h1{font-family:Georgia,"Times New Roman",serif;font-size:41px;font-weight:400;line-height:1.2;letter-spacing:-1.4px;margin:21px 0 19px;}.intro h1 span{color:var(--accent);}.intro-copy{color:var(--muted);font-size:12px;line-height:1.9;}.level-section{margin-top:39px;}.section-topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}.section-topline h2{font-size:12px;font-weight:500;}.section-topline>span{font-size:10px;color:var(--soft);letter-spacing:1px;font-variant-numeric:tabular-nums;}.level-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}.level-button{position:relative;border:1px solid var(--line);border-radius:9px;background:transparent;height:41px;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;}.level-button:hover{border-color:#7b8c83;background:#b9d7ad08;}.level-button.active{background:var(--accent);border-color:var(--accent);color:#25342b;font-weight:700;box-shadow:0 3px 16px #b9d7ad0e;}.level-button.completed:not(.active){border-color:#536c60;color:var(--accent);}.level-button.completed::after{content:"";width:4px;height:4px;border-radius:50%;background:currentColor;position:absolute;bottom:5px;left:calc(50% - 2px);}.progress-track{height:2px;background:var(--line);margin-top:17px;overflow:hidden;}.progress-track span{display:block;height:100%;width:0;background:var(--accent);transition:width .4s;}.level-caption{color:var(--soft);font-size:10px;margin-top:10px;}.lesson{border:1px solid var(--line);background:linear-gradient(120deg,#2530296e,#2128303b);border-radius:14px;padding:19px 20px 21px;margin-top:26px;min-height:155px;}.lesson-topline{color:var(--accent);font-size:9px;letter-spacing:1.1px;display:flex;align-items:center;gap:8px;text-transform:uppercase;}.tiny-spark{font-size:18px;line-height:1;}.lesson h2{font-size:15px;font-weight:500;margin-top:15px;}.lesson p{font-size:11px;line-height:1.85;color:var(--muted);margin-top:10px;}.legend{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;margin:24px 7px 0;}.legend-item{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:10px;}.shape{width:14px;text-align:center;font-size:13px;}.coral .shape{color:var(--coral);}.mint .shape{color:var(--mint);}.lilac .shape{color:var(--lilac);}.gold .shape{color:var(--gold);}.sidebar-footer{display:flex;align-items:center;gap:13px;color:var(--soft);font-size:10px;line-height:1.85;margin-top:28px;}.clock-icon{font:28px Georgia,serif;color:#8b9b92;}.game-panel{background:var(--panel);border:1px solid #364047;border-radius:var(--radius);overflow:hidden;box-shadow:0 20px 65px #00000016;}.game-header{display:flex;align-items:center;justify-content:space-between;padding:25px 29px 23px;gap:10px;}.level-kicker{font-size:8px;letter-spacing:1.9px;color:var(--muted);font-variant-numeric:tabular-nums;}.game-level h2{font-size:19px;font-weight:500;letter-spacing:-.2px;margin-top:7px;}.stats{display:flex;gap:27px;padding-left:20px;}.stat{display:flex;flex-direction:column;align-items:center;min-width:29px;gap:4px;}.stat strong{font-size:23px;font-weight:400;line-height:1;font-variant-numeric:tabular-nums;}.stat span{color:var(--soft);font-size:9px;}.stage{position:relative;display:flex;justify-content:center;margin:0 27px;padding:16px;background:var(--panel-deep);border:1px solid #2b353e;border-radius:12px;overflow:hidden;min-height:160px;}.stage canvas{display:block;max-width:100%;height:auto;width:100%;touch-action:none;border-radius:4px;cursor:crosshair;aspect-ratio:8/7;}.win-overlay{position:absolute;inset:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;border:1px solid #829e8133;border-radius:9px;background:#19231ff5;padding:24px;backdrop-filter:blur(8px);}.win-symbol{color:var(--accent);font-size:62px;line-height:1;margin-bottom:23px;}.win-overlay .eyebrow{font-size:8px;letter-spacing:1.8px;}.win-overlay h3{font-family:Georgia,"Times New Roman",serif;font-size:34px;line-height:1.2;letter-spacing:-.8px;font-weight:400;margin-top:14px;}.win-overlay p:not(.eyebrow){font-size:12px;color:var(--muted);margin:15px 0 25px;line-height:1.7;}.primary-button{display:flex;align-items:center;justify-content:center;gap:24px;border:none;border-radius:9px;background:var(--accent);color:#28362b;padding:13px 20px;font-size:12px;font-weight:600;}.primary-button:hover{background:#c7e3bd;}.primary-button>span{font-size:19px;line-height:1;}.text-button{background:none;border:none;font-size:11px;color:var(--muted);padding:15px 20px 4px;}.text-button:hover{color:var(--text);}.control-section{padding:19px 27px 15px;}.selection-line{display:flex;align-items:center;justify-content:center;gap:7px;font-size:10px;color:var(--muted);min-height:16px;}.selection-dot{width:5px;height:5px;border:1px solid #708089;border-radius:50%;}.move-controls{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:13px;}.move-button{border:1px solid #475650;background:#b9d7ad08;border-radius:9px;min-width:114px;height:39px;display:flex;justify-content:center;align-items:center;gap:20px;font-size:11px;color:var(--accent);}.move-button span:first-child:not(:last-child),.move-button span:last-child:not(:first-child){line-height:1;}.move-button#leftBtn>span:first-child,.move-button#rightBtn>span:last-child{font-size:22px;}.move-button:disabled{opacity:.3;border-color:var(--line);background:transparent;}.move-button:not(:disabled):hover{background:#b9d7ad19;border-color:var(--accent);}.one-cell{font-size:8px;line-height:1.4;color:var(--soft);text-align:center;letter-spacing:.3px;}.status-message{font-size:10px;color:var(--soft);text-align:center;line-height:1.65;margin-top:13px;min-height:33px;display:flex;align-items:center;justify-content:center;}.status-message.lost{color:var(--danger);}.status-message.hint{color:var(--accent);}.game-toolbar{display:flex;align-items:stretch;border-top:1px solid var(--line);background:#182027;min-height:59px;padding:0 19px;gap:3px;}.tool-button{display:flex;align-items:center;justify-content:center;gap:7px;flex:1;border:0;background:transparent;font-size:10px;color:var(--muted);border-radius:7px;margin:8px 0;padding:5px 8px;}.tool-button:not(:disabled):hover{background:#ffffff07;color:var(--text);}.tool-button:disabled{opacity:.3;}.tool-icon{font-size:20px;line-height:1;}.tool-button.hint-button{color:var(--accent);}.tool-button kbd{margin-left:auto;}kbd{font-family:inherit;font-size:8px;color:var(--soft);border:1px solid #3e4b526e;border-bottom-width:2px;border-radius:4px;min-width:16px;height:17px;display:inline-flex;align-items:center;justify-content:center;padding:1px 3px;}.page-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);min-height:74px;color:var(--soft);gap:16px;}.page-footer>span{font-size:8px;letter-spacing:1.1px;white-space:nowrap;}.page-footer p{font-size:9px;line-height:2;}.page-footer kbd{margin:0 2px;font-size:10px;}.footer-separator{display:inline-block;margin:0 12px;color:#3e4b52;}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}dialog{border:1px solid #465449;background:#1c2524;color:var(--text);border-radius:20px;max-width:580px;width:calc(100% - 32px);max-height:calc(100dvh - 48px);padding:29px 33px;box-shadow:0 30px 90px #0007;}dialog::backdrop{background:#0b1214bb;backdrop-filter:blur(5px);}.dialog-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:23px;}.dialog-header .icon-button{font-size:25px;}dialog h2{font-family:Georgia,serif;font-weight:400;font-size:28px;letter-spacing:-.4px;line-height:1.25;margin-bottom:15px;}dialog>p{font-size:12px;line-height:1.85;color:var(--muted);}.rules-list{margin:22px 0;}.rules-list>div{display:flex;gap:15px;margin:15px 0;}.rule-number{font-size:10px;color:var(--accent);padding-top:4px;font-variant-numeric:tabular-nums;}.rules-list p,.dialog-note p{font-size:11px;line-height:1.9;color:var(--muted);}.rules-list strong{color:var(--text);font-weight:500;}.dialog-note{border-top:1px solid var(--line);padding-top:17px;margin-bottom:20px;}.dialog-note>strong{font-size:12px;font-weight:500;}.dialog-note p{margin-top:9px;}dialog>.primary-button{margin-left:auto;}
-@media(min-width:1320px){.app-shell{max-width:1280px;}.workspace{grid-template-columns:310px minmax(0,1fr);gap:76px;}.game-panel{max-width:680px;}.stage{padding:19px;}}
-@media(max-width:1050px){.app-shell{padding:0 32px;}.workspace{grid-template-columns:250px minmax(0,1fr);gap:34px;}.intro h1{font-size:35px;}.eyebrow{font-size:8px;letter-spacing:1px;}.game-header{padding:23px;}.game-level h2{font-size:16px;}.stage{margin:0 20px;padding:13px;}.stats{gap:18px;}.tool-button kbd{display:none;}.tool-button{gap:6px;padding:5px;}.lesson{padding:17px;}.legend{gap:13px 8px;}.page-footer .edition{display:none;}.workspace{padding-top:33px;}}
-@media(max-width:760px){.app-shell{padding:0 20px;max-width:620px;}.site-header{height:76px;}.brand{font-size:23px;}.header-right{gap:16px;}.quiet-label{font-size:10px;}.workspace{display:flex;flex-direction:column;gap:20px;padding:24px 0;}.sidebar{display:contents;}.intro{display:none;}.level-section{margin:0;order:0;width:100%;}.section-topline{margin-bottom:11px;}.section-topline h2{font-size:11px;}.level-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;}.level-button{height:35px;font-size:10px;border-radius:7px;}.progress-track{margin-top:11px;}.level-caption{display:none;}.game-panel{order:1;width:100%;border-radius:17px;}.lesson{order:2;margin:0;min-height:0;width:100%;padding:19px 21px;}.lesson-topline{font-size:8px;}.lesson h2{margin-top:11px;font-size:14px;}.lesson p{font-size:11px;margin-top:8px;}.legend,.sidebar-footer{display:none;}.game-header{padding:20px 23px;}.game-level h2{font-size:18px;}.stage{margin:0 18px;padding:13px;}.stat strong{font-size:22px;}.control-section{padding:16px 20px 12px;}.game-toolbar{padding:0 13px;min-height:57px;}.tool-button{font-size:11px;gap:8px;}.page-footer{display:block;text-align:center;padding:18px 0;min-height:0;}.page-footer>span{display:none;}.page-footer p{font-size:8px;}.footer-separator{margin:0 6px;}.status-message{font-size:10px;}.win-overlay h3{font-size:29px;}.win-symbol{font-size:49px;margin-bottom:17px;}.win-overlay .primary-button{font-size:11px;gap:16px;padding:12px 16px;}}
-@media(max-width:380px){.app-shell{padding:0 12px;}.quiet-label{display:none;}.game-header{padding:17px 19px;}.game-level h2{font-size:16px;}.stats{gap:16px;}.stage{margin:0 12px;padding:9px;}.move-button{min-width:99px;}.level-grid{gap:4px;}.level-button{height:33px;font-size:9px;}.tool-button{font-size:10px;}.win-overlay{padding:12px;}.win-overlay h3{font-size:26px;}.win-symbol{font-size:38px;margin-bottom:12px;}.win-overlay p:not(.eyebrow){margin:13px 0 18px;}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important;}}
-
-/* Fire expansion: preserve the original campaign's cool palette. */
-:root{--ember:#efb47f;}
-.fire-mode{--accent:#e5b381;--danger:#edab92;background:radial-gradient(ellipse at 8% 0%,#46301f45,transparent 46%),var(--bg);}
-.intro h1{font-size:36px;letter-spacing:-1.1px;line-height:1.23;}
-.fire-chapter-heading{display:flex;align-items:center;justify-content:space-between;margin:19px 0 10px;font-size:11px;color:var(--ember);}
-.new-badge{font-size:7px;letter-spacing:1px;border:1px solid #a1704444;background:#a1704411;border-radius:4px;padding:4px 5px;color:#c39c76;}
-.fire-level-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
-.fire-level{border-color:#79573766;color:#c5a07f;background:#67442310;}
-.fire-level:hover{border-color:#c4966e;background:#c4966e0a;}
-.fire-level.active{background:var(--ember);color:#382b20;border-color:var(--ember);}
-.fire-mode .level-button:not(.fire-level).active{background:#b9d7ad;border-color:#b9d7ad;color:#25342b;}
-.fire-mode .lesson{background:linear-gradient(125deg,#503a2755,#23272c44);border-color:#68533f66;}
-.fire-mode .lesson-topline{color:var(--ember);}
-.fire-mode .brand-mark i{background:var(--ember);}
-.fire-mode .brand-mark i:last-child{background:transparent;border-color:var(--ember);}
-.fire-mode .primary-button:hover{background:#f0c99f;}
-.fire-mode .stats{gap:18px;padding-left:7px;}
-.burnt-stat strong{color:#aaa7a2;}
-.flame-icon{width:16px;height:18px;flex-shrink:0;color:var(--ember);}
-.fire-legend,.ash-legend{font-size:9px;gap:7px;white-space:nowrap;}
-.ash-mini{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border:1px solid #8b8782;border-radius:3px;background:#626469;color:#2b2c32;font-size:15px;font-weight:bold;flex-shrink:0;}
-.mechanic-strip{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 28px 0;font-size:9px;line-height:1.6;color:var(--muted);}
-.mechanic-label{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;color:var(--ember);}
-.status-message.fire{color:#d7aa82;}
-.win-secondary{display:flex;justify-content:center;flex-wrap:wrap;column-gap:13px;}
-.win-secondary .text-button{padding:14px 0 3px;font-size:10px;}
-.result-link{display:block;margin:0 auto 14px;border:0;background:transparent;font-size:11px;color:var(--accent);padding:5px 8px;line-height:1.7;}
-.result-link:hover{text-decoration:underline;}
-@media(max-width:1050px){.intro h1{font-size:30px;}.fire-mode .stats{gap:12px;padding-left:0;}.game-level{min-width:0;}.game-level h2{line-height:1.35;}.fire-legend,.ash-legend{font-size:8px;gap:4px;}.mechanic-strip{margin-right:21px;margin-left:21px;font-size:8px;}}
-@media(max-width:760px){.fire-chapter-heading{margin:13px 0 7px;font-size:10px;}.fire-level-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;}.fire-level{height:33px;}.new-badge{font-size:6px;padding:3px 5px;}.mechanic-strip{margin:11px 19px 0;font-size:8px;gap:9px;}.mechanic-strip>span:last-child{text-align:right;max-width:155px;}.mechanic-label{gap:5px;}.fire-mode .stats{gap:13px;}.fire-mode .stat strong{font-size:22px;}.fire-mode .game-level h2{font-size:17px;}.fire-mode .game-header{gap:12px;}.fire-mode .control-section{padding-top:14px;}.win-secondary{column-gap:14px;}.win-secondary .text-button{font-size:9px;}.win-overlay .eyebrow{font-size:7px;}}
-@media(max-width:380px){.fire-mode .game-header{padding:17px 16px;gap:8px;}.fire-mode .game-level h2{font-size:15px;}.fire-mode .stats{gap:9px;}.fire-mode .stat strong{font-size:20px;}.fire-mode .stat span{font-size:8px;}.mechanic-strip{margin-left:14px;margin-right:14px;font-size:7px;}.mechanic-strip>span:last-child{max-width:132px;}.selection-line{font-size:9px;}.win-overlay h3{font-size:24px;}.win-overlay .win-symbol{margin-bottom:8px;}.win-overlay p:not(.eyebrow){font-size:10px;margin:9px 0 13px;}.win-secondary .text-button{padding-top:10px;}}
-
-
-/* Portals: numbered paired wall openings. */
-:root { --portal: #9cdeda; }
-.portal-mode { --accent: #9cdeda; background: radial-gradient(ellipse at 14% 0%,#24464a50,transparent 48%),var(--bg); }
-.portal-mode .brand-mark i { background:var(--portal); }
-.portal-mode .brand-mark i:last-child { background:transparent;border-color:var(--portal); }
-.portal-mode .lesson { background:linear-gradient(125deg,#25434566,#23272c44);border-color:#44666888; }
-.portal-mode .lesson-topline { color:var(--portal); }
-.portal-mode .primary-button:hover { background:#c5eeea; }
-.intro h1 { font-size:44px; line-height:1.16; margin:19px 0; }
-.level-section { margin-top:29px; }
-.chapter-counter { font-size:9px;color:var(--soft); }
-.portal-chapter-heading { display:flex;align-items:center;justify-content:space-between;margin:17px 0 10px;font-size:11px;color:var(--portal); }
-.portal-badge { font-size:7px;letter-spacing:.6px;border:1px solid #80c7c644;background:#80c7c60a;border-radius:4px;padding:4px 5px; }
-.portal-level-grid { grid-template-columns:repeat(6,minmax(0,1fr));gap:7px; }
-.portal-level { border-color:#69999766;color:#abd5d1;background:#29505016; }
-.portal-level:hover { border-color:var(--portal);background:#9cdeda12; }
-.portal-level.active { background:var(--portal);color:#183331;border-color:var(--portal); }
-.portal-mode .level-button:not(.portal-level):not(.fire-level).active { background:#b9d7ad;border-color:#b9d7ad; }
-.portal-strip { color:#a2bebf; }
-.portal-strip .mechanic-label,.portal-legend { color:var(--portal); }
-.portal-mini { display:inline-flex;justify-content:center;align-items:center;min-width:16px;height:17px;font:600 10px "Segoe UI",Arial,sans-serif;border-left:2px solid var(--portal);border-right:2px solid var(--portal);border-radius:3px;color:var(--portal);line-height:1;flex-shrink:0; }
-.portal-legend { font-size:9px;gap:7px; }
-.status-message.portal { color:var(--portal); }
-.game-header { gap:16px; }
-.stats { flex-shrink:0; }
-.legend { row-gap:12px; }
-@media(max-width:1050px) {
-  .intro h1 { font-size:37px; }
-  .portal-level-grid { gap:5px; }
+:root {
+  color-scheme: dark;
+  --bg: #10171d;
+  --panel: #162027;
+  --panel-2: #1b272f;
+  --line: #2a3942;
+  --text: #eef3ec;
+  --muted: #8da0a7;
+  --accent: #c7e8bc;
+  --accent-2: #8fded8;
+  --danger: #e28f7f;
+  --shadow: 0 24px 70px #0007;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
-@media(max-width:760px) {
-  .portal-chapter-heading { margin:12px 0 7px;font-size:10px; }
-  .portal-badge { font-size:6px;padding:3px 5px; }
-  .portal-level-grid { grid-template-columns:repeat(6,minmax(0,1fr));gap:7px; }
-  .portal-level { height:33px; }
-  .level-section { margin:0; }
-  .workspace { padding-top:19px; }
-  .game-header { padding-top:19px;padding-bottom:19px; }
-  .game-level h2 { font-size:17px; }
-}
-@media(max-width:380px) {
-  .portal-level-grid { gap:5px; }
-  .game-level h2 { font-size:15px; }
-  .game-header { gap:9px; }
-}
-.fire-mode .level-button.portal-level.active { background:var(--portal);color:#183331;border-color:var(--portal); }
-button, .brand { touch-action: manipulation; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: #091015; color: var(--text); }
+body { min-height: 100dvh; overflow: hidden; }
+button, dialog { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, canvas:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important; }
 
-/* Elements: cool ice, living leaves and translucent upward airflow. */
-:root { --ice:#9bd9ec; --leaf:#a9c889; --air:#c7dfdd; }
-.element-mode { --accent:#b7d7c2; background:radial-gradient(ellipse at 10% 0%,#32494355,transparent 48%),var(--bg); }
-.element-mode .brand-mark i { background:var(--accent); }
-.element-mode .brand-mark i:last-child { background:transparent;border-color:var(--accent); }
-.element-mode .lesson { background:linear-gradient(135deg,#29474055,#1c283b33);border-color:#5f83766b; }
-.element-mode .lesson-topline { color:#b9d9c8; }
-.intro h1 {font-size:38px;line-height:1.19;margin:18px 0 16px;letter-spacing:-1.2px;}
-.element-chapter-heading {display:flex;align-items:center;justify-content:space-between;margin:18px 0 10px;font-size:11px;color:#bddfd2;}
-.element-badge {font-size:7px;letter-spacing:.65px;border:1px solid #9ac3b55c;background:#9ac3b515;border-radius:4px;padding:4px 6px;}
-.element-level-grid {grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;}
-.element-level {border-color:#6f9e9666;color:#b9d9d1;background:#37564d1a;}
-.element-level:hover {border-color:#afdbcf;background:#afdbcf10;}
-.element-mode .level-button.element-level.active,.level-button.element-level.active {background:#b9dbc8;border-color:#b9dbc8;color:#203d35;}
-.elements-strip {display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:13px 27px 0;}
-.element-chip {display:inline-flex;align-items:center;gap:6px;font-size:9px;line-height:1.5;padding:5px 9px;border:1px solid #718e853f;background:#2d454036;border-radius:6px;color:#c0d4cd;}
-.element-chip b {font-size:14px;font-weight:500;color:#c5e5df;line-height:1;}
-.ice-legend,.plant-legend,.wind-legend {font-size:9px;gap:7px;white-space:nowrap;}
-.ice-legend .element-mini {color:var(--ice);}.plant-legend .element-mini {color:var(--leaf);}.wind-legend .element-mini {color:var(--air);}
-.element-mini {display:inline-flex;align-items:center;justify-content:center;width:16px;font-size:17px;line-height:1;}
-.status-message.element {color:#badccd;}
-.element-mode .stats {gap:18px;padding-left:5px;}
-.legend {column-gap:12px;row-gap:11px;}
-.lesson {margin-top:22px;}
-.sidebar-footer {margin-top:21px;}
-@media(max-width:1050px){.intro h1{font-size:31px;}.element-mode .stats{gap:12px;padding-left:0;}.elements-strip{margin-left:20px;margin-right:20px;}.element-chip{font-size:8px;padding:5px 7px;}.ice-legend,.plant-legend,.wind-legend{font-size:8px;}}
-@media(max-width:760px){
- .element-chapter-heading{margin:12px 0 7px;font-size:10px;}
- .element-badge{font-size:6px;padding:3px 5px;}
- .element-level-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;}
- .element-level{height:33px;font-size:10px;}
- .elements-strip{margin:10px 14px 0;gap:5px;}
- .element-chip{font-size:8px;padding:5px 6px;}
- .element-chip b{font-size:12px;}
- .element-mode .game-level h2{font-size:16px;}
- .element-mode .stats{gap:13px;}
- .lesson{margin:0;}
+.mobile-shell {
+  width: min(100%, 560px);
+  height: 100dvh;
+  margin: 0 auto;
+  background:
+    radial-gradient(circle at 70% -10%, #29434a55, transparent 34%),
+    linear-gradient(180deg, #121b21 0%, #0e151a 100%);
+  position: relative;
+  overflow: hidden;
 }
-@media(max-width:380px){
- .element-level-grid{gap:4px;}.element-level{font-size:9px;}
- .element-mode .game-level h2{font-size:14px;}
- .element-mode .game-header{padding:17px 16px;gap:7px;}
- .element-mode .stats{gap:8px;}.element-mode .stat strong{font-size:20px;}
- .elements-strip{gap:4px;margin-left:12px;margin-right:12px;}
- .element-chip{font-size:7px;padding:4px 5px;}
+@media (min-width: 700px) {
+  body { display: grid; place-items: center; padding: 24px; overflow: auto; background: #081015; }
+  .mobile-shell { height: min(920px, calc(100dvh - 48px)); border: 1px solid #26353d; border-radius: 30px; box-shadow: var(--shadow); }
 }
+.app-screen { height: 100%; min-height: 0; animation: screenIn .22s ease-out; }
+@keyframes screenIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
-/* Imported DAT campaigns. */
-.campaign-switch{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 0 13px;}
-.campaign-switch a{display:flex;align-items:center;justify-content:center;min-height:31px;border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:9px;letter-spacing:.35px;}
-.campaign-switch a:hover{border-color:var(--soft);background:#ffffff08;color:var(--text);}
-.campaign-switch a.active{border-color:var(--accent);background:#b9d7ad12;color:var(--accent);}
-.level-grid.many-levels{max-height:314px;overflow:auto;overscroll-behavior:contain;padding-right:4px;scrollbar-width:thin;scrollbar-color:#53645c #1b222a;}
-.level-grid.many-levels .level-button{min-height:41px;}
-@media(max-width:760px){.campaign-switch{margin-bottom:10px;}.level-grid.many-levels{max-height:210px;}.level-grid.many-levels .level-button{min-height:35px;}}
+/* Home */
+.home-screen { position: relative; display: flex; flex-direction: column; padding: max(18px, env(safe-area-inset-top)) 20px max(18px, env(safe-area-inset-bottom)); overflow: auto; }
+.home-glow { position: absolute; width: 340px; height: 340px; right: -150px; top: 100px; background: radial-gradient(circle, #77d8cf24, transparent 68%); pointer-events: none; }
+.home-topbar, .screen-header, .game-topbar { display: flex; align-items: center; gap: 12px; position: relative; z-index: 2; }
+.home-topbar { justify-content: space-between; }
+.wordmark { display: inline-flex; align-items: center; gap: 9px; font-weight: 760; letter-spacing: -.03em; font-size: 20px; }
+.wordmark > span:last-child > span { color: #e3b67c; }
+.wordmark-mark { display: inline-flex; gap: 3px; }
+.wordmark-mark i { display: block; width: 12px; height: 24px; border: 2px solid #9eb4a1; border-radius: 9px 4px; transform: rotate(22deg); }
+.wordmark-mark i:last-child { transform: rotate(-22deg); opacity: .7; }
+.circle-button, .back-button { border: 1px solid var(--line); background: #172128cc; color: var(--text); display: grid; place-items: center; cursor: pointer; }
+.circle-button { width: 40px; height: 40px; border-radius: 50%; font-weight: 700; }
+.back-button { width: 42px; height: 42px; border-radius: 14px; font-size: 21px; }
+.home-main { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 38px 0 20px; position: relative; z-index: 1; }
+.eyebrow, .screen-kicker, .level-kicker, .transition-kicker { margin: 0; color: #8ca09b; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+.home-main h1 { margin: 10px 0 16px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(40px, 11vw, 58px); line-height: .98; letter-spacing: -.045em; font-weight: 500; }
+.home-main h1 span { color: #b7c9b4; }
+.home-copy { max-width: 420px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
+.home-art { margin: 38px auto 30px; width: min(92%, 400px); height: 96px; position: relative; display: flex; align-items: center; justify-content: center; gap: 0; }
+.art-block { width: 62px; height: 62px; border-radius: 14px; display: grid; place-items: center; color: #243238; font-size: 22px; box-shadow: 0 10px 24px #0006, inset 0 1px #fff5; position: relative; z-index: 2; }
+.art-block.coral { background: #d98e7e; }
+.art-block.mint { background: #9fc8ae; }
+.art-line { height: 2px; flex: 1; min-width: 80px; max-width: 190px; background: linear-gradient(90deg, #8fded800, #8fded888 25%, #8fded888 75%, #8fded800); }
+.art-door { width: 18px; height: 64px; position: relative; }
+.art-door::before, .art-door::after { content: ""; position: absolute; left: 8px; width: 3px; height: 19px; background: #8fded8; border-radius: 4px; box-shadow: 0 0 12px #8fded8; }
+.art-door::before { top: 6px; }.art-door::after { bottom: 6px; }
+.progress-card { background: #172129d9; border: 1px solid #283840; border-radius: 18px; padding: 15px 16px 14px; backdrop-filter: blur(12px); }
+.progress-card > div:first-child { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; color: var(--muted); font-size: 13px; }
+.progress-card strong { color: var(--text); font-size: 14px; }
+.progress-track, .levels-progress { height: 5px; background: #26343b; border-radius: 999px; overflow: hidden; }
+.progress-track { margin-top: 12px; }
+.progress-track span, .levels-progress span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #9ed0b1, #8fded8); border-radius: inherit; transition: width .25s ease; }
+.home-actions, .transition-actions { display: grid; gap: 10px; margin-top: 14px; }
+.primary-button, .secondary-button, .text-button { border: 0; min-height: 52px; border-radius: 16px; cursor: pointer; font-weight: 760; }
+.primary-button { background: var(--accent); color: #162019; box-shadow: 0 8px 28px #95c78a24; }
+.secondary-button { background: #1b272e; color: var(--text); border: 1px solid #314149; }
+.text-button { background: transparent; color: #9db0b5; }
+.home-footer { display: flex; justify-content: space-between; color: #667980; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding-top: 14px; }
+
+/* Level browser */
+.levels-screen { display: flex; flex-direction: column; padding: max(18px, env(safe-area-inset-top)) 16px max(12px, env(safe-area-inset-bottom)); }
+.screen-header { min-height: 48px; }
+.screen-header > div { flex: 1; }
+.screen-header h1 { margin: 1px 0 0; font-size: 23px; letter-spacing: -.03em; }
+.level-progress { color: #9db0b5; font-size: 12px; font-weight: 750; }
+.levels-progress { margin: 14px 2px 0; }
+.levels-note { margin: 13px 2px 12px; color: #7f9299; font-size: 12px; line-height: 1.45; }
+.level-grid { flex: 1; overflow-y: auto; overscroll-behavior: contain; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: 54px; gap: 8px; padding: 4px 2px max(18px, env(safe-area-inset-bottom)); scrollbar-width: thin; }
+.level-button { position: relative; border: 1px solid #283840; background: #172129; color: #9cabb0; border-radius: 14px; font-size: 12px; font-weight: 760; cursor: pointer; }
+.level-button i { position: absolute; right: 6px; top: 5px; width: 15px; height: 15px; border-radius: 50%; display: none; place-items: center; font-size: 9px; font-style: normal; background: #97caa7; color: #142018; }
+.level-button.completed { color: #d7e0dc; border-color: #385047; }
+.level-button.completed i { display: grid; }
+.level-button.active { background: #21322f; border-color: #8bc8a0; color: #eff8ef; box-shadow: inset 0 0 0 1px #8bc8a055; }
+@media (max-width: 360px) { .level-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Game */
+.game-screen { display: flex; flex-direction: column; min-height: 0; padding-top: max(10px, env(safe-area-inset-top)); }
+.game-topbar { padding: 0 14px; }
+.game-heading { flex: 1; min-width: 0; }
+.game-heading h2 { margin: 1px 0 0; font-size: 19px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.game-stats { display: flex; gap: 7px; padding: 10px 14px 8px; }
+.game-stats > div { min-width: 0; flex: 1; border: 1px solid #24343c; background: #151f26; border-radius: 12px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+.game-stats strong { font-size: 17px; }.game-stats span { color: #71858c; font-size: 10px; }
+.game-main { flex: 1; min-height: 0; overflow-y: auto; padding: 0 14px 10px; overscroll-behavior: contain; }
+.stage { display: grid; place-items: center; min-height: 0; padding: 6px 0; }
+canvas#board { display: block; width: min(100%, 440px); max-height: 48dvh; border-radius: 18px; border: 1px solid #2b3a43; box-shadow: 0 14px 30px #0005; background: #151c23; touch-action: none; }
+.mechanic-stack { display: grid; gap: 7px; margin-top: 4px; }
+.mechanic-strip { border-radius: 12px; padding: 8px 10px; display: flex; gap: 8px; align-items: baseline; font-size: 11px; line-height: 1.35; border: 1px solid #2a3941; background: #172128; color: #8fa1a7; }
+.mechanic-strip b { color: #dce7e1; }
+.door-strip { border-color: #305050; background: #142526; }
+.element-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.element-chips span { border: 1px solid #294049; background: #17262d; color: #9db5ba; border-radius: 999px; padding: 6px 9px; font-size: 10px; }
+.selection-line { min-height: 34px; display: flex; align-items: center; gap: 9px; color: #9caeb3; font-size: 12px; padding: 8px 2px 2px; }
+.selection-dot { width: 10px; height: 10px; border: 1.5px solid #647780; border-radius: 50%; flex: 0 0 auto; }
+.status-message { margin-top: 4px; min-height: 42px; border-radius: 12px; padding: 10px 11px; background: #131d23; border: 1px solid #223139; color: #7f9298; font-size: 11px; line-height: 1.4; }
+.status-message.hint { border-color: #365044; color: #a9c5b0; }.status-message.lost { border-color: #5a3d3b; color: #d99b91; }.status-message.portal { border-color: #2e5354; color: #9fd9d6; }
+.touch-controls { background: linear-gradient(180deg, #10171d00 0, #10171df2 14%); padding: 8px 14px max(12px, env(safe-area-inset-bottom)); }
+.move-controls { display: grid; grid-template-columns: 1fr 58px 1fr; gap: 8px; align-items: stretch; }
+.move-button { min-height: 58px; border: 1px solid #314149; border-radius: 16px; background: #1a262d; color: #edf2ec; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; }
+.move-button span { font-size: 24px; }.move-button b { font-size: 13px; }
+.move-button:disabled { opacity: .34; cursor: default; }
+.move-hint { display: grid; place-items: center; color: #5f747b; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; position: relative; }
+.move-hint i { width: 24px; height: 1px; background: #33444b; }
+.game-toolbar { margin-top: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.tool-button { min-height: 46px; border-radius: 13px; border: 1px solid #26363e; background: #151f26; color: #83979d; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.tool-button span { font-size: 16px; }.tool-button b { font-size: 10px; }.tool-button:disabled { opacity: .32; cursor: default; }
+
+/* Completion transition */
+.transition-screen { padding: max(28px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at 50% 34%, #6ab9a82b, transparent 30%), linear-gradient(180deg, #121b21, #0d151a); }
+.transition-symbol { width: 86px; height: 86px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 26px; color: #d8f2ce; font-size: 42px; border: 1px solid #4c6a5c; background: #1c2d29; box-shadow: 0 0 50px #77c8a720; }
+.transition-screen h2 { margin: 10px 0 8px; font-family: Georgia, serif; font-size: 43px; font-weight: 500; letter-spacing: -.04em; }
+.transition-screen > p { margin: 0; color: #8da0a7; font-size: 14px; }
+.transition-actions { width: min(100%, 360px); margin-top: 32px; }
+
+/* Help sheet */
+dialog { width: min(calc(100% - 20px), 540px); max-height: min(82dvh, 720px); margin: auto auto max(10px, env(safe-area-inset-bottom)); border: 1px solid #33434b; border-radius: 26px 26px 18px 18px; padding: 12px 18px 18px; background: #172128; color: var(--text); box-shadow: 0 30px 80px #000b; }
+dialog::backdrop { background: #05090dbb; backdrop-filter: blur(4px); }
+.dialog-handle { width: 42px; height: 4px; margin: 0 auto 14px; background: #405158; border-radius: 99px; }
+.dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.dialog-header h2 { margin: 4px 0 0; font-family: Georgia, serif; font-size: 30px; font-weight: 500; }
+.rules-list { display: grid; gap: 8px; margin: 18px 0; max-height: 48dvh; overflow-y: auto; }
+.rules-list p { margin: 0; padding: 11px 12px; border-radius: 13px; background: #131c22; color: #93a5aa; font-size: 12px; line-height: 1.45; border: 1px solid #24333a; }
+.rules-list b { color: #dce6df; }
+#playBtn { width: 100%; }
+
+@media (max-height: 700px) {
+  .game-stats { padding-top: 6px; padding-bottom: 4px; }
+  .game-stats > div { padding-top: 6px; padding-bottom: 6px; }
+  canvas#board { max-height: 42dvh; }
+  .status-message { min-height: 36px; padding-top: 8px; padding-bottom: 8px; }
+  .move-button { min-height: 52px; }
+  .tool-button { min-height: 42px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; transition-duration: .001ms !important; } }
 
 </style>
 <link rel="icon" href="data:,">
 </head>
 <body>
-<div class="app-shell">
-  <header class="site-header">
-    <a class="brand" href="#" id="brand" aria-label="Сближение — к первому уровню">
-      <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
-      <span>сближение<span class="brand-dot">.</span></span>
-    </a>
-    <div class="header-right"><span class="quiet-label"><span class="quiet-dot"></span> В своём ритме</span><button class="icon-button help-trigger" id="helpBtn" aria-label="Правила и управление" title="Правила и управление">?</button></div>
-  </header>
-
-  <main class="workspace">
-    <aside class="sidebar">
-      <div class="intro">
-        <p class="eyebrow" id="campaignEyebrow">КОЛЛЕКЦИЯ · 300 УРОВНЕЙ</p>
-        <h1>Холод. Ветер.<br><span>Живая логика.</span></h1>
-        <p class="intro-copy">Сдвигайте, замораживайте, поднимайте.<br>У каждого блока — свой характер.</p>
+<div class="mobile-shell">
+  <section class="app-screen home-screen is-active" id="homeScreen" aria-labelledby="homeTitle">
+    <div class="home-glow" aria-hidden="true"></div>
+    <header class="home-topbar">
+      <div class="wordmark"><span class="wordmark-mark"><i></i><i></i></span><span>сближение<span>.</span></span></div>
+      <button class="circle-button" id="helpBtn" type="button" aria-label="Правила игры">?</button>
+    </header>
+    <main class="home-main">
+      <p class="eyebrow">КЛАССИЧЕСКАЯ КОЛЛЕКЦИЯ</p>
+      <h1 id="homeTitle">260 уровней.<br><span>Один ход за раз.</span></h1>
+      <p class="home-copy">Сдвигайте блоки, используйте платформы и двери на краях поля. Без таймера и штрафов за раздумья.</p>
+      <div class="home-art" aria-hidden="true">
+        <span class="art-block coral">●</span><span class="art-door left"></span><span class="art-line"></span><span class="art-door right"></span><span class="art-block mint">◆</span>
       </div>
-      <section class="level-section" aria-label="Выбор уровня">
-        <div class="section-topline"><h2>Ваш путь</h2><span id="progressText">0 / 300</span></div>
-        <nav class="campaign-switch" aria-label="Набор уровней"><a data-campaign="current" href="?campaign=current">300 новых</a><a data-campaign="old" href="?campaign=old">260 старых</a></nav>
-        <div class="level-grid" id="levelGrid"></div>
-        <div class="fire-chapter-heading"><span>Огненные этюды</span><span class="chapter-counter">11–14</span></div>
-        <div class="level-grid fire-level-grid" id="fireLevelGrid" aria-label="Четыре уровня с огнём"></div>
-        <div class="portal-chapter-heading"><span>Огонь и двери</span><span class="portal-badge">15–20</span></div>
-        <div class="level-grid portal-level-grid" id="portalLevelGrid" aria-label="Шесть уровней с новыми механиками"></div>
-        <div class="element-chapter-heading"><span>Стихии</span><span class="element-badge">НОВОЕ · 21–30</span></div>
-        <div class="level-grid element-level-grid" id="elementLevelGrid" aria-label="Десять уровней со льдом, растениями и ветром"></div>
-        <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
-        <p class="level-caption">Любой уровень открыт с самого начала.</p>
+      <section class="progress-card" aria-label="Прогресс прохождения">
+        <div><span>Пройдено</span><strong id="homeProgressText">0 / 260</strong></div>
+        <div class="progress-track"><span id="homeProgressBar"></span></div>
       </section>
-      <section class="lesson" aria-labelledby="lessonTitle">
-        <div class="lesson-topline"><span class="tiny-spark" aria-hidden="true">✧</span><span id="lessonTag">ЗНАКОМСТВО</span></div>
-        <h2 id="lessonTitle">Первый контакт</h2>
-        <p id="lessonNote"></p>
-      </section>
-      <div class="legend" aria-label="Типы блоков">
-        <span class="legend-item coral"><span class="shape">●</span> круг</span>
-        <span class="legend-item mint"><span class="shape">◆</span> ромб</span>
-        <span class="legend-item lilac"><span class="shape">▲</span> треугольник</span>
-        <span class="legend-item gold"><span class="shape">✚</span> крест</span>
-        <span class="legend-item fire-legend"><svg class="flame-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 5 7 6 7 12a7 7 0 0 1-14 0c0-3 2-5 4-7-1 4 2 6 3 3 1-2-1-5 0-8Z" fill="currentColor"/><path d="M12 12c0 3 4 4 2 7-2 2-5-1-3-3Z" fill="#ffdca3"/></svg> огонь · подвижный</span>
-        <span class="legend-item ash-legend"><span class="ash-mini" aria-hidden="true">╱</span> уголь · подвижный</span>
-        <span class="legend-item ice-legend"><span class="element-mini">❄</span> лёд · два касания</span>
-        <span class="legend-item plant-legend"><span class="element-mini">♧</span> растения · хватка</span>
-        <span class="legend-item wind-legend"><span class="element-mini">↑</span> ветер · подъём</span>
-        <span class="legend-item portal-legend"><span class="portal-mini" aria-hidden="true">1</span> двери · парные</span>
+      <div class="home-actions">
+        <button class="primary-button" id="continueBtn" type="button">Продолжить · уровень 001</button>
+        <button class="secondary-button" id="openLevelsBtn" type="button">Выбрать уровень</button>
       </div>
-      <div class="sidebar-footer"><span class="clock-icon" aria-hidden="true">∞</span><span>Без таймера. Без спешки.<br>Каждый ход можно отменить.</span></div>
-    </aside>
+    </main>
+    <footer class="home-footer"><span>КЛАССИКА · 260</span><span>∞ без таймера</span></footer>
+  </section>
 
-    <section class="game-panel" aria-label="Головоломка">
-      <header class="game-header">
-        <div class="game-level"><span class="level-kicker" id="levelKicker">ЭТЮД 21 / 30</span><h2 id="boardTitle">Первый контакт</h2></div>
-        <div class="stats">
-          <div class="stat"><strong id="moveCount">0</strong><span>ходов</span></div>
-          <div class="stat"><strong id="blockCount">3</strong><span id="blockCountLabel">игровых</span></div>
-          <div class="stat burnt-stat" id="burntStat"><strong id="burntCount">0</strong><span>горелых</span></div>
-        </div>
-      </header>
+  <section class="app-screen levels-screen" id="levelsScreen" hidden aria-labelledby="levelsTitle">
+    <header class="screen-header">
+      <button class="back-button" id="levelsBackBtn" type="button" aria-label="Назад">←</button>
+      <div><p class="screen-kicker">КЛАССИКА</p><h1 id="levelsTitle">Уровни</h1></div>
+      <span class="level-progress" id="progressText">0 / 260</span>
+    </header>
+    <div class="levels-progress"><span id="progressBar"></span></div>
+    <p class="levels-note">Все уровни доступны сразу. Галочка отмечает лучший завершённый результат.</p>
+    <div class="level-grid" id="levelGrid" aria-label="Список уровней"></div>
+  </section>
+
+  <section class="app-screen game-screen" id="gameScreen" hidden aria-label="Игра">
+    <header class="game-topbar">
+      <button class="back-button" id="gameBackBtn" type="button" aria-label="К списку уровней">←</button>
+      <div class="game-heading"><span class="level-kicker" id="levelKicker">УРОВЕНЬ 001 / 260</span><h2 id="boardTitle">Уровень 001</h2></div>
+      <button class="circle-button" id="gameHelpBtn" type="button" aria-label="Правила игры">?</button>
+    </header>
+
+    <div class="game-stats" aria-label="Статистика уровня">
+      <div><strong id="moveCount">0</strong><span>ходов</span></div>
+      <div><strong id="blockCount">0</strong><span id="blockCountLabel">цветных</span></div>
+      <div id="burntStat" hidden><strong id="burntCount">0</strong><span>горелых</span></div>
+    </div>
+
+    <main class="game-main">
       <div class="stage" id="stage">
-        <canvas id="board" tabindex="0" aria-label="Игровое поле" aria-describedby="boardInstructions boardDescription">Для игры нужен браузер с поддержкой Canvas.</canvas>
-        <p class="sr-only" id="boardInstructions">Вверх и вниз: выбрать блок. Влево и вправо: сдвинуть выбранный блок на одну клетку. Z: отменить ход. R: начать уровень заново. H: подсказка. Escape: снять выделение.</p>
+        <canvas id="board" tabindex="0" aria-label="Игровое поле" aria-describedby="boardInstructions boardDescription">Для игры нужен Canvas.</canvas>
+        <p class="sr-only" id="boardInstructions">Коснитесь блока. Свайпните влево или вправо либо используйте кнопки под полем. Z — отменить, R — заново, H — подсказка.</p>
         <p class="sr-only" id="boardDescription"></p>
-        <div class="win-overlay" id="winOverlay" hidden>
-          <div class="win-symbol" aria-hidden="true">✧</div>
-          <p class="eyebrow">ВСЁ НА СВОИХ МЕСТАХ</p>
-          <h3 id="winTitle">Красиво сошлось.</h3>
-          <p id="winDescription"></p>
-          <button class="primary-button" id="nextBtn">Следующий этюд <span aria-hidden="true">→</span></button>
-          <div class="win-secondary"><button class="text-button" id="viewBoardBtn">Посмотреть поле</button><button class="text-button" id="winReplayBtn">Пройти ещё раз</button></div>
-        </div>
       </div>
-      <div class="mechanic-strip" id="fireMechanic">
-        <span class="mechanic-label"><svg class="flame-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 5 7 6 7 12a7 7 0 0 1-14 0c0-3 2-5 4-7-1 4 2 6 3 3 1-2-1-5 0-8Z" fill="currentColor"/><path d="M12 12c0 3 4 4 2 7-2 2-5-1-3-3Z" fill="#ffdca3"/></svg><span>Огонь → уголь</span></span>
-        <span>Огонь можно двигать. Обжиг только сверху.</span>
-      </div>
-      <div class="mechanic-strip portal-strip" id="portalMechanic" hidden>
-        <span class="mechanic-label"><span class="portal-mini" aria-hidden="true">1</span><span>Телепорт-дверь</span></span>
-        <span id="portalMechanicText">Одинаковые номера — одна пара.</span>
-      </div>
-      <div class="elements-strip" id="elementsMechanic" hidden aria-label="Специальные механики уровня">
-        <span class="element-chip" id="iceChip"><b aria-hidden="true">❄</b> Лёд · два касания</span>
-        <span class="element-chip" id="plantChip"><b aria-hidden="true">♧</b> Растения · хватка</span>
-        <span class="element-chip" id="windChip"><b aria-hidden="true">↑</b> Ветер · подъём</span>
-      </div>
-      <div class="control-section">
-        <button class="result-link" id="showResultBtn" hidden>Уровень решён · Показать результат →</button>
-        <div class="selection-line" id="selectionLine"><span class="selection-dot" id="selectionDot"></span><span id="selectionText">Выберите блок на поле</span></div>
-        <div class="move-controls" aria-label="Перемещение выбранного блока">
-          <button class="move-button" id="leftBtn" aria-label="Передвинуть выбранный блок влево" disabled><span aria-hidden="true">←</span><span>Влево</span></button>
-          <span class="one-cell" aria-hidden="true">на 1<br>клетку</span>
-          <button class="move-button" id="rightBtn" aria-label="Передвинуть выбранный блок вправо" disabled><span>Вправо</span><span aria-hidden="true">→</span></button>
-        </div>
-        <div class="status-message" id="statusMessage" role="status" aria-live="polite">Соедините одинаковые блоки и очистите поле.</div>
-      </div>
-      <footer class="game-toolbar">
-        <button class="tool-button" id="undoBtn" disabled><span class="tool-icon" aria-hidden="true">↶</span><span>Отменить</span><kbd>Z</kbd></button>
-        <button class="tool-button" id="resetBtn"><span class="tool-icon" aria-hidden="true">↻</span><span>Заново</span><kbd>R</kbd></button>
-        <button class="tool-button hint-button" id="hintBtn"><span class="tool-icon" aria-hidden="true">✧</span><span id="hintLabel">Подсказка</span><kbd>H</kbd></button>
-      </footer>
-    </section>
-  </main>
 
-  <footer class="page-footer"><span>ЛОГИКА ВМЕСТО СКОРОСТИ</span><p>Выберите блок и нажмите <kbd>←</kbd> <kbd>→</kbd><span class="footer-separator">/</span>или смахните блок в сторону</p><span class="edition" id="editionLabel">300 УРОВНЕЙ · DAT</span></footer>
+      <div class="mechanic-stack" aria-live="polite">
+        <div class="mechanic-strip fire-strip" id="fireMechanic" hidden><b>Огонь</b><span>обжигает только сверху</span></div>
+        <div class="mechanic-strip door-strip" id="portalMechanic" hidden><b>Двери</b><span id="portalMechanicText">Открытый край переносит на противоположную сторону.</span></div>
+        <div class="element-chips" id="elementsMechanic" hidden>
+          <span id="iceChip">❄ лёд</span><span id="plantChip">♧ растение</span><span id="windChip">↑ ветер</span>
+        </div>
+      </div>
+
+      <div class="selection-line" id="selectionLine"><span class="selection-dot" id="selectionDot"></span><span id="selectionText">Коснитесь блока, чтобы выбрать его</span></div>
+      <div class="status-message" id="statusMessage" role="status" aria-live="polite">Соединяйте одинаковые цветные блоки.</div>
+    </main>
+
+    <div class="touch-controls">
+      <div class="move-controls" aria-label="Перемещение выбранного блока">
+        <button class="move-button" id="leftBtn" type="button" disabled><span aria-hidden="true">←</span><b>Влево</b></button>
+        <div class="move-hint"><span>1 клетка</span><i></i></div>
+        <button class="move-button" id="rightBtn" type="button" disabled><b>Вправо</b><span aria-hidden="true">→</span></button>
+      </div>
+      <div class="game-toolbar">
+        <button class="tool-button" id="undoBtn" type="button" disabled><span>↶</span><b>Отменить</b></button>
+        <button class="tool-button" id="resetBtn" type="button"><span>↻</span><b>Заново</b></button>
+        <button class="tool-button" id="hintBtn" type="button"><span>✧</span><b id="hintLabel">Подсказка</b></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="app-screen transition-screen" id="transitionScreen" hidden aria-labelledby="transitionTitle">
+    <div class="transition-symbol" aria-hidden="true">✧</div>
+    <span class="transition-kicker" id="transitionKicker">УРОВЕНЬ 001 ПРОЙДЕН</span>
+    <h2 id="transitionTitle">Сошлось.</h2>
+    <p id="transitionDescription">Решение за 0 ходов.</p>
+    <div class="transition-actions">
+      <button class="primary-button" id="nextBtn" type="button">Следующий уровень →</button>
+      <button class="secondary-button" id="transitionReplayBtn" type="button">Пройти ещё раз</button>
+      <button class="text-button" id="transitionLevelsBtn" type="button">К списку уровней</button>
+    </div>
+  </section>
 </div>
 
 <dialog id="helpDialog" aria-labelledby="helpTitle">
-  <div class="dialog-header"><span class="eyebrow">КАК ИГРАТЬ</span><button class="icon-button" id="closeHelpBtn" aria-label="Закрыть правила">×</button></div>
-  <h2 id="helpTitle">Всё начинается с одного хода.</h2>
-  <p>Ваша цель — убрать все обычные цветные блоки: соединить одинаковые или обжечь на огне. Лёд, растения, ветер, огонь и горелые блоки могут остаться. Таймера нет.</p>
+  <div class="dialog-handle" aria-hidden="true"></div>
+  <header class="dialog-header"><div><p class="eyebrow">КАК ИГРАТЬ</p><h2 id="helpTitle">Сначала контакт.</h2></div><button class="circle-button" id="closeHelpBtn" type="button" aria-label="Закрыть">×</button></header>
   <div class="rules-list">
-    <div><span class="rule-number">01</span><p><strong>Только влево и вправо.</strong> Игрок сдвигает любой подвижный блок на одну свободную клетку. Толкать соседей нельзя. Вертикальное движение происходит автоматически: вниз от гравитации, вверх от ветра. Светлая грань платформы между клетками непроходима.</p></div>
-    <div><span class="rule-number">02</span><p><strong>Цель — убрать цветные блоки.</strong> После завершения движения и реакций исчезают группы из двух и более обычных блоков одного типа, соединённых сторонами. Диагональ не считается. Все специальные блоки могут остаться на поле.</p></div>
-    <div><span class="rule-number">03</span><p><strong>Огонь и уголь.</strong> Обычный блок непосредственно над горящим огнём становится углём. Он сохраняет свою клетку, подвижность и вес, но больше не совпадает и не учитывается в цели уровня. Опасна только верхняя грань огня; сам огонь тоже можно двигать.</p></div>
-    <div><span class="rule-number">04</span><p><strong>Лёд помнит попадания, а не время.</strong> Новое приземление или горизонтальный сдвиг другого блока на лёд даёт трещину: 0/2 → 1/2. Второе попадание разрушает лёд и освобождает клетку. Стоящий сверху блок не наносит повторных ударов. Тот же блок можно убрать и вернуть для второго удара.</p></div>
-    <div><span class="rule-number">05</span><p><strong>На огне лёд тает.</strong> Лёд над горящей верхней гранью огня исчезает, а не превращается в уголь. Замёрзшее растение — это растение, а не ледяной блок.</p></div>
-    <div><span class="rule-number">06</span><p><strong>Растения удерживают соседей.</strong> Незамёрзшее растение не даёт падать блокам рядом с любой из четырёх сторон. Хватка действует только при непосредственном соседстве, не через дверь. Она не запрещает горизонтальные ходы. Удалите контакт — сосед снова сможет упасть.</p></div>
-    <div><span class="rule-number">07</span><p><strong>Лёд замораживает растение.</strong> Контакт с любой стороной льда навсегда замораживает растение: оно отпускает соседей, а другие растения больше не могут удерживать его самого. Оно остаётся твёрдым, подвижным блоком и может лежать на обычной опоре. Заморозка не передаётся от растения к растению.</p></div>
-    <div><span class="rule-number">08</span><p><strong>Растение над огнём загорается.</strong> В этой версии оно превращается в полноценный подвижный огненный блок и теряет хватку. Это работает и для замёрзшего растения. Новый огонь может зажечь растение или обуглить цветной блок над собой.</p></div>
-    <div><span class="rule-number">09</span><p><strong>Ветер поднимает блоки.</strong> Поток идёт строго вверх до первой стены или блока и поднимает этот блок. Если на нём стоят другие блоки, давление поднимает и всю соприкасающуюся стопку. Ветер сильнее хватки растения. В потоке блоки удерживаются наверху; вне потока снова действует гравитация.</p></div>
-    <div><span class="rule-number">10</span><p><strong>Поток временно гасит огонь.</strong> Только огонь, на который непосредственно дует ветер, становится безопасным, не переставая быть твёрдым блоком. С прекращением обдува пламя возвращается. Блок между ветром и огнём закрывает пламя от обдува. Погашенный огонь не обугливает, не плавит и не поджигает.</p></div>
-    <div><span class="rule-number">11</span><p><strong>Сам ветер не трескает лёд.</strong> И при падении, и при горизонтальном сдвиге на лёд ветровой блок не наносит удар. Остальные блоки, в том числе уголь и растения, дают обычную нагрузку. Все эти блоки можно двигать и телепортировать.</p></div>
-    <div><span class="rule-number">12</span><p><strong>Телепорт — дверь, не клетка.</strong> Чтобы перейти, нужно пересечь проём. Нижняя дверь ведёт к верхней, боковая — к противоположной боковой. Ветер может протолкнуть блок через верхнюю дверь к нижнему выходу. Сам воздух через двери не проходит. После выхода действуют местные ветер, растения и гравитация.</p></div>
-    <div><span class="rule-number">13</span><p><strong>Выход должен быть свободен.</strong> Дверь не выталкивает и не заменяет блоки. При переходе сохраняются трещины, заморозка и обугливание. Если движение попадает в бесконечный цикл ветра, падений и переходов, ход отменяется без изменения позиции и счётчика.</p></div>
-    <div><span class="rule-number">14</span><p><strong>Любой ход можно отменить целиком.</strong> Z возвращает положение и все состояния до хода: лёд, растения, пламя, уголь, двери и совпадения. Без огня одиночный цветной блок — тупик; с огнём его ещё можно обуглить. Таймера, жизней и штрафа за раздумья нет.</p></div>
+    <p><b>Двигайте влево и вправо.</b> Выберите блок и сдвиньте его на одну свободную клетку. После хода работает физика.</p>
+    <p><b>Одинаковые цвета исчезают при касании.</b> Проверка происходит до следующего падения или входа в дверь.</p>
+    <p><b>Светлая платформа</b> блокирует переход только между двумя доступными клетками. Линии вдоль стен не показываются.</p>
+    <p><b>Открытый край — дверь.</b> Горизонтальная дверь переносит блок на противоположную сторону. При падении нижняя дверь возвращает блок сверху.</p>
+    <p><b>Специальные элементы</b> сохраняют механику классической игры: огонь, лёд, растения и ветер взаимодействуют с соседними клетками.</p>
   </div>
-  <div class="dialog-note"><strong>Управление</strong><p>Мышь или касание: выберите блок, затем нажмите стрелку под полем, соседнюю пустую клетку или смахните в сторону. На клавиатуре: ↑ / ↓ выбирают блок, ← / → двигают. Z — отмена, R — заново, H — подсказка.</p><p>Подсказка ищет решение от текущей позиции и показывает один ход, но не делает его за вас. Общий поиск ограничен 60 000 состояний: достижение лимита не означает проигрыш.</p></div>
-  <button class="primary-button" id="playBtn">Понятно. Начнём <span aria-hidden="true">→</span></button>
+  <button class="primary-button" id="playBtn" type="button">Понятно</button>
 </dialog>
+
 <script>
 /* Generated by scripts/build.mjs. Edit src/, not this file. */
 (() => {
@@ -344,19 +335,44 @@ class GameController {
         this.input.attach();
         const parent = this.elements.get('board').parentElement;
         if (typeof ResizeObserver !== 'undefined' && parent) {
-            this.resizeObserver = new ResizeObserver(() => this.renderer.resizeCanvas());
+            this.resizeObserver = new ResizeObserver(() => {
+                if (this.ui.screen === 'game')
+                    this.renderer.resizeCanvas();
+            });
             this.resizeObserver.observe(parent);
         }
         else
-            window.addEventListener('resize', () => this.renderer.resizeCanvas(), { signal: this.scope.signal });
-        this.loadLevel(this.progress.level);
+            window.addEventListener('resize', () => {
+                if (this.ui.screen === 'game')
+                    this.renderer.resizeCanvas();
+            }, { signal: this.scope.signal });
+        this.view.configureLevel();
+        this.view.updateLevelNavigation();
+        this.ui.screen = 'home';
+        this.view.render();
+    }
+    showHome() {
+        if (this.destroyed)
+            return;
+        this.cancelPending();
+        this.ui.screen = 'home';
+        this.view.render();
+    }
+    showLevels() {
+        if (this.destroyed)
+            return;
+        this.cancelPending();
+        this.ui.screen = 'levels';
+        this.view.updateLevelNavigation();
+        this.view.render();
     }
     loadLevel(index) {
         if (this.destroyed || !this.levels.has(index))
             return;
         this.session.load(index);
         this.cancelPending();
-        this.ui.reset();
+        this.ui.resetGameplay();
+        this.ui.screen = 'game';
         this.view.configureLevel();
         this.progress.select(index);
         this.view.updateLevelNavigation();
@@ -434,6 +450,7 @@ class GameController {
         if (this.session.getStatus().kind === 'won') {
             this.progress.complete(this.session.levelIndex, this.session.moves);
             this.view.updateLevelNavigation();
+            this.ui.screen = 'complete';
         }
         const message = GameMessages_js_1.GameMessages.afterMove(result);
         this.setMessage(message.text, message.kind);
@@ -444,7 +461,6 @@ class GameController {
         if (this.destroyed || this.ui.busy || !this.session.undo())
             return;
         this.cancelPending();
-        this.ui.reviewingWin = false;
         this.setMessage('Ход отменён целиком: трещины, заморозка, огонь, поток, телепортации и совпадения.');
         this.renderer.draw();
     }
@@ -487,12 +503,6 @@ class GameController {
         }
         this.refresh();
     }
-    reviewResult(review) {
-        if (this.destroyed)
-            return;
-        this.ui.reviewingWin = review;
-        this.refresh();
-    }
     nextLevel() {
         const completed = this.progress.completed;
         const firstUnsolved = this.levels.all.findIndex((_, index) => !Object.hasOwn(completed, index));
@@ -509,8 +519,8 @@ class GameController {
             wind: blocks.filter(this.engine.isWind).map(block => ({ id: block.id, x: block.x, y: block.y })),
             extinguishedFires: blocks.filter(block => this.engine.isFire(block) && block.out).map(block => block.id),
             fires: blocks.filter(this.engine.isFire).map(block => ({ id: block.id, x: block.x, y: block.y })),
-            portals: this.session.board.portals.map(pair => ({ id: pair.id, a: { ...pair.a }, b: { ...pair.b } })),
-            reviewingWin: this.ui.reviewingWin, animationPhase: this.ui.animation?.frame.kind ?? null,
+            portals: this.session.board.portals.map(pair => ({ id: pair.id, boundary: Boolean(pair.boundary), oneWay: Boolean(pair.oneWay), a: { ...pair.a }, b: { ...pair.b } })),
+            screen: this.ui.screen, animationPhase: this.ui.animation?.frame.kind ?? null,
         };
     }
     destroy() {
@@ -1029,6 +1039,17 @@ class PhysicsSystem {
                 if (!changed)
                     break;
             }
+            if (board.contactBeforeMotion) {
+                const groups = withMatches ? this.matchingGroups(board, blocks) : [];
+                if (groups.length) {
+                    const removed = new Set(groups.flat()), after = blocks.filter(b => !removed.has(b.id));
+                    frame('match', blocks, after, { removed: [...removed], groups });
+                    blocks = after;
+                    movedIds = new Set();
+                    oldContacts = this.iceContacts(board, blocks);
+                    continue;
+                }
+            }
             const key = BlockRules_js_1.BlockRules.stateKey(blocks);
             if (seen.has(key))
                 return { blocks: BlockRules_js_1.BlockRules.clone(input), trace: [], rejected: BlockRules_js_1.BlockRules.hasElements(input) ? 'physics-loop' : 'portal-loop' };
@@ -1066,12 +1087,16 @@ class PhysicsSystem {
                     frame(kind, before, blocks, { ...(warps.length ? { warps } : {}), risen, fallen });
                 continue;
             }
-            const groups = withMatches ? this.matchingGroups(board, blocks) : [];
-            if (!groups.length)
-                return { blocks, trace };
-            const removed = new Set(groups.flat()), after = blocks.filter(b => !removed.has(b.id));
-            frame('match', blocks, after, { removed: [...removed], groups });
-            blocks = after;
+            if (!board.contactBeforeMotion) {
+                const groups = withMatches ? this.matchingGroups(board, blocks) : [];
+                if (groups.length) {
+                    const removed = new Set(groups.flat()), after = blocks.filter(b => !removed.has(b.id));
+                    frame('match', blocks, after, { removed: [...removed], groups });
+                    blocks = after;
+                    continue;
+                }
+            }
+            return { blocks, trace };
         }
         return { blocks: BlockRules_js_1.BlockRules.clone(input), trace: [], rejected: 'settle-limit' };
     }
@@ -1104,6 +1129,8 @@ class PhysicsSystem {
         return groups;
     }
     resolve(board, input, withTrace = false) {
+        if (board.contactBeforeMotion)
+            return this.settleElements(board, input, withTrace, true);
         if (BlockRules_js_1.BlockRules.hasElements(input) || input.some(BlockRules_js_1.BlockRules.isFire))
             return this.settleElements(board, input, withTrace);
         let blocks = BlockRules_js_1.BlockRules.clone(input);
@@ -1224,7 +1251,7 @@ class PuzzleEngine {
         const candidates = this.candidateMoves(board, blocks);
         if (!candidates.length)
             return { kind: 'lost', reason: 'immobile' };
-        if (board.wrapGravity)
+        if (board.wrapGravity || board.portals.some((pair) => pair.boundary))
             return { kind: 'playing' };
         if (board.portals.length || BlockRules_js_1.BlockRules.hasElements(blocks)) {
             let any = false;
@@ -1434,24 +1461,21 @@ const FLAG_SIDES = [
     [DatLevelArchive_js_1.DatTileFlag.PlatformDirectionRight, 'right'],
 ];
 class DatCampaignCatalog {
-    campaigns;
-    constructor() {
-        this.campaigns = Object.freeze({
-            current: this.buildCampaign('current', 'Новая коллекция · 300', '300 новых', 'sblizhenie.progress.dat.current.v1', embeddedData_js_1.CURRENT_ARCHIVES),
-            old: this.buildCampaign('old', 'Классическая коллекция · 260', '260 старых', 'sblizhenie.progress.dat.old.v1', embeddedData_js_1.OLD_ARCHIVES),
+    campaign;
+    constructor(sources = embeddedData_js_1.OLD_ARCHIVES) {
+        const decoded = sources.flatMap(source => new DatLevelArchive_js_1.DatLevelArchive(source.name, source.bytes).levels);
+        const levels = decoded.map((level, index) => this.toLevelDefinition(level, index));
+        this.campaign = Object.freeze({
+            id: 'old',
+            label: 'Классическая коллекция · 260',
+            shortLabel: '260 классических',
+            progressKey: 'sblizhenie.progress.dat.old.v2',
+            levels: Object.freeze(levels),
         });
     }
-    fromSearch(search) {
-        const value = new URLSearchParams(search).get('campaign');
-        return this.get(value === 'old' ? 'old' : 'current');
-    }
-    get(id) { return this.campaigns[id]; }
-    buildCampaign(id, label, shortLabel, progressKey, sources) {
-        const decoded = sources.flatMap(source => new DatLevelArchive_js_1.DatLevelArchive(source.name, source.bytes).levels);
-        const levels = decoded.map((level, index) => this.toLevelDefinition(level, index, id));
-        return Object.freeze({ id, label, shortLabel, progressKey, levels: Object.freeze(levels) });
-    }
-    toLevelDefinition(level, index, campaign) {
+    get() { return this.campaign; }
+    fromSearch(_search) { return this.campaign; }
+    toLevelDefinition(level, index) {
         const rows = [];
         const platforms = [];
         const present = new Set();
@@ -1478,15 +1502,14 @@ class DatCampaignCatalog {
             present.has(DatLevelArchive_js_1.DatTileType.Plant) ? 'растения' : '',
             present.has(DatLevelArchive_js_1.DatTileType.Wind) ? 'ветер' : '',
         ].filter(Boolean);
-        const sourceNumber = level.archiveIndex + 1;
         return Object.freeze({
             title: `Уровень ${String(index + 1).padStart(3, '0')}`,
-            tag: campaign === 'old' ? 'КЛАССИЧЕСКИЙ НАБОР' : 'НОВЫЙ НАБОР',
-            note: `${level.width} × ${level.height} · ${level.archive}, запись ${sourceNumber}${features.length ? ` · ${features.join(', ')}` : ''}.`,
+            tag: 'КЛАССИКА',
+            note: `${level.width} × ${level.height}${features.length ? ` · ${features.join(', ')}` : ''}`,
             rows: Object.freeze(rows),
             openBoundary: true,
-            wrapHorizontal: true,
-            wrapGravity: true,
+            edgeDoors: true,
+            contactBeforeMotion: true,
             resolveOnLoad: false,
             ...(platforms.length ? { platforms: Object.freeze(platforms) } : {}),
         });
@@ -1568,279 +1591,7 @@ exports.DatLevelArchive = DatLevelArchive;
 "levels/dat/embeddedData.js": function(module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OLD_ARCHIVES = exports.CURRENT_ARCHIVES = void 0;
-exports.CURRENT_ARCHIVES = [
-    {
-        name: "1_60.dat",
-        bytes: new Uint8Array([
-            52, 5, 112, 1, 52, 112, 16, 68, 0, 48, 20, 0, 64, 53, 5, 49, 1, 4, 32, 0, 68, 16, 0, 112, 36, 64, 112, 52, 16, 86, 112, 112,
-            112, 49, 1, 112, 112, 0, 64, 32, 4, 0, 0, 32, 64, 4, 112, 0, 112, 112, 4, 112, 0, 0, 112, 52, 112, 0, 0, 112, 85, 5, 65, 1,
-            65, 1, 4, 12, 0, 112, 112, 4, 0, 64, 0, 112, 4, 12, 12, 0, 0, 4, 0, 0, 0, 0, 84, 5, 1, 17, 1, 1, 112, 112, 48, 32,
-            0, 4, 64, 32, 16, 0, 4, 48, 16, 64, 0, 85, 5, 17, 1, 33, 1, 4, 1, 17, 1, 0, 4, 33, 1, 17, 0, 4, 1, 1, 1, 0,
-            112, 0, 1, 0, 112, 53, 37, 17, 0, 52, 64, 0, 112, 112, 112, 20, 32, 0, 68, 48, 0, 85, 112, 0, 1, 1, 1, 112, 1, 49, 5, 0,
-            112, 0, 1, 64, 0, 4, 1, 49, 5, 0, 4, 0, 64, 49, 0, 85, 37, 0, 1, 0, 112, 112, 64, 0, 0, 112, 112, 1, 4, 0, 112, 112,
-            0, 33, 4, 112, 112, 0, 64, 1, 32, 54, 5, 64, 1, 4, 1, 4, 112, 0, 0, 4, 65, 0, 4, 1, 0, 112, 0, 65, 85, 53, 17, 65,
-            33, 1, 5, 1, 1, 1, 0, 4, 0, 0, 0, 0, 100, 96, 96, 96, 96, 48, 1, 112, 112, 112, 85, 5, 65, 17, 49, 97, 4, 112, 112, 112,
-            112, 4, 1, 16, 0, 112, 5, 0, 1, 1, 112, 112, 0, 4, 4, 112, 85, 53, 65, 112, 17, 33, 36, 1, 0, 1, 48, 112, 0, 0, 0, 112,
-            112, 1, 0, 1, 112, 112, 97, 97, 97, 112, 67, 5, 17, 96, 1, 36, 112, 112, 112, 52, 0, 0, 0, 85, 112, 112, 65, 112, 0, 100, 1, 1,
-            1, 0, 68, 0, 0, 4, 0, 112, 64, 0, 4, 112, 112, 112, 64, 1, 1, 85, 112, 1, 1, 49, 17, 4, 0, 0, 16, 64, 4, 84, 80, 112,
-            112, 52, 1, 112, 112, 112, 68, 112, 112, 112, 112, 84, 112, 1, 49, 1, 112, 4, 48, 80, 48, 0, 0, 80, 112, 80, 0, 4, 112, 112, 112, 0,
-            70, 112, 69, 1, 112, 112, 112, 0, 68, 68, 4, 0, 80, 84, 80, 0, 80, 112, 84, 80, 80, 112, 84, 80, 80, 84, 53, 1, 81, 112, 112, 113,
-            4, 1, 0, 116, 112, 4, 0, 0, 116, 112, 84, 80, 80, 49, 54, 21, 81, 1, 5, 1, 0, 4, 16, 0, 20, 1, 1, 84, 0, 0, 5, 0,
-            0, 100, 53, 161, 1, 112, 112, 112, 112, 0, 0, 0, 160, 48, 112, 0, 0, 12, 4, 112, 112, 0, 0, 1, 0, 112, 100, 165, 33, 1, 112, 112,
-            112, 52, 160, 0, 0, 0, 52, 112, 32, 0, 0, 0, 1, 112, 112, 0, 0, 0, 0, 69, 5, 1, 33, 161, 112, 0, 0, 112, 164, 32, 0, 0,
-            112, 0, 0, 112, 4, 0, 32, 160, 69, 112, 1, 1, 17, 112, 0, 0, 112, 164, 0, 0, 160, 112, 0, 160, 112, 112, 16, 1, 112, 70, 1, 1,
-            33, 161, 112, 112, 0, 112, 0, 0, 32, 160, 112, 112, 0, 112, 0, 0, 32, 160, 112, 0, 112, 112, 85, 5, 33, 49, 17, 1, 4, 12, 12, 12,
-            0, 4, 12, 12, 0, 0, 4, 16, 48, 32, 0, 112, 112, 112, 112, 176, 101, 53, 1, 1, 1, 1, 17, 36, 112, 0, 112, 112, 64, 68, 112, 0,
-            112, 112, 32, 20, 112, 112, 112, 112, 48, 180, 112, 112, 112, 112, 176, 102, 21, 1, 49, 112, 112, 112, 52, 0, 176, 0, 112, 112, 112, 0, 0, 0,
-            0, 112, 112, 0, 0, 0, 0, 112, 112, 0, 0, 0, 0, 20, 112, 0, 176, 0, 0, 112, 102, 181, 0, 0, 1, 1, 116, 52, 0, 12, 4, 0,
-            116, 20, 0, 12, 36, 64, 116, 68, 0, 12, 52, 34, 21, 113, 52, 1, 117, 113, 113, 112, 5, 0, 116, 112, 112, 102, 69, 177, 181, 181, 181, 69,
-            112, 176, 0, 0, 0, 0, 112, 112, 176, 0, 0, 0, 112, 112, 112, 176, 0, 0, 112, 112, 112, 112, 176, 0, 112, 112, 112, 112, 112, 176, 85, 53,
-            81, 112, 81, 65, 36, 80, 0, 80, 48, 112, 80, 12, 80, 112, 112, 80, 0, 80, 112, 112, 1, 97, 1, 112, 69, 5, 97, 49, 1, 4, 112, 112,
-            0, 52, 0, 1, 0, 112, 0, 112, 0, 112, 80, 0, 49, 69, 21, 1, 112, 112, 68, 0, 1, 81, 36, 48, 0, 1, 112, 112, 0, 96, 112, 112,
-            0, 96, 101, 53, 1, 112, 112, 112, 112, 112, 16, 64, 32, 80, 52, 112, 80, 80, 84, 80, 112, 112, 80, 1, 5, 80, 112, 96, 1, 112, 112, 1,
-            1, 100, 112, 112, 112, 1, 81, 1, 100, 64, 32, 0, 80, 80, 112, 112, 112, 80, 80, 80, 112, 112, 112, 80, 80, 80, 100, 37, 177, 1, 1, 1,
-            53, 52, 176, 0, 0, 0, 1, 20, 160, 0, 0, 160, 0, 5, 1, 0, 0, 16, 32, 99, 112, 1, 177, 161, 1, 112, 36, 0, 176, 160, 0, 32,
-            112, 0, 176, 160, 0, 112, 86, 112, 161, 49, 177, 112, 4, 160, 16, 176, 0, 4, 160, 64, 176, 0, 4, 160, 48, 176, 0, 4, 160, 16, 176, 0,
-            112, 160, 64, 176, 112, 100, 37, 1, 112, 112, 112, 37, 164, 0, 0, 0, 0, 1, 4, 0, 0, 0, 0, 0, 176, 112, 176, 0, 112, 112, 101, 5,
-            161, 161, 161, 161, 1, 20, 160, 12, 12, 160, 16, 4, 1, 12, 12, 1, 0, 4, 0, 12, 12, 0, 0, 4, 176, 0, 0, 176, 0, 85, 112, 1,
-            161, 1, 112, 5, 0, 160, 0, 0, 36, 0, 160, 0, 32, 20, 0, 160, 0, 16, 112, 97, 1, 1, 112, 84, 112, 65, 17, 49, 112, 5, 1, 161,
-            165, 1, 4, 0, 160, 160, 0, 4, 96, 160, 160, 0, 85, 112, 161, 97, 161, 112, 4, 160, 160, 160, 0, 68, 0, 12, 0, 64, 112, 0, 0, 0,
-            112, 112, 0, 64, 0, 112, 53, 112, 97, 33, 4, 96, 160, 4, 96, 32, 4, 96, 160, 4, 96, 32, 86, 112, 112, 112, 0, 53, 112, 112, 0, 0,
-            112, 112, 0, 0, 1, 0, 112, 160, 160, 48, 160, 100, 1, 0, 0, 160, 112, 0, 96, 1, 112, 101, 53, 65, 85, 81, 21, 49, 20, 1, 0, 0,
-            1, 68, 112, 0, 176, 176, 0, 1, 112, 80, 80, 80, 80, 80, 112, 80, 80, 80, 80, 80, 100, 37, 112, 112, 112, 112, 112, 5, 1, 1, 1, 85,
-            85, 4, 4, 4, 4, 80, 32, 112, 112, 112, 177, 1, 1, 85, 112, 1, 81, 1, 112, 52, 0, 80, 0, 32, 36, 0, 12, 0, 48, 52, 0, 176,
-            0, 32, 112, 0, 176, 0, 112, 102, 37, 1, 112, 112, 112, 112, 84, 80, 0, 112, 112, 112, 112, 80, 0, 0, 112, 112, 112, 80, 0, 0, 0, 112,
-            112, 80, 0, 0, 0, 36, 112, 80, 176, 176, 176, 112, 85, 85, 17, 112, 17, 81, 84, 5, 177, 1, 84, 84, 81, 80, 81, 80, 112, 176, 80, 176,
-            112, 112, 112, 176, 112, 112, 86, 112, 161, 161, 112, 112, 112, 160, 160, 112, 112, 68, 160, 160, 4, 80, 112, 0, 0, 1, 1, 112, 0, 12, 12, 0,
-            112, 0, 0, 0, 69, 85, 4, 161, 161, 161, 112, 112, 160, 160, 160, 64, 112, 80, 80, 80, 112, 112, 80, 64, 80, 112, 0, 80, 80, 80, 112, 69,
-            112, 81, 161, 112, 5, 160, 80, 0, 68, 80, 160, 64, 5, 160, 80, 1, 112, 80, 160, 112, 85, 165, 161, 0, 161, 165, 164, 160, 160, 160, 160, 84,
-            80, 80, 80, 80, 84, 80, 80, 80, 80, 36, 80, 1, 80, 32, 99, 112, 112, 0, 1, 1, 53, 112, 80, 1, 160, 160, 112, 52, 80, 0, 160, 112,
-            112, 99, 53, 1, 1, 1, 1, 1, 112, 96, 96, 96, 96, 0, 180, 1, 1, 1, 1, 52, 85, 112, 177, 177, 177, 112, 180, 0, 32, 0, 176, 180,
-            177, 177, 177, 176, 180, 177, 97, 176, 176, 112, 176, 176, 176, 112, 85, 112, 1, 112, 1, 112, 4, 96, 0, 176, 0, 4, 112, 112, 112, 0, 4, 48,
-            112, 48, 0, 4, 177, 112, 177, 0, 70, 112, 97, 97, 112, 180, 32, 176, 48, 4, 176, 0, 176, 4, 16, 0, 0, 180, 64, 0, 176, 5, 176, 176,
-            1, 100, 53, 177, 4, 1, 97, 97, 36, 176, 12, 12, 96, 96, 68, 176, 0, 0, 96, 96, 20, 176, 1, 4, 96, 96
-        ]),
-    },
-    {
-        name: "61_120.dat",
-        bytes: new Uint8Array([
-            68, 112, 49, 17, 112, 4, 32, 64, 0, 112, 16, 32, 112, 112, 64, 48, 112, 101, 53, 112, 65, 17, 112, 33, 20, 0, 32, 48, 0, 64, 112, 0,
-            12, 12, 0, 112, 4, 0, 0, 0, 0, 0, 112, 0, 112, 112, 0, 112, 68, 5, 17, 33, 1, 112, 64, 48, 0, 112, 16, 64, 16, 112, 53, 1,
-            36, 86, 53, 17, 65, 33, 65, 20, 1, 1, 1, 16, 36, 0, 0, 0, 48, 112, 0, 0, 0, 112, 112, 0, 4, 4, 112, 112, 112, 4, 112, 112,
-            85, 5, 1, 16, 1, 1, 5, 32, 64, 12, 0, 4, 12, 12, 12, 0, 4, 12, 0, 0, 0, 68, 16, 0, 32, 65, 101, 53, 64, 33, 17, 1,
-            1, 36, 16, 48, 32, 0, 0, 112, 112, 112, 112, 0, 0, 0, 1, 49, 116, 4, 0, 4, 0, 64, 116, 4, 0, 86, 53, 17, 0, 112, 112, 36,
-            64, 1, 112, 112, 20, 48, 0, 112, 112, 112, 112, 1, 48, 16, 112, 112, 0, 64, 32, 112, 112, 1, 1, 16, 85, 5, 33, 0, 1, 1, 4, 1,
-            1, 12, 0, 4, 12, 0, 12, 0, 4, 12, 1, 0, 0, 36, 64, 0, 32, 64, 69, 69, 1, 1, 1, 36, 0, 64, 0, 1, 1, 36, 1, 5,
-            64, 1, 1, 4, 32, 0, 0, 84, 53, 1, 0, 1, 112, 112, 36, 48, 0, 0, 112, 1, 1, 4, 0, 0, 32, 0, 33, 4, 54, 53, 33, 112,
-            20, 112, 112, 52, 32, 112, 5, 64, 112, 4, 1, 112, 4, 96, 0, 99, 5, 49, 17, 112, 1, 1, 0, 1, 1, 96, 64, 32, 0, 0, 0, 112,
-            16, 48, 53, 21, 1, 1, 68, 48, 0, 20, 64, 0, 36, 48, 0, 112, 64, 96, 68, 21, 49, 1, 112, 68, 16, 0, 112, 20, 32, 0, 1, 5,
-            1, 0, 101, 85, 69, 1, 97, 1, 17, 36, 0, 12, 0, 48, 52, 0, 0, 0, 32, 112, 0, 4, 0, 112, 112, 0, 112, 0, 112, 85, 112, 1,
-            49, 1, 49, 52, 80, 80, 0, 112, 112, 112, 112, 0, 81, 4, 0, 0, 0, 112, 4, 0, 0, 80, 112, 100, 53, 1, 1, 1, 1, 65, 5, 0,
-            0, 0, 0, 1, 69, 81, 80, 80, 81, 33, 112, 32, 80, 80, 48, 112, 85, 21, 1, 116, 4, 116, 84, 1, 116, 4, 116, 16, 117, 21, 5, 1,
-            80, 116, 85, 0, 0, 113, 112, 113, 4, 117, 85, 69, 1, 116, 112, 112, 84, 0, 65, 1, 1, 84, 80, 80, 64, 0, 113, 84, 80, 80, 117, 112,
-            113, 84, 117, 112, 84, 53, 1, 81, 1, 49, 5, 0, 1, 0, 1, 84, 80, 80, 80, 80, 84, 80, 32, 80, 32, 85, 5, 160, 112, 160, 1, 4,
-            16, 112, 16, 0, 4, 112, 112, 112, 4, 4, 0, 160, 0, 0, 4, 0, 112, 0, 0, 54, 112, 0, 1, 52, 0, 0, 5, 160, 112, 4, 48, 0,
-            4, 1, 0, 53, 0, 112, 85, 5, 0, 64, 0, 1, 0, 160, 160, 160, 0, 0, 160, 165, 164, 0, 0, 160, 68, 164, 0, 4, 0, 1, 0, 0,
-            102, 112, 112, 112, 112, 165, 49, 112, 112, 112, 112, 164, 0, 1, 1, 1, 53, 164, 0, 4, 0, 0, 1, 164, 0, 5, 0, 0, 0, 117, 113, 4,
-            0, 0, 0, 116, 112, 100, 53, 161, 17, 1, 1, 1, 4, 16, 160, 48, 0, 0, 4, 0, 48, 160, 16, 0, 4, 0, 0, 16, 160, 48, 100, 53,
-            1, 177, 1, 1, 65, 20, 0, 0, 0, 48, 16, 68, 1, 4, 0, 5, 48, 112, 0, 180, 0, 4, 112, 68, 112, 64, 48, 1, 4, 48, 64, 0,
-            68, 12, 12, 4, 52, 1, 1, 176, 86, 112, 112, 33, 112, 112, 0, 0, 17, 0, 0, 0, 0, 32, 0, 0, 0, 48, 0, 16, 0, 0, 32, 0,
-            48, 0, 181, 112, 177, 112, 177, 85, 5, 17, 177, 177, 1, 4, 176, 16, 176, 0, 4, 0, 176, 16, 0, 4, 0, 0, 176, 0, 4, 176, 176, 112,
-            112, 100, 5, 65, 5, 49, 5, 1, 4, 52, 4, 68, 4, 4, 4, 4, 0, 4, 48, 4, 112, 177, 1, 177, 1, 112, 101, 112, 97, 97, 97, 97,
-            112, 4, 96, 32, 64, 96, 0, 4, 12, 12, 12, 12, 0, 4, 80, 80, 80, 80, 0, 112, 80, 64, 32, 80, 112, 69, 53, 1, 97, 33, 112, 0,
-            96, 1, 112, 80, 80, 0, 112, 80, 80, 0, 112, 112, 112, 48, 84, 112, 1, 97, 1, 112, 84, 0, 32, 0, 80, 20, 80, 48, 80, 64, 112, 80,
-            112, 80, 112, 85, 112, 17, 112, 33, 112, 4, 48, 112, 16, 0, 0, 64, 96, 48, 0, 4, 112, 84, 1, 0, 4, 112, 112, 112, 0, 85, 112, 64,
-            0, 1, 1, 4, 12, 80, 80, 64, 0, 0, 12, 80, 80, 0, 0, 0, 12, 80, 100, 4, 0, 68, 112, 100, 21, 1, 1, 1, 1, 33, 164, 160,
-            160, 160, 160, 160, 112, 0, 12, 0, 112, 112, 36, 0, 176, 0, 0, 16, 85, 69, 1, 112, 49, 1, 20, 0, 112, 16, 0, 52, 160, 160, 64, 160,
-            180, 0, 112, 160, 0, 180, 0, 112, 160, 0, 86, 5, 161, 0, 161, 1, 4, 53, 4, 53, 4, 4, 4, 4, 4, 4, 4, 4, 52, 4, 4, 4,
-            177, 1, 177, 0, 4, 1, 1, 1, 0, 85, 181, 1, 112, 112, 112, 180, 0, 0, 112, 112, 176, 48, 32, 48, 0, 112, 32, 160, 160, 0, 112, 112,
-            160, 32, 0, 85, 5, 0, 1, 0, 1, 4, 0, 12, 0, 0, 4, 160, 12, 160, 0, 36, 1, 176, 1, 32, 112, 0, 32, 0, 112, 54, 5, 161,
-            65, 4, 160, 1, 4, 160, 0, 4, 12, 0, 4, 96, 0, 68, 96, 0, 86, 112, 161, 49, 161, 112, 4, 160, 0, 160, 0, 4, 48, 160, 48, 0,
-            4, 0, 160, 0, 0, 4, 160, 160, 160, 0, 101, 1, 112, 1, 97, 68, 5, 97, 97, 96, 52, 112, 112, 112, 36, 160, 96, 32, 4, 64, 160, 64,
-            102, 165, 161, 161, 112, 112, 112, 20, 0, 0, 112, 112, 112, 52, 0, 0, 0, 112, 112, 112, 112, 0, 0, 96, 96, 112, 112, 112, 0, 96, 96, 112,
-            16, 0, 0, 96, 48, 69, 69, 33, 161, 49, 164, 12, 12, 0, 52, 160, 32, 48, 165, 0, 160, 65, 5, 97, 1, 112, 84, 85, 1, 112, 1, 49,
-            84, 4, 0, 0, 84, 52, 176, 112, 176, 48, 181, 1, 112, 1, 177, 100, 5, 1, 53, 1, 5, 1, 52, 1, 84, 81, 4, 48, 112, 80, 0, 80,
-            80, 112, 112, 112, 176, 112, 112, 112, 86, 4, 1, 49, 1, 112, 112, 112, 176, 176, 0, 112, 112, 112, 112, 0, 4, 48, 80, 0, 48, 4, 80, 80,
-            112, 112, 4, 112, 112, 112, 112, 101, 5, 177, 80, 80, 177, 1, 4, 176, 81, 81, 176, 0, 112, 176, 80, 80, 176, 112, 4, 176, 80, 80, 176, 0,
-            36, 176, 81, 81, 176, 32, 102, 69, 1, 1, 1, 69, 112, 37, 0, 80, 80, 1, 112, 112, 0, 80, 80, 0, 36, 112, 0, 80, 80, 1, 112, 112,
-            0, 80, 80, 0, 112, 112, 112, 112, 112, 176, 112, 102, 37, 81, 161, 1, 161, 112, 5, 160, 1, 160, 1, 160, 164, 1, 160, 161, 160, 1, 5, 160,
-            161, 160, 1, 160, 164, 1, 160, 1, 160, 1, 112, 160, 1, 160, 1, 36, 85, 5, 33, 1, 33, 1, 4, 160, 160, 160, 0, 4, 12, 0, 12, 0,
-            4, 160, 32, 160, 0, 112, 80, 80, 80, 112, 85, 69, 1, 112, 49, 112, 20, 80, 112, 16, 112, 52, 160, 160, 64, 112, 112, 80, 0, 160, 1, 112,
-            80, 112, 112, 112, 70, 85, 49, 161, 81, 84, 161, 161, 80, 84, 1, 1, 80, 84, 161, 161, 80, 84, 161, 161, 80, 84, 161, 49, 80, 101, 112, 0,
-            1, 1, 0, 112, 112, 0, 16, 0, 0, 112, 112, 112, 112, 112, 112, 112, 164, 16, 112, 112, 16, 160, 164, 0, 80, 80, 0, 160, 85, 5, 181, 97,
-            177, 5, 4, 176, 176, 176, 0, 4, 0, 33, 0, 0, 4, 0, 12, 0, 0, 4, 176, 176, 176, 0, 85, 5, 97, 65, 97, 1, 4, 96, 16, 96,
-            0, 4, 176, 176, 176, 0, 4, 0, 0, 0, 0, 68, 176, 176, 176, 16, 84, 69, 1, 177, 1, 33, 100, 0, 96, 0, 96, 180, 0, 176, 0, 176,
-            36, 0, 96, 0, 64, 86, 37, 1, 1, 1, 97, 20, 12, 1, 12, 64, 68, 12, 0, 12, 16, 36, 12, 0, 12, 64, 4, 0, 0, 0, 0, 181,
-            1, 181, 5, 177, 99, 112, 1, 0, 177, 1, 112, 20, 96, 12, 12, 96, 20, 112, 96, 0, 176, 96, 112
-        ]),
-    },
-    {
-        name: "121_180.dat",
-        bytes: new Uint8Array([
-            84, 5, 48, 1, 16, 1, 4, 12, 96, 12, 4, 36, 1, 12, 1, 64, 20, 4, 0, 0, 52, 70, 4, 97, 97, 112, 4, 97, 97, 48, 0, 12,
-            12, 32, 112, 64, 32, 112, 4, 16, 48, 0, 4, 112, 112, 112, 84, 5, 97, 0, 97, 1, 0, 96, 12, 96, 0, 4, 96, 12, 96, 112, 20, 96,
-            0, 96, 20, 69, 21, 1, 112, 112, 68, 48, 0, 96, 112, 32, 64, 1, 112, 112, 16, 0, 112, 112, 112, 0, 101, 112, 1, 97, 97, 112, 112, 4,
-            48, 16, 64, 32, 0, 4, 12, 12, 12, 12, 0, 4, 0, 12, 0, 0, 0, 112, 0, 0, 0, 0, 112, 100, 37, 1, 1, 1, 1, 65, 20, 0,
-            0, 0, 0, 16, 69, 80, 80, 80, 80, 33, 52, 80, 80, 80, 80, 48, 85, 1, 81, 33, 81, 1, 0, 32, 80, 32, 0, 0, 12, 12, 12, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 85, 5, 1, 81, 112, 112, 4, 16, 80, 81, 81, 112, 1, 1, 80, 80, 112, 0, 0, 1, 17, 4,
-            17, 1, 112, 112, 100, 68, 81, 65, 81, 1, 65, 84, 112, 112, 112, 112, 80, 84, 0, 0, 0, 0, 80, 112, 80, 4, 4, 4, 84, 70, 5, 1,
-            0, 1, 52, 0, 48, 0, 112, 112, 112, 0, 4, 80, 80, 48, 4, 112, 112, 112, 4, 0, 0, 0, 84, 5, 49, 161, 17, 1, 0, 0, 12, 0,
-            0, 0, 16, 160, 64, 0, 4, 64, 0, 48, 16, 84, 112, 1, 17, 1, 112, 0, 64, 161, 64, 160, 4, 112, 112, 16, 0, 4, 112, 112, 112, 16,
-            85, 5, 161, 49, 161, 1, 4, 160, 0, 160, 0, 4, 160, 0, 160, 0, 4, 160, 0, 160, 0, 4, 160, 48, 160, 0, 83, 161, 1, 161, 1, 49,
-            160, 0, 32, 0, 160, 32, 0, 48, 0, 32, 70, 52, 1, 1, 32, 165, 36, 0, 112, 112, 0, 48, 164, 164, 36, 0, 112, 112, 0, 0, 164, 4,
-            48, 0, 1, 101, 112, 176, 176, 1, 1, 65, 112, 112, 176, 176, 176, 48, 4, 0, 1, 64, 112, 112, 52, 0, 0, 112, 112, 112, 68, 0, 112, 112,
-            112, 112, 86, 5, 0, 112, 0, 1, 4, 16, 4, 4, 0, 4, 1, 0, 1, 0, 5, 1, 0, 0, 0, 4, 0, 0, 1, 1, 20, 0, 16, 0,
-            176, 101, 5, 49, 1, 112, 112, 112, 0, 0, 0, 0, 48, 16, 176, 176, 176, 0, 0, 0, 53, 17, 1, 0, 176, 176, 5, 1, 0, 0, 112, 112,
-            100, 1, 1, 112, 33, 1, 33, 0, 32, 0, 1, 17, 1, 0, 16, 0, 112, 112, 112, 176, 112, 176, 112, 112, 112, 70, 21, 65, 1, 1, 4, 181,
-            4, 0, 4, 17, 0, 0, 4, 0, 181, 4, 4, 0, 17, 64, 180, 176, 112, 112, 86, 53, 1, 112, 1, 81, 84, 80, 48, 80, 48, 52, 80, 1,
-            80, 80, 112, 80, 96, 80, 112, 112, 80, 80, 80, 112, 112, 112, 48, 112, 112, 84, 100, 112, 81, 112, 33, 52, 5, 80, 112, 16, 68, 0, 80, 1,
-            80, 112, 0, 1, 0, 112, 100, 53, 1, 1, 1, 1, 17, 20, 80, 4, 96, 84, 48, 52, 80, 1, 1, 80, 16, 112, 80, 84, 80, 84, 112, 85,
-            21, 1, 112, 112, 112, 68, 0, 1, 81, 81, 36, 0, 0, 1, 68, 112, 97, 0, 96, 112, 112, 96, 0, 96, 112, 84, 37, 17, 49, 65, 1, 112,
-            112, 1, 80, 0, 112, 96, 0, 112, 112, 112, 80, 0, 112, 112, 101, 4, 0, 0, 1, 1, 1, 164, 0, 0, 0, 0, 0, 164, 0, 12, 0, 48,
-            4, 5, 0, 4, 176, 5, 0, 4, 1, 0, 112, 0, 53, 85, 5, 161, 161, 161, 49, 4, 176, 176, 176, 0, 4, 160, 160, 160, 0, 52, 176, 160,
-            176, 0, 112, 176, 160, 176, 112, 86, 112, 112, 160, 16, 112, 4, 0, 176, 160, 0, 112, 164, 1, 1, 0, 112, 20, 4, 0, 16, 112, 112, 0, 4,
-            112, 112, 112, 0, 0, 112, 101, 5, 65, 161, 65, 1, 112, 4, 160, 160, 160, 0, 112, 4, 12, 12, 0, 0, 0, 4, 160, 64, 161, 1, 1, 112,
-            112, 112, 112, 176, 176, 85, 5, 1, 48, 1, 1, 4, 0, 5, 4, 0, 4, 48, 164, 52, 0, 4, 0, 161, 0, 0, 180, 0, 1, 0, 176, 100,
-            69, 1, 97, 97, 1, 17, 112, 0, 160, 160, 0, 112, 4, 1, 160, 160, 1, 0, 20, 4, 1, 1, 0, 68, 85, 101, 1, 65, 1, 161, 100, 0,
-            12, 16, 160, 100, 16, 68, 4, 160, 100, 1, 5, 1, 160, 100, 0, 1, 4, 160, 85, 165, 1, 49, 1, 161, 164, 0, 32, 0, 160, 164, 0, 12,
-            0, 160, 164, 0, 96, 48, 160, 164, 32, 96, 0, 160, 99, 37, 161, 101, 97, 165, 17, 4, 16, 160, 160, 32, 0, 5, 1, 0, 160, 1, 1, 86,
-            53, 0, 1, 112, 112, 68, 96, 48, 112, 112, 5, 32, 1, 112, 112, 4, 112, 65, 0, 32, 112, 112, 160, 0, 16, 112, 0, 160, 0, 64, 102, 181,
-            37, 1, 1, 1, 1, 180, 68, 80, 80, 80, 4, 180, 12, 80, 80, 80, 4, 36, 0, 12, 12, 12, 0, 68, 0, 0, 0, 0, 0, 112, 80, 80,
-            80, 80, 80, 85, 4, 112, 112, 112, 0, 180, 0, 64, 0, 80, 112, 0, 0, 0, 112, 4, 64, 176, 64, 0, 4, 112, 112, 112, 0, 84, 112, 1,
-            177, 1, 112, 68, 0, 80, 0, 64, 112, 176, 64, 176, 112, 112, 112, 176, 112, 112, 101, 112, 112, 80, 16, 1, 1, 112, 112, 1, 12, 12, 0, 112,
-            112, 0, 176, 0, 0, 112, 0, 0, 12, 16, 112, 20, 0, 0, 0, 1, 112, 85, 85, 33, 177, 1, 81, 5, 12, 0, 32, 1, 4, 12, 0, 12,
-            0, 4, 80, 176, 12, 0, 4, 80, 32, 0, 0, 85, 53, 161, 1, 112, 112, 68, 160, 0, 0, 112, 52, 160, 0, 80, 0, 112, 0, 1, 1, 1,
-            112, 112, 64, 48, 0, 100, 5, 17, 112, 81, 161, 1, 16, 160, 112, 16, 64, 0, 80, 112, 112, 112, 112, 0, 84, 64, 112, 80, 0, 0, 86, 37,
-            161, 1, 81, 33, 20, 1, 0, 1, 16, 112, 0, 0, 0, 112, 112, 0, 12, 4, 112, 112, 0, 36, 4, 112, 112, 0, 112, 0, 112, 70, 5, 81,
-            81, 81, 20, 1, 1, 165, 164, 0, 0, 164, 165, 0, 0, 164, 165, 0, 4, 161, 165, 0, 0, 21, 102, 165, 160, 112, 112, 112, 112, 52, 80, 0,
-            112, 112, 112, 112, 16, 160, 160, 112, 112, 112, 112, 32, 80, 0, 112, 112, 112, 112, 48, 160, 160, 32, 0, 112, 112, 16, 80, 70, 5, 0, 177, 33,
-            20, 0, 112, 112, 112, 112, 96, 16, 36, 96, 0, 112, 112, 1, 176, 64, 52, 0, 97, 112, 86, 5, 64, 5, 1, 177, 4, 1, 0, 17, 101, 4,
-            64, 0, 32, 1, 112, 112, 1, 48, 0, 112, 1, 0, 1, 1, 112, 0, 4, 0, 0, 70, 112, 49, 17, 112, 112, 32, 64, 0, 4, 176, 176, 112,
-            112, 176, 176, 112, 4, 176, 176, 0, 4, 96, 96, 0, 85, 5, 97, 1, 17, 1, 4, 52, 4, 52, 0, 4, 20, 4, 68, 0, 4, 32, 4, 4,
-            0, 180, 112, 112, 176, 32, 70, 5, 65, 5, 1, 4, 12, 96, 4, 4, 32, 12, 0, 4, 12, 32, 0, 100, 16, 68, 0, 5, 1, 176, 1, 86,
-            53, 97, 1, 97, 49, 5, 96, 0, 96, 112, 4, 96, 12, 96, 0, 112, 96, 0, 96, 0, 4, 96, 0, 96, 0, 4, 96, 0, 96, 48, 85, 112,
-            1, 1, 1, 112, 52, 16, 0, 32, 64, 68, 32, 0, 48, 16, 20, 64, 0, 16, 48, 112, 112, 96, 112, 112, 84, 112, 65, 17, 33, 112, 112, 112,
-            1, 48, 112, 0, 32, 0, 64, 0, 4, 64, 96, 48, 0, 85, 112, 97, 97, 97, 112, 4, 16, 48, 16, 0, 4, 48, 64, 32, 4, 4, 64, 112,
-            112, 0, 4, 112, 112, 96, 0, 85, 5, 0, 112, 0, 1, 4, 112, 112, 112, 0, 100, 64, 97, 64, 96, 21, 112, 112, 112, 48, 52, 0, 112, 1,
-            16, 86, 112, 1, 49, 65, 112, 4, 0, 80, 32, 0, 4, 0, 32, 80, 0, 84, 80, 69, 1, 4, 84, 80, 36, 0, 4, 112, 64, 52, 0, 112,
-            38, 85, 0, 84, 32, 84, 1, 36, 0, 85, 0, 36, 0, 100, 5, 1, 81, 81, 81, 1, 20, 0, 80, 80, 80, 0, 5, 0, 80, 80, 80, 0,
-            4, 0, 80, 16, 80, 16, 85, 5, 33, 112, 81, 1, 4, 12, 48, 80, 0, 4, 80, 80, 80, 0, 4, 80, 80, 12, 0, 4, 80, 80, 32, 48,
-            69, 68, 1, 1, 49, 20, 0, 0, 16, 52, 84, 80, 68, 112, 84, 80, 112, 112, 84, 80, 112
-        ]),
-    },
-    {
-        name: "181_240.dat",
-        bytes: new Uint8Array([
-            102, 5, 161, 17, 112, 112, 112, 4, 0, 161, 48, 112, 112, 112, 0, 0, 161, 32, 112, 112, 112, 0, 0, 161, 48, 112, 160, 17, 0, 0, 112, 112,
-            0, 160, 33, 112, 112, 84, 5, 0, 33, 0, 1, 4, 12, 160, 12, 0, 4, 0, 160, 0, 0, 36, 0, 112, 0, 32, 70, 5, 161, 161, 1, 4,
-            64, 16, 0, 4, 160, 160, 0, 4, 16, 64, 0, 4, 160, 160, 0, 4, 64, 16, 0, 102, 112, 1, 1, 33, 1, 112, 4, 160, 0, 1, 160, 0,
-            36, 1, 0, 0, 1, 32, 112, 0, 1, 0, 0, 112, 112, 0, 112, 112, 0, 112, 112, 0, 112, 112, 0, 112, 85, 112, 1, 0, 1, 112, 4, 0,
-            160, 0, 48, 52, 0, 48, 0, 1, 5, 0, 1, 0, 0, 112, 0, 0, 0, 112, 100, 53, 17, 1, 49, 17, 1, 68, 0, 0, 64, 48, 0, 4,
-            0, 0, 0, 0, 0, 180, 176, 0, 176, 176, 0, 101, 112, 1, 33, 17, 1, 112, 112, 0, 64, 48, 0, 112, 4, 49, 12, 12, 65, 0, 4, 16,
-            12, 12, 32, 0, 112, 1, 176, 176, 1, 112, 100, 1, 49, 112, 112, 17, 1, 4, 16, 48, 16, 48, 0, 112, 1, 0, 0, 1, 112, 112, 0, 177,
-            177, 0, 112, 85, 5, 0, 48, 0, 1, 4, 0, 0, 0, 0, 4, 48, 176, 48, 0, 4, 12, 12, 12, 0, 180, 0, 0, 0, 176, 85, 180, 112,
-            0, 112, 176, 68, 0, 176, 0, 32, 112, 32, 1, 64, 112, 112, 112, 0, 112, 112, 4, 64, 0, 32, 0, 86, 112, 112, 97, 112, 112, 112, 112, 16,
-            80, 112, 4, 80, 80, 80, 0, 4, 80, 16, 80, 0, 112, 80, 80, 112, 112, 112, 112, 16, 112, 112, 84, 112, 97, 81, 97, 112, 68, 12, 80, 12,
-            48, 20, 0, 80, 0, 32, 52, 1, 80, 1, 64, 84, 37, 1, 1, 1, 65, 68, 96, 0, 96, 16, 112, 80, 176, 80, 112, 112, 16, 80, 32, 112,
-            85, 112, 112, 17, 112, 112, 101, 1, 64, 1, 97, 36, 0, 12, 0, 32, 84, 12, 0, 12, 80, 84, 0, 0, 0, 80, 69, 112, 33, 1, 81, 100,
-            64, 0, 80, 21, 1, 80, 80, 112, 80, 80, 80, 112, 80, 80, 80, 70, 53, 161, 1, 112, 112, 160, 160, 0, 4, 160, 160, 112, 112, 160, 160, 0,
-            4, 160, 160, 112, 112, 1, 48, 176, 70, 37, 112, 112, 33, 4, 160, 160, 0, 5, 176, 176, 1, 4, 161, 161, 0, 4, 1, 1, 0, 180, 1, 1,
-            176, 86, 112, 17, 177, 33, 112, 4, 0, 12, 0, 0, 4, 0, 176, 0, 0, 4, 0, 12, 0, 0, 4, 176, 160, 176, 0, 112, 32, 160, 16, 112,
-            84, 165, 17, 177, 65, 161, 5, 0, 176, 0, 1, 164, 0, 176, 16, 160, 21, 64, 176, 0, 1, 85, 5, 33, 161, 112, 5, 4, 1, 32, 1, 0,
-            4, 4, 4, 12, 0, 69, 12, 4, 164, 64, 112, 1, 176, 1, 1, 101, 112, 1, 97, 1, 161, 112, 53, 32, 1, 64, 160, 16, 112, 112, 0, 1,
-            112, 112, 112, 1, 0, 160, 160, 112, 112, 0, 0, 160, 160, 112, 85, 165, 17, 65, 1, 112, 36, 160, 160, 0, 0, 112, 0, 112, 0, 0, 112, 0,
-            112, 0, 112, 112, 112, 112, 96, 112, 100, 5, 4, 1, 1, 1, 37, 164, 1, 0, 0, 0, 1, 164, 32, 0, 0, 96, 0, 164, 1, 4, 0, 100,
-            112, 86, 21, 161, 112, 165, 49, 52, 1, 32, 1, 16, 68, 160, 12, 164, 64, 4, 5, 96, 1, 4, 4, 1, 1, 1, 0, 112, 4, 112, 0, 112,
-            86, 5, 49, 33, 65, 112, 4, 165, 1, 161, 32, 4, 164, 0, 160, 48, 4, 164, 0, 160, 0, 4, 164, 0, 160, 0, 4, 160, 96, 160, 112, 84,
-            5, 49, 1, 33, 1, 4, 33, 81, 49, 0, 4, 49, 1, 33, 0, 180, 1, 1, 1, 0, 84, 112, 112, 1, 1, 1, 5, 17, 65, 0, 81, 20,
-            64, 16, 0, 176, 112, 112, 1, 0, 112, 86, 181, 81, 65, 81, 177, 4, 80, 12, 80, 64, 4, 12, 12, 12, 0, 180, 0, 12, 0, 0, 112, 0,
-            64, 0, 176, 112, 0, 1, 112, 112, 85, 5, 81, 81, 1, 112, 4, 12, 12, 0, 176, 4, 0, 16, 0, 112, 52, 0, 12, 48, 16, 20, 48, 176,
-            1, 112, 101, 112, 65, 1, 1, 112, 112, 112, 112, 0, 4, 1, 1, 84, 112, 1, 68, 4, 0, 68, 1, 0, 1, 84, 0, 112, 112, 176, 0, 1,
-            112, 84, 112, 65, 161, 161, 112, 112, 112, 1, 80, 0, 112, 160, 160, 160, 0, 4, 160, 161, 69, 4, 85, 5, 1, 160, 65, 1, 112, 0, 12, 160,
-            80, 0, 64, 0, 12, 80, 0, 12, 0, 64, 80, 0, 0, 0, 112, 112, 100, 53, 161, 1, 1, 112, 112, 164, 160, 160, 0, 80, 0, 4, 0, 12,
-            0, 84, 80, 112, 0, 0, 0, 84, 48, 85, 37, 161, 1, 112, 112, 4, 160, 80, 0, 112, 164, 160, 12, 12, 32, 112, 0, 0, 1, 84, 112, 112,
-            0, 0, 80, 100, 5, 17, 161, 17, 1, 81, 4, 164, 21, 80, 0, 80, 4, 12, 4, 12, 0, 112, 4, 1, 0, 0, 0, 112, 70, 69, 112, 112,
-            112, 36, 0, 0, 112, 52, 12, 0, 112, 20, 0, 96, 0, 180, 0, 1, 0, 112, 96, 96, 112, 85, 69, 1, 1, 1, 17, 36, 100, 96, 96, 52,
-            52, 100, 96, 96, 36, 20, 5, 1, 1, 68, 181, 0, 0, 0, 177, 85, 112, 1, 1, 1, 17, 100, 0, 5, 1, 52, 100, 5, 0, 0, 68, 100,
-            0, 1, 1, 32, 180, 176, 176, 176, 112, 100, 181, 181, 112, 112, 177, 181, 100, 52, 0, 0, 32, 100, 180, 0, 16, 64, 0, 176, 5, 177, 112, 112,
-            177, 1, 68, 5, 65, 33, 69, 0, 20, 5, 0, 4, 1, 96, 0, 180, 0, 16, 176, 99, 5, 49, 1, 112, 112, 112, 52, 32, 16, 48, 32, 0,
-            112, 48, 32, 16, 48, 112, 83, 69, 1, 1, 1, 65, 36, 0, 0, 0, 16, 112, 16, 112, 32, 112, 100, 21, 112, 112, 112, 1, 17, 5, 0, 0,
-            0, 0, 160, 112, 0, 1, 0, 161, 160, 112, 0, 0, 0, 0, 160, 101, 4, 112, 112, 112, 112, 112, 4, 16, 0, 112, 112, 112, 4, 1, 0, 112,
-            16, 0, 4, 0, 5, 1, 80, 80, 5, 1, 1, 0, 16, 80, 86, 112, 112, 112, 1, 1, 112, 48, 112, 0, 0, 112, 1, 0, 0, 0, 52, 17,
-            33, 0, 0, 20, 32, 16, 0, 0, 112, 112, 112, 176, 0, 53, 53, 97, 1, 68, 16, 0, 112, 112, 0, 36, 48, 0, 112, 64, 0, 101, 5, 65,
-            17, 49, 65, 17, 4, 32, 64, 32, 16, 64, 4, 112, 112, 112, 112, 112, 4, 0, 0, 0, 0, 0, 112, 0, 0, 0, 112, 48, 85, 5, 1, 64,
-            1, 1, 4, 0, 165, 4, 0, 4, 0, 164, 4, 0, 164, 0, 164, 4, 160, 68, 0, 1, 0, 64, 84, 69, 1, 1, 112, 112, 5, 0, 65, 0,
-            112, 4, 1, 1, 65, 0, 69, 0, 4, 1, 64, 84, 5, 112, 1, 112, 1, 4, 0, 32, 0, 0, 4, 32, 112, 32, 0, 180, 1, 112, 1, 176,
-            102, 69, 1, 1, 1, 112, 112, 112, 32, 0, 0, 0, 112, 112, 112, 16, 0, 0, 0, 112, 112, 112, 64, 96, 0, 112, 112, 112, 112, 32, 0, 112,
-            112, 112, 112, 112, 16, 70, 0, 49, 1, 80, 5, 32, 0, 1, 4, 112, 112, 0, 4, 48, 32, 0, 4, 112, 112, 49, 4, 112, 112, 32, 100, 21,
-            65, 33, 1, 1, 1, 52, 32, 16, 0, 0, 0, 4, 0, 0, 48, 32, 64, 180, 176, 176, 64, 16, 32, 101, 5, 1, 112, 112, 5, 1, 36, 0,
-            112, 112, 64, 0, 20, 0, 96, 96, 16, 0, 36, 0, 112, 112, 52, 0, 64, 0, 112, 112, 36, 0, 100, 53, 65, 1, 1, 112, 112, 112, 112, 0,
-            160, 160, 160, 112, 112, 112, 0, 160, 0, 68, 0, 0, 48, 160, 0, 85, 5, 49, 16, 112, 112, 4, 65, 33, 0, 0, 4, 16, 48, 0, 0, 4,
-            68, 32, 0, 4, 96, 112, 1, 0, 5, 102, 5, 49, 112, 1, 49, 1, 4, 16, 112, 32, 16, 0, 4, 32, 112, 16, 1, 0, 0, 80, 80, 80,
-            0, 0, 4, 80, 116, 84, 0, 0, 4, 80, 116, 84, 0, 0, 69, 4, 112, 112, 16, 36, 112, 112, 32, 20, 176, 0, 16, 112, 112, 0, 112, 4,
-            0, 0, 0, 84, 53, 161, 17, 1, 1, 4, 16, 160, 48, 0, 4, 0, 48, 160, 16, 4, 0, 0, 16, 160, 100, 101, 97, 96, 112, 112, 112, 96,
-            96, 97, 64, 96, 0, 112, 64, 12, 12, 32, 96, 112, 112, 1, 96, 16, 96
-        ]),
-    },
-    {
-        name: "241_300.dat",
-        bytes: new Uint8Array([
-            102, 5, 1, 65, 33, 1, 112, 4, 0, 16, 48, 0, 0, 4, 0, 112, 112, 0, 0, 4, 1, 96, 16, 0, 112, 4, 4, 112, 112, 0, 4, 4,
-            0, 112, 112, 0, 0, 100, 112, 65, 17, 49, 112, 4, 5, 1, 1, 1, 1, 0, 0, 0, 160, 160, 160, 1, 4, 96, 160, 160, 160, 0, 86, 5,
-            1, 1, 1, 52, 0, 0, 4, 0, 112, 0, 112, 112, 112, 112, 4, 0, 0, 48, 160, 4, 0, 64, 160, 64, 0, 176, 0, 112, 112, 102, 181, 112,
-            33, 1, 1, 1, 180, 112, 64, 80, 80, 4, 180, 112, 80, 80, 80, 4, 36, 0, 1, 1, 1, 0, 68, 80, 80, 80, 80, 80, 112, 80, 80, 80,
-            80, 80, 101, 5, 1, 1, 33, 17, 49, 4, 0, 0, 16, 32, 16, 4, 0, 0, 112, 112, 112, 4, 0, 0, 0, 0, 0, 112, 0, 112, 0, 112,
-            48, 102, 85, 81, 1, 1, 112, 112, 52, 16, 64, 0, 0, 0, 164, 160, 160, 160, 160, 160, 5, 0, 0, 0, 0, 0, 164, 160, 160, 160, 160, 160,
-            5, 0, 0, 48, 16, 64, 85, 112, 112, 177, 112, 112, 68, 96, 176, 96, 32, 4, 12, 176, 12, 0, 180, 0, 176, 0, 176, 112, 112, 176, 112, 112,
-            69, 53, 1, 1, 33, 36, 160, 160, 48, 4, 160, 160, 32, 4, 0, 0, 0, 180, 0, 0, 176, 86, 53, 161, 112, 161, 33, 4, 5, 96, 1, 4,
-            4, 1, 1, 1, 0, 112, 160, 12, 160, 112, 112, 32, 0, 48, 112, 112, 48, 0, 32, 112, 68, 5, 80, 80, 1, 4, 80, 80, 0, 20, 181, 177,
-            20, 5, 176, 176, 1, 85, 112, 1, 112, 1, 112, 180, 0, 1, 0, 176, 164, 32, 48, 32, 160, 180, 0, 12, 0, 176, 164, 0, 48, 0, 160, 101,
-            5, 49, 1, 33, 1, 65, 36, 1, 17, 1, 49, 17, 5, 0, 1, 65, 1, 49, 4, 0, 32, 1, 17, 65, 113, 112, 1, 0, 117, 113, 85, 112,
-            1, 161, 1, 112, 112, 16, 160, 16, 112, 4, 1, 160, 1, 0, 100, 0, 160, 0, 0, 112, 17, 160, 96, 112, 70, 112, 0, 80, 112, 4, 32, 81,
-            0, 36, 12, 12, 0, 164, 12, 12, 0, 164, 32, 0, 160, 112, 1, 0, 112, 100, 112, 1, 17, 65, 1, 112, 112, 0, 48, 32, 0, 112, 1, 97,
-            12, 12, 97, 1, 0, 176, 176, 96, 176, 0, 85, 112, 1, 1, 1, 112, 180, 0, 0, 0, 176, 84, 0, 48, 0, 80, 180, 1, 12, 1, 176, 84,
-            0, 48, 0, 80, 101, 5, 49, 1, 1, 81, 1, 4, 12, 1, 0, 12, 16, 164, 160, 160, 161, 160, 160, 4, 12, 0, 0, 12, 0, 4, 16, 80,
-            80, 48, 0, 86, 4, 53, 1, 33, 4, 4, 12, 96, 12, 0, 112, 0, 160, 0, 112, 112, 1, 49, 1, 112, 4, 160, 32, 160, 0, 4, 160, 160,
-            160, 0, 102, 101, 65, 17, 1, 1, 1, 112, 112, 112, 65, 0, 0, 4, 33, 17, 49, 4, 0, 4, 1, 65, 1, 12, 0, 4, 1, 1, 1, 0,
-            0, 180, 112, 112, 112, 0, 176, 70, 112, 177, 1, 112, 4, 0, 0, 48, 180, 176, 0, 1, 84, 80, 0, 48, 84, 80, 0, 1, 84, 80, 0, 48,
-            84, 112, 49, 33, 17, 1, 112, 1, 17, 1, 0, 112, 1, 1, 49, 0, 36, 4, 4, 16, 1, 86, 112, 112, 1, 161, 0, 164, 52, 0, 112, 112,
-            112, 32, 0, 164, 112, 112, 112, 160, 68, 0, 112, 112, 32, 160, 0, 112, 112, 64, 48, 0, 84, 112, 112, 33, 1, 112, 112, 112, 64, 32, 1, 1,
-            1, 32, 64, 0, 0, 64, 1, 1, 112, 99, 5, 32, 1, 1, 4, 65, 20, 1, 0, 4, 1, 32, 68, 33, 4, 4, 5, 16, 101, 112, 112, 112,
-            1, 17, 1, 4, 1, 49, 80, 48, 0, 4, 21, 12, 12, 12, 0, 4, 48, 112, 16, 0, 0, 4, 80, 80, 1, 1, 0, 85, 5, 112, 1, 112,
-            112, 52, 17, 0, 65, 49, 20, 112, 0, 112, 112, 68, 112, 0, 112, 112, 5, 176, 1, 112, 112, 100, 101, 1, 17, 1, 65, 112, 112, 0, 112, 0,
-            112, 0, 68, 0, 32, 0, 0, 0, 112, 16, 64, 16, 0, 112, 99, 65, 1, 0, 1, 69, 1, 5, 1, 20, 0, 17, 1, 4, 17, 1, 64, 1,
-            0, 84, 5, 161, 65, 161, 1, 4, 160, 5, 4, 1, 4, 160, 68, 4, 0, 4, 160, 4, 4, 112, 85, 112, 49, 112, 33, 112, 112, 0, 48, 0,
-            112, 4, 180, 4, 180, 4, 4, 33, 0, 49, 0, 180, 1, 176, 1, 176, 84, 37, 97, 1, 1, 112, 112, 17, 96, 0, 0, 112, 112, 49, 96, 0,
-            112, 112, 112, 32, 112, 100, 112, 112, 17, 1, 161, 112, 112, 112, 160, 16, 112, 112, 4, 0, 0, 160, 16, 0, 4, 0, 0, 0, 160, 0, 86, 112,
-            1, 5, 5, 112, 53, 0, 0, 0, 65, 20, 0, 0, 0, 16, 68, 0, 4, 4, 48, 112, 177, 1, 1, 112, 112, 112, 0, 112, 112, 84, 112, 112,
-            112, 65, 1, 4, 80, 96, 80, 0, 4, 16, 80, 64, 0, 4, 64, 112, 80, 176, 102, 37, 161, 49, 1, 1, 65, 112, 0, 1, 112, 112, 112, 112,
-            0, 160, 0, 0, 112, 112, 0, 64, 160, 48, 112, 112, 0, 112, 112, 32, 112, 112, 0, 112, 112, 112, 112, 101, 112, 112, 112, 0, 1, 1, 112, 112,
-            0, 32, 48, 32, 112, 112, 16, 112, 112, 112, 0, 1, 48, 112, 112, 112, 48, 0, 16, 4, 0, 1, 68, 5, 161, 33, 112, 4, 0, 161, 32, 4,
-            80, 0, 161, 112, 32, 80, 112, 84, 5, 1, 181, 177, 177, 68, 0, 0, 112, 1, 112, 0, 1, 68, 0, 112, 0, 176, 176, 176, 85, 5, 81, 80,
-            112, 112, 4, 65, 1, 0, 0, 4, 16, 0, 0, 0, 4, 68, 48, 0, 4, 96, 112, 1, 0, 5, 85, 5, 97, 97, 97, 1, 112, 80, 80, 80,
-            0, 112, 48, 16, 64, 112, 4, 160, 160, 160, 112, 4, 176, 176, 176, 0, 85, 112, 17, 1, 1, 17, 5, 1, 0, 0, 1, 5, 17, 4, 12, 0,
-            112, 1, 17, 12, 0, 112, 112, 1, 17, 112, 102, 4, 160, 4, 48, 4, 176, 5, 160, 4, 1, 4, 176, 4, 176, 52, 0, 5, 160, 180, 1, 5,
-            0, 4, 160, 5, 0, 4, 48, 4, 1, 4, 0, 4, 1, 4, 0, 102, 5, 17, 65, 49, 65, 1, 4, 12, 12, 12, 12, 0, 4, 68, 48, 16,
-            0, 4, 4, 12, 12, 12, 12, 0, 180, 0, 0, 0, 0, 176, 5, 176, 176, 176, 176, 1, 85, 4, 1, 97, 1, 0, 4, 0, 12, 0, 112, 52,
-            84, 80, 80, 0, 112, 80, 52, 84, 0, 4, 80, 85, 48, 0, 86, 1, 1, 0, 1, 112, 36, 0, 0, 0, 64, 112, 0, 0, 37, 112, 112, 4,
-            0, 1, 68, 112, 112, 36, 0, 1, 65, 0, 1, 160, 112, 101, 4, 65, 49, 65, 1, 1, 5, 177, 177, 177, 177, 0, 52, 84, 80, 80, 80, 80,
-            68, 49, 1, 84, 80, 80, 5, 1, 0, 84, 80, 80, 54, 69, 1, 65, 84, 0, 80, 68, 80, 80, 84, 80, 64, 84, 80, 80, 84, 64, 80, 84,
-            5, 161, 49, 161, 33, 4, 160, 0, 160, 0, 4, 160, 0, 160, 112, 36, 160, 96, 160, 0, 101, 112, 181, 1, 112, 1, 161, 112, 68, 0, 160, 0,
-            64, 4, 33, 4, 1, 0, 32, 112, 84, 4, 101, 4, 84, 4, 1, 0, 68, 4, 1, 86, 5, 49, 112, 65, 1, 112, 64, 0, 48, 112, 4, 48,
-            0, 64, 0, 112, 32, 0, 16, 112, 4, 16, 0, 32, 0, 112, 48, 112, 64, 112, 101, 112, 112, 33, 161, 112, 112, 112, 0, 80, 0, 0, 112, 36,
-            160, 160, 160, 0, 32, 164, 0, 161, 161, 160, 160, 164, 0, 112, 112, 0, 0, 70, 69, 81, 177, 17, 5, 80, 176, 1, 69, 80, 176, 17, 5, 80,
-            176, 1, 69, 80, 176, 17, 5, 80, 176, 1, 86, 53, 17, 65, 1, 112, 165, 1, 1, 0, 160, 165, 0, 0, 0, 161, 165, 0, 0, 0, 161, 112,
-            112, 0, 112, 112, 112, 48, 16, 64, 112, 84, 5, 1, 17, 177, 112, 4, 0, 1, 176, 4, 4, 0, 16, 181, 20, 180, 0, 5, 176, 1, 85, 4,
-            97, 177, 97, 69, 112, 160, 160, 160, 112, 112, 80, 80, 80, 112, 112, 80, 64, 80, 112, 0, 80, 80, 80, 112, 100, 69, 33, 97, 65, 112, 112, 4,
-            0, 12, 52, 32, 0, 180, 176, 176, 1, 1, 0, 112, 112, 1, 96, 96, 96, 102, 5, 1, 112, 112, 1, 1, 52, 0, 0, 0, 0, 64, 36, 16,
-            176, 176, 32, 16, 84, 64, 12, 12, 48, 80, 84, 80, 0, 0, 80, 80, 84, 112, 112, 112, 112, 80, 102, 5, 37, 5, 65, 33, 17, 4, 20, 4,
-            16, 48, 32, 0, 52, 4, 48, 64, 48, 4, 1, 0, 64, 32, 64, 4, 0, 0, 112, 112, 112, 4, 32, 0, 112, 112, 112, 102, 112, 1, 97, 97,
-            1, 112, 112, 49, 80, 80, 33, 112, 164, 16, 12, 12, 64, 160, 164, 0, 12, 12, 0, 160, 112, 176, 0, 0, 176, 112, 112, 112, 80, 80, 112, 112,
-            100, 69, 81, 1, 81, 81, 64, 112, 80, 96, 80, 80, 112, 36, 80, 12, 80, 80, 32, 112, 80, 0, 80, 80, 112
-        ]),
-    },
-];
+exports.OLD_ARCHIVES = void 0;
 exports.OLD_ARCHIVES = [
     {
         name: "1_50.dat",
@@ -2114,7 +1865,7 @@ class LevelParser {
         if (width < (level.openBoundary ? 1 : 3) || level.rows.some(r => r.length !== width))
             throw new Error(level.openBoundary ? 'DAT level rows must have equal, non-zero width.' : 'Level rows must have equal width, at least three cells.');
         const walls = new Set(), blocks = [];
-        for (let y = 0; y < height; y++)
+        for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
                 const c = level.rows[y][x];
                 if (!'#.ABCDFXIJQPW'.includes(c))
@@ -2132,6 +1883,7 @@ class LevelParser {
                 else if ('ABCDFIPW'.includes(c))
                     blocks.push({ id: blocks.length, type: c, x, y });
             }
+        }
         if (level.portals !== undefined && !Array.isArray(level.portals))
             throw new Error('portals must be an array.');
         if (level.platforms !== undefined && !Array.isArray(level.platforms))
@@ -2152,10 +1904,10 @@ class LevelParser {
                 if (nx >= 0 && ny >= 0 && nx < width && ny < height) {
                     platformEdges.add(Grid_js_1.Grid.edgeKey(nx, ny, -dx, -dy));
                 }
-                else {
-                    if (level.wrapHorizontal && platform.x === 0 && platform.side === 'left')
+                else if (level.edgeDoors || level.wrapHorizontal || level.wrapGravity) {
+                    if (platform.x === 0 && platform.side === 'left')
                         platformEdges.add(Grid_js_1.Grid.edgeKey(width - 1, platform.y, 1, 0));
-                    if (level.wrapGravity && platform.y === 0 && platform.side === 'top')
+                    if (platform.y === 0 && platform.side === 'top')
                         platformEdges.add(Grid_js_1.Grid.edgeKey(platform.x, height - 1, 0, 1));
                 }
             }
@@ -2167,15 +1919,55 @@ class LevelParser {
             ...(platforms ? { platforms } : {}),
             ...(level.wrapHorizontal ? { wrapHorizontal: true } : {}),
             ...(level.wrapGravity ? { wrapGravity: true } : {}),
+            ...(level.contactBeforeMotion ? { contactBeforeMotion: true } : {}),
         };
         const ids = new Set();
+        const isOpenCell = (x, y) => Grid_js_1.Grid.inBounds(board, x, y) && !walls.has(Grid_js_1.Grid.cell(x, y, width));
+        const blocked = (x, y, dx, dy) => Boolean(platformEdges?.has(Grid_js_1.Grid.edgeKey(x, y, dx, dy)));
+        const addEdge = (id, entry, exit) => {
+            const [dx, dy] = Grid_js_1.DIRECTIONS[entry.side];
+            const key = Grid_js_1.Grid.edgeKey(entry.x, entry.y, dx, dy);
+            if (board.portalEdges.has(key))
+                throw new Error('Two portals cannot occupy the same edge.');
+            board.portalEdges.set(key, { pair: id, entry, exit });
+        };
+        const addPair = (pair) => {
+            ids.add(pair.id);
+            board.portals.push(pair);
+        };
+        if (level.edgeDoors) {
+            for (let y = 0; y < height; y++) {
+                if (!isOpenCell(0, y) || !isOpenCell(width - 1, y))
+                    continue;
+                const a = { x: 0, y, side: 'left' };
+                const b = { x: width - 1, y, side: 'right' };
+                const leftOpen = !blocked(0, y, -1, 0);
+                const rightOpen = !blocked(width - 1, y, 1, 0);
+                if (!leftOpen && !rightOpen)
+                    continue;
+                const id = `H${y + 1}`;
+                addPair({ id, a, b, boundary: true });
+                if (leftOpen)
+                    addEdge(id, a, b);
+                if (rightOpen)
+                    addEdge(id, b, a);
+            }
+            for (let x = 0; x < width; x++) {
+                if (!isOpenCell(x, 0) || !isOpenCell(x, height - 1) || blocked(x, height - 1, 0, 1))
+                    continue;
+                const a = { x, y: height - 1, side: 'bottom' };
+                const b = { x, y: 0, side: 'top' };
+                const id = `V${x + 1}`;
+                addPair({ id, a, b, boundary: true, oneWay: true });
+                addEdge(id, a, b);
+            }
+        }
         for (const pair of (level.portals || [])) {
             if (!pair || !pair.a || !pair.b)
                 throw new Error('Every portal requires two endpoints.');
             const id = String(pair.id ?? board.portals.length + 1);
             if (!/^[A-Za-z0-9]{1,4}$/.test(id) || ids.has(id))
                 throw new Error('Portal IDs must be unique short alphanumeric labels.');
-            ids.add(id);
             const ends = [pair.a, pair.b].map(p => {
                 const { x, y, side } = p;
                 if (!Number.isInteger(x) || !Number.isInteger(y) || !Object.hasOwn(Grid_js_1.DIRECTIONS, side) ||
@@ -2188,15 +1980,9 @@ class LevelParser {
             });
             if (Grid_js_1.OPPOSITE[ends[0].side] !== ends[1].side)
                 throw new Error('Portal faces must be opposite: bottom/top or left/right.');
-            const saved = { id, a: ends[0], b: ends[1] };
-            board.portals.push(saved);
-            for (let i = 0; i < 2; i++) {
-                const entry = ends[i], exit = ends[1 - i], [dx, dy] = Grid_js_1.DIRECTIONS[entry.side];
-                const key = Grid_js_1.Grid.edgeKey(entry.x, entry.y, dx, dy);
-                if (board.portalEdges.has(key))
-                    throw new Error('Two portals cannot occupy the same edge.');
-                board.portalEdges.set(key, { pair: id, entry, exit });
-            }
+            addPair({ id, a: ends[0], b: ends[1] });
+            addEdge(id, ends[0], ends[1]);
+            addEdge(id, ends[1], ends[0]);
         }
         return { board, blocks };
     }
@@ -3730,23 +3516,12 @@ const LevelRepository_js_1 = require("./levels/LevelRepository.js");
 const DatCampaignCatalog_js_1 = require("./levels/dat/DatCampaignCatalog.js");
 const DomElements_js_1 = require("./presentation/DomElements.js");
 try {
-    const catalog = new DatCampaignCatalog_js_1.DatCampaignCatalog();
-    const campaign = catalog.fromSearch(window.location.search);
+    const campaign = new DatCampaignCatalog_js_1.DatCampaignCatalog().get();
     const elements = new DomElements_js_1.DomElements(document);
     const levels = new LevelRepository_js_1.LevelRepository(campaign.levels);
     const progress = new ProgressRepository_js_1.ProgressRepository(() => window.localStorage, levels.count, levels.defaultIndex, campaign.progressKey);
     const app = new GameController_js_1.GameController(elements, new PuzzleEngine_js_1.PuzzleEngine(), levels, progress);
-    document.title = `Сближение — ${campaign.shortLabel}`;
-    document.getElementById('campaignEyebrow')?.replaceChildren(document.createTextNode(campaign.label.toUpperCase()));
-    document.getElementById('editionLabel')?.replaceChildren(document.createTextNode(`${levels.count} УРОВНЕЙ · DAT`));
-    for (const node of document.querySelectorAll('[data-campaign]')) {
-        const active = node.dataset.campaign === campaign.id;
-        node.classList.toggle('active', active);
-        if (active)
-            node.setAttribute('aria-current', 'page');
-        else
-            node.removeAttribute('aria-current');
-    }
+    document.title = 'Сближение — классика';
     app.start();
     window.Sblizhenie = Object.freeze({
         loadLevel: (index) => app.loadLevel(index),
@@ -3754,6 +3529,8 @@ try {
         move: (direction) => app.requestMove(direction),
         undo: () => app.undo(),
         hint: () => app.requestHint(),
+        home: () => app.showHome(),
+        levels: () => app.showLevels(),
         snapshot: () => app.snapshot(),
         destroy: () => { app.destroy(); delete window.Sblizhenie; },
     });
@@ -3924,13 +3701,19 @@ class CanvasRenderer {
     drawPlatforms() {
         if (!this.session.board.platforms?.length)
             return;
-        const seen = new Set();
+        const seen = new Set(), { width, height, walls } = this.session.board;
         this.ctx.save();
         this.ctx.lineCap = 'round';
         for (const platform of this.session.board.platforms) {
             const { x, y, side } = platform;
-            const canonical = side === 'right' && x + 1 < this.session.board.width ? `${x + 1},${y}:left`
-                : side === 'bottom' && y + 1 < this.session.board.height ? `${x},${y + 1}:top`
+            const [dx, dy] = side === 'left' ? [-1, 0] : side === 'right' ? [1, 0] : side === 'top' ? [0, -1] : [0, 1];
+            const nx = x + dx, ny = y + dy;
+            if (nx < 0 || ny < 0 || nx >= width || ny >= height)
+                continue;
+            if (walls.has(y * width + x) || walls.has(ny * width + nx))
+                continue;
+            const canonical = side === 'right' ? `${nx},${ny}:left`
+                : side === 'bottom' ? `${nx},${ny}:top`
                     : `${x},${y}:${side}`;
             if (seen.has(canonical))
                 continue;
@@ -3939,22 +3722,22 @@ class CanvasRenderer {
             let x1 = left, y1 = top, x2 = left, y2 = top;
             if (side === 'top' || side === 'bottom') {
                 y1 = y2 = top + (side === 'bottom' ? CanvasRenderer.TILE : 0);
-                x1 = left + 5;
-                x2 = left + CanvasRenderer.TILE - 5;
+                x1 = left + 7;
+                x2 = left + CanvasRenderer.TILE - 7;
             }
             else {
                 x1 = x2 = left + (side === 'right' ? CanvasRenderer.TILE : 0);
-                y1 = top + 5;
-                y2 = top + CanvasRenderer.TILE - 5;
+                y1 = top + 7;
+                y2 = top + CanvasRenderer.TILE - 7;
             }
-            this.ctx.strokeStyle = '#a8b69a33';
-            this.ctx.lineWidth = 7;
+            this.ctx.strokeStyle = '#b5ddaa26';
+            this.ctx.lineWidth = 8;
             this.ctx.beginPath();
             this.ctx.moveTo(x1, y1);
             this.ctx.lineTo(x2, y2);
             this.ctx.stroke();
-            this.ctx.strokeStyle = '#b9d7ad';
-            this.ctx.lineWidth = 2.2;
+            this.ctx.strokeStyle = '#c7e8bc';
+            this.ctx.lineWidth = 2.4;
             this.ctx.beginPath();
             this.ctx.moveTo(x1, y1);
             this.ctx.lineTo(x2, y2);
@@ -4401,6 +4184,44 @@ class CanvasRenderer {
         this.ctx.stroke();
         this.ctx.restore();
     }
+    drawBoundaryDoor(end) {
+        const dirs = { left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] };
+        const [dx, dy] = dirs[end.side];
+        const x = (end.x + .5 + dx * .5) * CanvasRenderer.TILE, y = (end.y + .5 + dy * .5) * CanvasRenderer.TILE;
+        const horizontal = end.side === 'top' || end.side === 'bottom';
+        this.ctx.save();
+        this.ctx.translate(x, y);
+        this.ctx.strokeStyle = '#8fded8';
+        this.ctx.shadowColor = '#72d6d0';
+        this.ctx.shadowBlur = 10;
+        this.ctx.lineWidth = 3;
+        this.ctx.lineCap = 'round';
+        this.ctx.beginPath();
+        if (horizontal) {
+            this.ctx.moveTo(-22, 0);
+            this.ctx.lineTo(-7, 0);
+            this.ctx.moveTo(7, 0);
+            this.ctx.lineTo(22, 0);
+        }
+        else {
+            this.ctx.moveTo(0, -22);
+            this.ctx.lineTo(0, -7);
+            this.ctx.moveTo(0, 7);
+            this.ctx.lineTo(0, 22);
+        }
+        this.ctx.stroke();
+        this.ctx.shadowBlur = 0;
+        this.ctx.fillStyle = '#d7fffb';
+        for (const sign of [-1, 1]) {
+            this.ctx.beginPath();
+            if (horizontal)
+                this.ctx.arc(sign * 25, 0, 2.2, 0, Math.PI * 2);
+            else
+                this.ctx.arc(0, sign * 25, 2.2, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
+        this.ctx.restore();
+    }
     drawPortal(end, label, index) {
         const dirs = { left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] };
         const [dx, dy] = dirs[end.side];
@@ -4500,7 +4321,16 @@ class CanvasRenderer {
             }
         }
         this.drawPlatforms();
-        this.session.board.portals.forEach((pair, index) => { this.drawPortal(pair.a, pair.id, index); this.drawPortal(pair.b, pair.id, index); });
+        this.session.board.portals.forEach((pair, index) => {
+            if (pair.boundary) {
+                this.drawBoundaryDoor(pair.a);
+                this.drawBoundaryDoor(pair.b);
+            }
+            else {
+                this.drawPortal(pair.a, pair.id, index);
+                this.drawPortal(pair.b, pair.id, index);
+            }
+        });
         if (this.session.levelIndex === 0 && !this.session.levels.get(0).openBoundary && this.session.moves === 0 && !this.ui.busy && this.session.selectedId === null) {
             this.ctx.save();
             this.ctx.textAlign = 'center';
@@ -4583,56 +4413,59 @@ exports.CanvasRenderer = CanvasRenderer;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DomElements = void 0;
 const TAGS = {
-    "brand": "a",
-    "helpBtn": "button",
-    "progressText": "span",
-    "levelGrid": "div",
-    "fireLevelGrid": "div",
-    "portalLevelGrid": "div",
-    "elementLevelGrid": "div",
-    "progressBar": "span",
-    "lessonTag": "span",
-    "lessonTitle": "h2",
-    "lessonNote": "p",
-    "levelKicker": "span",
-    "boardTitle": "h2",
-    "moveCount": "strong",
-    "blockCount": "strong",
-    "blockCountLabel": "span",
-    "burntStat": "div",
-    "burntCount": "strong",
-    "stage": "div",
-    "board": "canvas",
-    "boardInstructions": "p",
-    "boardDescription": "p",
-    "winOverlay": "div",
-    "winTitle": "h3",
-    "winDescription": "p",
-    "nextBtn": "button",
-    "viewBoardBtn": "button",
-    "winReplayBtn": "button",
-    "fireMechanic": "div",
-    "portalMechanic": "div",
-    "portalMechanicText": "span",
-    "elementsMechanic": "div",
-    "iceChip": "span",
-    "plantChip": "span",
-    "windChip": "span",
-    "showResultBtn": "button",
-    "selectionLine": "div",
-    "selectionDot": "span",
-    "selectionText": "span",
-    "leftBtn": "button",
-    "rightBtn": "button",
-    "statusMessage": "div",
-    "undoBtn": "button",
-    "resetBtn": "button",
-    "hintBtn": "button",
-    "hintLabel": "span",
-    "helpDialog": "dialog",
-    "closeHelpBtn": "button",
-    "helpTitle": "h2",
-    "playBtn": "button"
+    homeScreen: 'section',
+    levelsScreen: 'section',
+    gameScreen: 'section',
+    transitionScreen: 'section',
+    homeProgressText: 'strong',
+    homeProgressBar: 'span',
+    continueBtn: 'button',
+    openLevelsBtn: 'button',
+    helpBtn: 'button',
+    levelsBackBtn: 'button',
+    progressText: 'span',
+    levelGrid: 'div',
+    progressBar: 'span',
+    gameBackBtn: 'button',
+    gameHelpBtn: 'button',
+    levelKicker: 'span',
+    boardTitle: 'h2',
+    moveCount: 'strong',
+    blockCount: 'strong',
+    blockCountLabel: 'span',
+    burntStat: 'div',
+    burntCount: 'strong',
+    stage: 'div',
+    board: 'canvas',
+    boardInstructions: 'p',
+    boardDescription: 'p',
+    fireMechanic: 'div',
+    portalMechanic: 'div',
+    portalMechanicText: 'span',
+    elementsMechanic: 'div',
+    iceChip: 'span',
+    plantChip: 'span',
+    windChip: 'span',
+    selectionLine: 'div',
+    selectionDot: 'span',
+    selectionText: 'span',
+    leftBtn: 'button',
+    rightBtn: 'button',
+    statusMessage: 'div',
+    undoBtn: 'button',
+    resetBtn: 'button',
+    hintBtn: 'button',
+    hintLabel: 'b',
+    transitionKicker: 'span',
+    transitionTitle: 'h2',
+    transitionDescription: 'p',
+    nextBtn: 'button',
+    transitionReplayBtn: 'button',
+    transitionLevelsBtn: 'button',
+    helpDialog: 'dialog',
+    closeHelpBtn: 'button',
+    helpTitle: 'h2',
+    playBtn: 'button',
 };
 class DomElements {
     nodes = new Map();
@@ -4727,53 +4560,61 @@ class GameView {
         this.progress = progress;
     }
     get canvas() { return this.elements.get('board'); }
+    showScreen(screen) {
+        const ids = [
+            ['home', 'homeScreen'], ['levels', 'levelsScreen'], ['game', 'gameScreen'], ['complete', 'transitionScreen'],
+        ];
+        for (const [name, id] of ids) {
+            const node = this.elements.get(id);
+            const active = name === screen;
+            node.hidden = !active;
+            node.classList.toggle('is-active', active);
+        }
+        document.body.dataset.screen = screen;
+    }
     createNavigation() {
-        const gridIds = ['levelGrid', 'fireLevelGrid', 'portalLevelGrid', 'elementLevelGrid'];
-        for (const id of gridIds)
-            this.elements.get(id).replaceChildren();
-        const digits = this.levels.count >= 100 ? 3 : 2;
+        const grid = this.elements.get('levelGrid');
+        grid.replaceChildren();
         for (let i = 0; i < this.levels.count; i++) {
-            const level = this.levels.get(i), button = document.createElement('button');
+            const button = document.createElement('button');
             button.type = 'button';
             button.className = 'level-button';
             button.dataset.level = String(i);
-            button.textContent = String(i + 1).padStart(digits, '0');
-            button.title = level.title;
-            if (level.chapter)
-                button.classList.add(level.chapter === 'portals' ? 'portal-level' : level.chapter === 'elements' ? 'element-level' : 'fire-level');
-            this.elements.get(level.chapter === 'elements' ? 'elementLevelGrid' : level.chapter === 'portals' ? 'portalLevelGrid' : level.chapter === 'fire' ? 'fireLevelGrid' : 'levelGrid').append(button);
-        }
-        const primary = this.elements.get('levelGrid');
-        primary.classList.toggle('many-levels', primary.childElementCount > 60);
-        for (const id of ['fireLevelGrid', 'portalLevelGrid', 'elementLevelGrid']) {
-            const grid = this.elements.get(id), empty = grid.childElementCount === 0;
-            grid.hidden = empty;
-            if (grid.previousElementSibling instanceof HTMLElement)
-                grid.previousElementSibling.hidden = empty;
+            button.innerHTML = `<span>${String(i + 1).padStart(3, '0')}</span><i aria-hidden="true">✓</i>`;
+            grid.append(button);
         }
     }
     updateLevelNavigation() {
-        [...document.querySelectorAll('.level-button')].forEach((button, index) => {
-            const done = Object.prototype.hasOwnProperty.call(this.progress.completed, index);
-            button.classList.toggle('active', index === this.session.levelIndex);
+        const completed = this.progress.completed;
+        const buttons = this.elements.get('levelGrid').querySelectorAll('button[data-level]');
+        buttons.forEach((button, index) => {
+            const done = Object.prototype.hasOwnProperty.call(completed, index);
+            const active = index === this.session.levelIndex;
+            button.classList.toggle('active', active);
             button.classList.toggle('completed', done);
-            if (index === this.session.levelIndex)
+            if (active)
                 button.setAttribute('aria-current', 'step');
             else
                 button.removeAttribute('aria-current');
-            button.setAttribute('aria-label', `Уровень ${index + 1}: ${this.levels.all[index].title}${done ? '. Пройден' : ''}`);
+            button.setAttribute('aria-label', `Уровень ${index + 1}${done ? ', пройден' : ''}${active ? ', текущий' : ''}`);
         });
-        const count = Object.keys(this.progress.completed).length;
-        this.elements.get('progressText').textContent = `${count} / ${this.levels.all.length}`;
-        this.elements.get('progressBar').style.width = `${100 * count / this.levels.all.length}%`;
+        const count = Object.keys(completed).length;
+        const text = `${count} / ${this.levels.count}`;
+        const width = `${100 * count / this.levels.count}%`;
+        this.elements.get('progressText').textContent = text;
+        this.elements.get('homeProgressText').textContent = text;
+        this.elements.get('progressBar').style.width = width;
+        this.elements.get('homeProgressBar').style.width = width;
+        this.elements.get('continueBtn').textContent = `Продолжить · уровень ${String(this.session.levelIndex + 1).padStart(3, '0')}`;
     }
     render() {
-        if (!this.session.board)
-            return;
+        this.showScreen(this.ui.screen);
         const status = this.session.getStatus();
         const selected = this.session.blocks.find(b => b.id === this.session.selectedId);
+        const active = this.engine.activeCount(this.session.blocks);
+        const burnt = this.session.blocks.filter(b => b.burnt).length;
+        const hasFire = this.session.blocks.some(this.engine.isFire);
         this.elements.get('moveCount').textContent = String(this.session.moves);
-        const active = this.engine.activeCount(this.session.blocks), burnt = this.session.blocks.filter(b => b.burnt).length, hasFire = this.session.blocks.some(this.engine.isFire);
         this.elements.get('blockCount').textContent = String(active);
         this.elements.get('burntCount').textContent = String(burnt);
         this.elements.get('burntStat').hidden = !hasFire && !burnt;
@@ -4782,70 +4623,84 @@ class GameView {
         this.elements.get('rightBtn').disabled = this.ui.busy || status.kind !== 'playing' || !selected || !this.engine.canMove(this.session.board, this.session.blocks, this.session.selectedId, 1);
         this.elements.get('undoBtn').disabled = this.ui.busy || this.session.historyLength === 0;
         this.elements.get('hintBtn').disabled = this.ui.busy || this.ui.hintBusy || status.kind !== 'playing';
-        this.elements.get('hintLabel').textContent = this.ui.hintBusy ? 'Ищу ход…' : 'Подсказка';
+        this.elements.get('hintLabel').textContent = this.ui.hintBusy ? 'Ищу…' : 'Подсказка';
         const dot = this.elements.get('selectionDot');
         dot.style.backgroundColor = selected ? BlockAppearance_js_1.BlockAppearance.for(selected).color : 'transparent';
-        dot.style.borderColor = selected ? BlockAppearance_js_1.BlockAppearance.for(selected).color : '#708089';
-        this.elements.get('selectionText').textContent = this.ui.busy ? 'Блоки находят своё место…' : selected && status.kind === 'playing' ? `${BlockAppearance_js_1.BlockAppearance.for(selected).name} выбран · двигайте стрелками` : status.kind === 'won' ? 'Все игровые блоки убраны' : 'Выберите блок на поле';
-        const statusEl = this.elements.get('statusMessage');
+        dot.style.borderColor = selected ? BlockAppearance_js_1.BlockAppearance.for(selected).color : '#647780';
+        this.elements.get('selectionText').textContent = this.ui.busy ? 'Ход выполняется…' : selected && status.kind === 'playing'
+            ? `${BlockAppearance_js_1.BlockAppearance.for(selected).name} · свайпните или нажмите стрелку`
+            : status.kind === 'won' ? 'Все цветные блоки убраны' : 'Коснитесь блока, чтобы выбрать его';
         let text = this.ui.message, kind = this.ui.messageKind;
         if (!this.ui.busy && status.kind === 'lost') {
-            text = status.reason === 'singleton' ? 'Остался блок без пары. Отмените ход и попробуйте другой путь.' : status.reason === 'proven' ? 'Из этой позиции не убрать все игровые блоки. Отмените ход.' : 'Все блоки заблокированы. Отмените ход и попробуйте другой путь.';
+            text = status.reason === 'singleton' ? 'Остался блок без пары. Отмените ход и попробуйте другой путь.'
+                : status.reason === 'proven' ? 'Из этой позиции решения нет. Отмените ход.'
+                    : 'Все доступные ходы заблокированы. Отмените ход.';
             kind = 'lost';
         }
         else if (!this.ui.busy && status.kind === 'won') {
-            text = 'Цветных блоков не осталось. Уголь и специальные блоки могут остаться — уровень решён.';
+            text = 'Уровень решён.';
             kind = 'hint';
         }
+        const statusEl = this.elements.get('statusMessage');
         statusEl.textContent = text;
         statusEl.className = `status-message ${kind}`;
         const descriptions = this.session.blocks.map(b => `${BlockAppearance_js_1.BlockAppearance.for(b).description}: столбец ${b.x + 1}, строка ${b.y + 1}${b.id === this.session.selectedId ? ', выбран' : ''}`);
-        const sideNames = { top: 'сверху', bottom: 'снизу', left: 'слева', right: 'справа' };
-        for (const pair of this.session.board.portals)
-            descriptions.push(`Двери ${pair.id}: ${sideNames[pair.a.side]} у клетки ${pair.a.x + 1}, ${pair.a.y + 1}; ${sideNames[pair.b.side]} у клетки ${pair.b.x + 1}, ${pair.b.y + 1}. Занятый выход блокирует проход`);
-        if (this.session.board.platforms?.length)
-            descriptions.push(`На поле ${this.session.board.platforms.length} направленных граней платформ; через них блоки не проходят`);
+        const boundaryDoors = this.session.board.portals.filter(pair => pair.boundary).length;
+        if (boundaryDoors)
+            descriptions.push(`Открытых граничных дверей: ${boundaryDoors}. Горизонтальная дверь переносит на противоположный край; нижняя дверь возвращает падающий блок сверху`);
+        const internalPlatforms = this.visiblePlatformCount();
+        if (internalPlatforms)
+            descriptions.push(`Платформ между проходимыми клетками: ${internalPlatforms}`);
         this.elements.get('boardDescription').textContent = descriptions.join('. ') || 'Поле очищено.';
-        const won = !this.ui.busy && status.kind === 'won';
-        this.elements.get('winOverlay').hidden = !won || this.ui.reviewingWin;
-        this.elements.get('showResultBtn').hidden = !won || !this.ui.reviewingWin;
-        if (won) {
-            const allDone = Object.keys(this.progress.completed).length === this.levels.all.length;
-            this.elements.get('winTitle').textContent = allDone ? 'Все этюды решены.' : 'Красиво сошлось.';
-            this.elements.get('winDescription').textContent = `Решение за ${RussianText_js_1.RussianText.moves(this.session.moves)}.${burnt ? ` На поле ${burnt} ${RussianText_js_1.RussianText.plural(burnt, ['горелый блок', 'горелых блока', 'горелых блоков'])} — это не мешает победе.` : allDone ? ' Можно вернуться к любому уровню.' : ' Ещё одна маленькая победа.'}`;
-            this.elements.get('nextBtn').replaceChildren(document.createTextNode(this.session.levelIndex < this.levels.all.length - 1 ? 'Следующий этюд ' : allDone ? 'К первому этюду ' : 'К непройденному '));
-            const arrow = document.createElement('span');
-            arrow.textContent = '→';
-            arrow.setAttribute('aria-hidden', 'true');
-            this.elements.get('nextBtn').append(arrow);
+        if (this.ui.screen === 'complete') {
+            const allDone = Object.keys(this.progress.completed).length === this.levels.count;
+            this.elements.get('transitionKicker').textContent = `УРОВЕНЬ ${String(this.session.levelIndex + 1).padStart(3, '0')} ПРОЙДЕН`;
+            this.elements.get('transitionTitle').textContent = allDone ? 'Классика пройдена.' : 'Сошлось.';
+            this.elements.get('transitionDescription').textContent = `Решение за ${RussianText_js_1.RussianText.moves(this.session.moves)}.${burnt ? ` Осталось ${burnt} ${RussianText_js_1.RussianText.plural(burnt, ['горелый блок', 'горелых блока', 'горелых блоков'])}.` : ''}`;
+            this.elements.get('nextBtn').textContent = this.session.levelIndex < this.levels.count - 1 ? 'Следующий уровень →' : allDone ? 'С начала →' : 'К непройденному →';
         }
     }
     configureLevel() {
         const index = this.session.levelIndex;
-        const hasFire = this.session.blocks.some(this.engine.isFire), hasPortals = this.session.board.portals.length > 0;
+        const hasFire = this.session.blocks.some(this.engine.isFire);
+        const hasDoors = this.session.board.portals.some(pair => pair.boundary);
         const hasElements = this.session.blocks.some(b => this.engine.isIce(b) || this.engine.isPlant(b) || this.engine.isWind(b));
-        const hasPlatforms = Boolean(this.session.board.platformEdges?.size);
-        this.ui.message = hasElements ? 'Уберите все цветные блоки. Лёд, растения, ветер и огонь могут остаться.' : hasPortals ? 'Проходите сквозь двери с одинаковым номером. Гравитация всегда направлена вниз.' : hasFire ? 'Огонь теперь можно двигать. Он падает и обжигает только сверху.' : hasPlatforms ? 'Соединяйте одинаковые блоки. Светлые грани платформ перекрывают движение между клетками.' : 'Соедините одинаковые блоки и очистите поле.';
-        this.ui.messageKind = hasElements ? 'element' : hasPortals ? 'portal' : hasFire ? 'fire' : '';
-        document.body.classList.toggle('fire-mode', hasFire);
-        document.body.classList.toggle('portal-mode', hasPortals);
-        document.body.classList.toggle('element-mode', hasElements);
+        const hasPlatforms = this.visiblePlatformCount() > 0;
+        this.ui.message = hasElements ? 'Уберите цветные блоки. Специальные элементы могут остаться.'
+            : hasDoors ? 'Открытый край — дверь на противоположную сторону. Совпадения срабатывают до падения и входа в дверь.'
+                : hasFire ? 'Огонь можно двигать. Он обжигает только сверху.'
+                    : hasPlatforms ? 'Светлая платформа перекрывает переход между двумя клетками.'
+                        : 'Соединяйте одинаковые цветные блоки.';
+        this.ui.messageKind = hasElements ? 'element' : hasDoors ? 'portal' : hasFire ? 'fire' : '';
         this.elements.get('elementsMechanic').hidden = !hasElements;
         this.elements.get('iceChip').hidden = !this.session.blocks.some(this.engine.isIce);
         this.elements.get('plantChip').hidden = !this.session.blocks.some(this.engine.isPlant);
         this.elements.get('windChip').hidden = !this.session.blocks.some(this.engine.isWind);
         this.elements.get('fireMechanic').hidden = !hasFire;
-        this.elements.get('portalMechanic').hidden = !hasPortals;
-        this.elements.get('portalMechanicText').textContent = this.session.board.portals.length > 1 ? 'Две пары дверей. Ориентируйтесь по номерам.' : hasElements ? 'Дверь переносит и при подъёме ветром.' : 'Вниз → из верхней двери. Вбок → с другой стороны.';
-        const level = this.levels.all[index];
+        this.elements.get('portalMechanic').hidden = !hasDoors;
+        this.elements.get('portalMechanicText').textContent = 'Нет платформы на краю — блок входит в дверь и появляется с противоположной стороны.';
+        const level = this.levels.get(index);
         this.elements.get('boardTitle').textContent = level.title;
-        this.elements.get('lessonTitle').textContent = level.title;
-        this.elements.get('lessonTag').textContent = level.tag;
-        this.elements.get('lessonNote').textContent = level.note;
-        this.elements.get('levelKicker').textContent = `ЭТЮД ${String(index + 1).padStart(2, '0')} / ${this.levels.all.length}`;
+        this.elements.get('levelKicker').textContent = `УРОВЕНЬ ${String(index + 1).padStart(3, '0')} / ${this.levels.count}`;
         this.canvas.style.aspectRatio = `${this.session.board.width} / ${this.session.board.height}`;
-        this.canvas.style.width = `min(100%, ${480 * this.session.board.width / this.session.board.height}px)`;
-        this.canvas.setAttribute('aria-label', `Игровое поле. Уровень ${index + 1}: ${level.title}. ${this.session.board.width} на ${this.session.board.height} клеток.`);
+        this.canvas.setAttribute('aria-label', `Игровое поле. Уровень ${index + 1}. ${this.session.board.width} на ${this.session.board.height} клеток.`);
+    }
+    visiblePlatformCount() {
+        const { width, height, walls, platforms } = this.session.board;
+        if (!platforms)
+            return 0;
+        const seen = new Set();
+        for (const p of platforms) {
+            const [dx, dy] = p.side === 'left' ? [-1, 0] : p.side === 'right' ? [1, 0] : p.side === 'top' ? [0, -1] : [0, 1];
+            const nx = p.x + dx, ny = p.y + dy;
+            if (nx < 0 || ny < 0 || nx >= width || ny >= height)
+                continue;
+            if (walls.has(p.y * width + p.x) || walls.has(ny * width + nx))
+                continue;
+            const key = p.side === 'right' ? `${nx},${ny}:left` : p.side === 'bottom' ? `${nx},${ny}:top` : `${p.x},${p.y}:${p.side}`;
+            seen.add(key);
+        }
+        return seen.size;
     }
 }
 exports.GameView = GameView;
@@ -4880,31 +4735,37 @@ class InputController {
         canvas.addEventListener('pointerup', event => this.pointerUp(event), options);
         canvas.addEventListener('pointercancel', () => this.resetPointer(), options);
         canvas.addEventListener('lostpointercapture', () => { this.pointerStart = null; }, options);
+        this.elements.get('continueBtn').addEventListener('click', () => this.actions.loadLevel(this.session.levelIndex), options);
+        this.elements.get('openLevelsBtn').addEventListener('click', () => this.actions.showLevels(), options);
+        this.elements.get('levelsBackBtn').addEventListener('click', () => this.actions.showHome(), options);
+        this.elements.get('gameBackBtn').addEventListener('click', () => this.actions.showLevels(), options);
+        this.elements.get('transitionLevelsBtn').addEventListener('click', () => this.actions.showLevels(), options);
+        this.elements.get('transitionReplayBtn').addEventListener('click', () => this.actions.loadLevel(this.session.levelIndex), options);
+        this.elements.get('nextBtn').addEventListener('click', () => this.actions.nextLevel(), options);
         this.elements.get('leftBtn').addEventListener('click', () => { void this.actions.requestMove(-1); }, options);
         this.elements.get('rightBtn').addEventListener('click', () => { void this.actions.requestMove(1); }, options);
         this.elements.get('undoBtn').addEventListener('click', () => this.actions.undo(), options);
         this.elements.get('resetBtn').addEventListener('click', () => this.actions.loadLevel(this.session.levelIndex), options);
         this.elements.get('hintBtn').addEventListener('click', () => this.actions.requestHint(), options);
-        this.elements.get('winReplayBtn').addEventListener('click', () => this.actions.loadLevel(this.session.levelIndex), options);
-        this.elements.get('viewBoardBtn').addEventListener('click', () => this.actions.reviewResult(true), options);
-        this.elements.get('showResultBtn').addEventListener('click', () => this.actions.reviewResult(false), options);
-        this.elements.get('brand').addEventListener('click', event => { event.preventDefault(); this.actions.loadLevel(0); }, options);
-        this.elements.get('nextBtn').addEventListener('click', () => this.actions.nextLevel(), options);
-        for (const id of ['levelGrid', 'fireLevelGrid', 'portalLevelGrid', 'elementLevelGrid']) {
-            const grid = this.elements.get(id);
-            grid.addEventListener('click', event => {
-                const button = event.target instanceof Element ? event.target.closest('button[data-level]') : null;
-                if (button instanceof HTMLButtonElement && grid.contains(button))
-                    this.actions.loadLevel(Number(button.dataset.level));
-            }, options);
-        }
+        const grid = this.elements.get('levelGrid');
+        grid.addEventListener('click', event => {
+            const button = event.target instanceof Element ? event.target.closest('button[data-level]') : null;
+            if (button instanceof HTMLButtonElement && grid.contains(button))
+                this.actions.loadLevel(Number(button.dataset.level));
+        }, options);
         const help = this.elements.get('helpDialog');
-        this.elements.get('helpBtn').addEventListener('click', () => {
+        const openHelp = () => {
             if (!help.open)
                 help.showModal();
-        }, options);
+        };
+        this.elements.get('helpBtn').addEventListener('click', openHelp, options);
+        this.elements.get('gameHelpBtn').addEventListener('click', openHelp, options);
         this.elements.get('closeHelpBtn').addEventListener('click', () => help.close(), options);
-        this.elements.get('playBtn').addEventListener('click', () => { help.close(); canvas.focus({ preventScroll: true }); }, options);
+        this.elements.get('playBtn').addEventListener('click', () => {
+            help.close();
+            if (this.ui.screen === 'game')
+                canvas.focus({ preventScroll: true });
+        }, options);
         help.addEventListener('click', event => {
             if (event.target !== help)
                 return;
@@ -4925,7 +4786,7 @@ class InputController {
         }
     }
     dispose() { this.resetPointer(); this.scope.abort(); }
-    isPlaying() { return !this.ui.busy && this.session.getStatus().kind === 'playing'; }
+    isPlaying() { return this.ui.screen === 'game' && !this.ui.busy && this.session.getStatus().kind === 'playing'; }
     eventCell(event) {
         const rect = this.canvas.getBoundingClientRect();
         return { x: Math.floor((event.clientX - rect.left) / rect.width * this.session.board.width), y: Math.floor((event.clientY - rect.top) / rect.height * this.session.board.height) };
@@ -4976,6 +4837,15 @@ class InputController {
         const target = event.target;
         if (this.elements.get('helpDialog').open || event.altKey || event.ctrlKey || event.metaKey || event.repeat || (target instanceof HTMLElement && (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable)))
             return;
+        if (event.key === 'Escape') {
+            if (this.ui.screen === 'game')
+                this.actions.showLevels();
+            else if (this.ui.screen === 'levels' || this.ui.screen === 'complete')
+                this.actions.showHome();
+            return;
+        }
+        if (this.ui.screen !== 'game')
+            return;
         if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
             event.preventDefault();
             void this.actions.requestMove(event.key === 'ArrowLeft' ? -1 : 1);
@@ -4996,8 +4866,6 @@ class InputController {
             event.preventDefault();
             this.actions.requestHint();
         }
-        else if (event.key === 'Escape')
-            this.actions.clearSelection();
     }
 }
 exports.InputController = InputController;
@@ -5022,15 +4890,15 @@ exports.RussianText = RussianText;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UiState = void 0;
 class UiState {
+    screen = 'home';
     busy = false;
     hintBusy = false;
-    reviewingWin = false;
     hint = null;
     animation = null;
     message = '';
     messageKind = '';
-    reset() {
-        this.busy = this.hintBusy = this.reviewingWin = false;
+    resetGameplay() {
+        this.busy = this.hintBusy = false;
         this.hint = this.animation = null;
         this.message = '';
         this.messageKind = '';
