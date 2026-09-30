@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#151b21">
-<meta name="description" content="Логическая головоломка: лёд, растения, ветер, огонь, телепорты и 30 уровней. Без таймера. Каждый ход можно отменить.">
+<meta name="description" content="Логическая головоломка с двумя коллекциями: 300 новых и 260 классических уровней из исходных .dat-файлов.">
 <title>Сближение — стихии</title>
 <style>
 :root {color-scheme:dark;--bg:#141a20;--panel:#1b222a;--panel-deep:#151c23;--text:#e9eee9;--muted:#8c9b9e;--soft:#606f77;--line:#303b43;--accent:#b9d7ad;--coral:#eea58e;--mint:#a9d2c7;--lilac:#b9b3dc;--gold:#e3c786;--danger:#edab92;--radius:22px;font-family:"Segoe UI",Arial,sans-serif;font-synthesis:none;}
@@ -143,6 +143,15 @@ button, .brand { touch-action: manipulation; }
  .element-chip{font-size:7px;padding:4px 5px;}
 }
 
+/* Imported DAT campaigns. */
+.campaign-switch{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 0 13px;}
+.campaign-switch a{display:flex;align-items:center;justify-content:center;min-height:31px;border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:9px;letter-spacing:.35px;}
+.campaign-switch a:hover{border-color:var(--soft);background:#ffffff08;color:var(--text);}
+.campaign-switch a.active{border-color:var(--accent);background:#b9d7ad12;color:var(--accent);}
+.level-grid.many-levels{max-height:314px;overflow:auto;overscroll-behavior:contain;padding-right:4px;scrollbar-width:thin;scrollbar-color:#53645c #1b222a;}
+.level-grid.many-levels .level-button{min-height:41px;}
+@media(max-width:760px){.campaign-switch{margin-bottom:10px;}.level-grid.many-levels{max-height:210px;}.level-grid.many-levels .level-button{min-height:35px;}}
+
 </style>
 <link rel="icon" href="data:,">
 </head>
@@ -159,12 +168,13 @@ button, .brand { touch-action: manipulation; }
   <main class="workspace">
     <aside class="sidebar">
       <div class="intro">
-        <p class="eyebrow">ОБНОВЛЕНИЕ · СТИХИИ</p>
+        <p class="eyebrow" id="campaignEyebrow">КОЛЛЕКЦИЯ · 300 УРОВНЕЙ</p>
         <h1>Холод. Ветер.<br><span>Живая логика.</span></h1>
         <p class="intro-copy">Сдвигайте, замораживайте, поднимайте.<br>У каждого блока — свой характер.</p>
       </div>
       <section class="level-section" aria-label="Выбор уровня">
-        <div class="section-topline"><h2>Ваш путь</h2><span id="progressText">0 / 30</span></div>
+        <div class="section-topline"><h2>Ваш путь</h2><span id="progressText">0 / 300</span></div>
+        <nav class="campaign-switch" aria-label="Набор уровней"><a data-campaign="current" href="?campaign=current">300 новых</a><a data-campaign="old" href="?campaign=old">260 старых</a></nav>
         <div class="level-grid" id="levelGrid"></div>
         <div class="fire-chapter-heading"><span>Огненные этюды</span><span class="chapter-counter">11–14</span></div>
         <div class="level-grid fire-level-grid" id="fireLevelGrid" aria-label="Четыре уровня с огнём"></div>
@@ -248,7 +258,7 @@ button, .brand { touch-action: manipulation; }
     </section>
   </main>
 
-  <footer class="page-footer"><span>ЛОГИКА ВМЕСТО СКОРОСТИ</span><p>Выберите блок и нажмите <kbd>←</kbd> <kbd>→</kbd><span class="footer-separator">/</span>или смахните блок в сторону</p><span class="edition">30 ЭТЮДОВ · V 1.3 / СТИХИИ</span></footer>
+  <footer class="page-footer"><span>ЛОГИКА ВМЕСТО СКОРОСТИ</span><p>Выберите блок и нажмите <kbd>←</kbd> <kbd>→</kbd><span class="footer-separator">/</span>или смахните блок в сторону</p><span class="edition" id="editionLabel">300 УРОВНЕЙ · DAT</span></footer>
 </div>
 
 <dialog id="helpDialog" aria-labelledby="helpTitle">
@@ -256,7 +266,7 @@ button, .brand { touch-action: manipulation; }
   <h2 id="helpTitle">Всё начинается с одного хода.</h2>
   <p>Ваша цель — убрать все обычные цветные блоки: соединить одинаковые или обжечь на огне. Лёд, растения, ветер, огонь и горелые блоки могут остаться. Таймера нет.</p>
   <div class="rules-list">
-    <div><span class="rule-number">01</span><p><strong>Только влево и вправо.</strong> Игрок сдвигает любой подвижный блок на одну свободную клетку. Толкать соседей нельзя. Вертикальное движение происходит автоматически: вниз от гравитации, вверх от ветра.</p></div>
+    <div><span class="rule-number">01</span><p><strong>Только влево и вправо.</strong> Игрок сдвигает любой подвижный блок на одну свободную клетку. Толкать соседей нельзя. Вертикальное движение происходит автоматически: вниз от гравитации, вверх от ветра. Светлая грань платформы между клетками непроходима.</p></div>
     <div><span class="rule-number">02</span><p><strong>Цель — убрать цветные блоки.</strong> После завершения движения и реакций исчезают группы из двух и более обычных блоков одного типа, соединённых сторонами. Диагональ не считается. Все специальные блоки могут остаться на поле.</p></div>
     <div><span class="rule-number">03</span><p><strong>Огонь и уголь.</strong> Обычный блок непосредственно над горящим огнём становится углём. Он сохраняет свою клетку, подвижность и вес, но больше не совпадает и не учитывается в цели уровня. Опасна только верхняя грань огня; сам огонь тоже можно двигать.</p></div>
     <div><span class="rule-number">04</span><p><strong>Лёд помнит попадания, а не время.</strong> Новое приземление или горизонтальный сдвиг другого блока на лёд даёт трещину: 0/2 → 1/2. Второе попадание разрушает лёд и освобождает клетку. Стоящий сверху блок не наносит повторных ударов. Тот же блок можно убрать и вернуть для второго удара.</p></div>
@@ -641,7 +651,12 @@ class GameSession {
         return { levelIndex: this.currentLevel, blocks: this.engine.clone(this.blocks), selectedId: this.selected, moves: this.moves, historyLength: this.snapshots.length, status: this.getStatus() };
     }
     parse(index) {
-        const parsed = this.engine.parseLevel(this.levels.get(index));
+        const level = this.levels.get(index);
+        const parsed = this.engine.parseLevel(level);
+        if (level.resolveOnLoad === false) {
+            this.engine.assertValid(parsed.board, parsed.blocks);
+            return parsed;
+        }
         const resolved = this.engine.resolve(parsed.board, parsed.blocks);
         if (resolved.rejected)
             throw new Error(`Unstable initial level: ${resolved.rejected}.`);
@@ -753,10 +768,38 @@ class Grid {
     static edgeKey(x, y, dx, dy) { return `${x},${y}:${dx},${dy}`; }
     static inBounds(board, x, y) { return x >= 0 && y >= 0 && x < board.width && y < board.height; }
     static occupied(board, blocks) { return new Map(blocks.map(b => [Grid.cell(b.x, b.y, board.width), b])); }
+    static isPlatformBlocked(board, x, y, dx, dy) {
+        return Boolean(board.platformEdges?.has(Grid.edgeKey(x, y, dx, dy)));
+    }
+    static canTouch(board, x, y, dx, dy) {
+        return Grid.inBounds(board, x + dx, y + dy);
+    }
+    static movementTarget(board, x, y, dx, dy) {
+        let nx = x + dx, ny = y + dy;
+        if (nx < 0 || nx >= board.width) {
+            if (!board.wrapHorizontal || dy !== 0)
+                return null;
+            nx = (nx + board.width) % board.width;
+        }
+        if (ny >= board.height) {
+            if (!board.wrapGravity || dx !== 0 || dy <= 0)
+                return null;
+            ny = 0;
+        }
+        if (ny < 0)
+            return null;
+        return { x: nx, y: ny };
+    }
     static destination(board, blocks, b, dx, dy, occ = Grid.occupied(board, blocks)) {
-        const door = board.portalEdges && board.portalEdges.get(Grid.edgeKey(b.x, b.y, dx, dy));
-        const x = door ? door.exit.x : b.x + dx, y = door ? door.exit.y : b.y + dy;
-        if (!Grid.inBounds(board, x, y) || board.walls.has(Grid.cell(x, y, board.width)) || occ.has(Grid.cell(x, y, board.width)))
+        const edge = Grid.edgeKey(b.x, b.y, dx, dy);
+        const door = board.portalEdges && board.portalEdges.get(edge);
+        if (!door && board.platformEdges?.has(edge))
+            return null;
+        const target = door ? { x: door.exit.x, y: door.exit.y } : Grid.movementTarget(board, b.x, b.y, dx, dy);
+        if (!target)
+            return null;
+        const { x, y } = target;
+        if (board.walls.has(Grid.cell(x, y, board.width)) || occ.has(Grid.cell(x, y, board.width)))
             return null;
         return { x, y, ...(door ? { portal: { ...door, dx, dy, id: b.id } } : {}) };
     }
@@ -783,7 +826,7 @@ class PhysicsSystem {
     gravity(board, input, withTrace = false) {
         if (BlockRules_js_1.BlockRules.hasElements(input) || input.some(BlockRules_js_1.BlockRules.isFire))
             return this.settleElements(board, input, withTrace, false);
-        if (!board.portals.length) {
+        if (!board.portals.length && !board.platformEdges?.size && !board.wrapGravity) {
             const blocks = BlockRules_js_1.BlockRules.clone(input), occ = new Set(board.walls);
             for (const b of [...blocks].sort((a, b) => b.y - a.y || a.x - b.x)) {
                 while (b.y + 1 < board.height && !occ.has(Grid_js_1.Grid.cell(b.x, b.y + 1, board.width)))
@@ -796,7 +839,7 @@ class PhysicsSystem {
         for (let tick = 0; tick < this.maxSteps; tick++) {
             const key = BlockRules_js_1.BlockRules.stateKey(blocks);
             if (seen.has(key))
-                return { blocks: BlockRules_js_1.BlockRules.clone(input), trace: [], rejected: 'portal-loop' };
+                return { blocks: BlockRules_js_1.BlockRules.clone(input), trace: [], rejected: board.wrapGravity ? 'physics-loop' : 'portal-loop' };
             seen.add(key);
             const before = withTrace ? BlockRules_js_1.BlockRules.clone(blocks) : [], occ = Grid_js_1.Grid.occupied(board, blocks), warps = [];
             let changed = false;
@@ -834,7 +877,7 @@ class PhysicsSystem {
         const occ = Grid_js_1.Grid.occupied(board, input), burned = [], melted = [], ignited = [];
         const blocks = [];
         for (const b of input) {
-            const below = occ.get(Grid_js_1.Grid.cell(b.x, b.y + 1, board.width));
+            const below = Grid_js_1.Grid.canTouch(board, b.x, b.y, 0, 1) ? occ.get(Grid_js_1.Grid.cell(b.x, b.y + 1, board.width)) : undefined;
             if (below && BlockRules_js_1.BlockRules.liveFire(below)) {
                 if (BlockRules_js_1.BlockRules.isActive(b)) {
                     burned.push(b.id);
@@ -884,7 +927,7 @@ class PhysicsSystem {
             if (!BlockRules_js_1.BlockRules.isPlant(plant) || plant.frozen)
                 continue;
             for (const [dx, dy] of Object.values(Grid_js_1.DIRECTIONS)) {
-                const other = occ.get(Grid_js_1.Grid.cell(plant.x + dx, plant.y + dy, board.width));
+                const other = Grid_js_1.Grid.canTouch(board, plant.x, plant.y, dx, dy) ? occ.get(Grid_js_1.Grid.cell(plant.x + dx, plant.y + dy, board.width)) : undefined;
                 if (other && !(BlockRules_js_1.BlockRules.isPlant(other) && other.frozen))
                     held.add(other.id);
             }
@@ -894,7 +937,7 @@ class PhysicsSystem {
     iceContacts(board, blocks) {
         const occ = Grid_js_1.Grid.occupied(board, blocks), contacts = new Map();
         for (const ice of blocks.filter(BlockRules_js_1.BlockRules.isIce)) {
-            const top = occ.get(Grid_js_1.Grid.cell(ice.x, ice.y - 1, board.width));
+            const top = Grid_js_1.Grid.canTouch(board, ice.x, ice.y, 0, -1) ? occ.get(Grid_js_1.Grid.cell(ice.x, ice.y - 1, board.width)) : undefined;
             if (top)
                 contacts.set(ice.id, top.id);
         }
@@ -923,7 +966,7 @@ class PhysicsSystem {
         const occ = Grid_js_1.Grid.occupied(board, input), frozen = [];
         const blocks = input.map(b => {
             if (BlockRules_js_1.BlockRules.isPlant(b) && !b.frozen && Object.values(Grid_js_1.DIRECTIONS).some(([dx, dy]) => {
-                const other = occ.get(Grid_js_1.Grid.cell(b.x + dx, b.y + dy, board.width));
+                const other = Grid_js_1.Grid.canTouch(board, b.x, b.y, dx, dy) ? occ.get(Grid_js_1.Grid.cell(b.x + dx, b.y + dy, board.width)) : undefined;
                 return other && BlockRules_js_1.BlockRules.isIce(other);
             })) {
                 frozen.push(b.id);
@@ -1046,7 +1089,7 @@ class PhysicsSystem {
                 group.push(b.id);
                 for (const [dx, dy] of Object.values(Grid_js_1.DIRECTIONS)) {
                     const x = b.x + dx, y = b.y + dy;
-                    if (!Grid_js_1.Grid.inBounds(board, x, y))
+                    if (!Grid_js_1.Grid.canTouch(board, b.x, b.y, dx, dy))
                         continue;
                     const n = occ.get(Grid_js_1.Grid.cell(x, y, board.width));
                     if (n && BlockRules_js_1.BlockRules.isActive(n) && n.type === start.type && !visited.has(n.id)) {
@@ -1181,6 +1224,8 @@ class PuzzleEngine {
         const candidates = this.candidateMoves(board, blocks);
         if (!candidates.length)
             return { kind: 'lost', reason: 'immobile' };
+        if (board.wrapGravity)
+            return { kind: 'playing' };
         if (board.portals.length || BlockRules_js_1.BlockRules.hasElements(blocks)) {
             let any = false;
             for (const a of candidates) {
@@ -1306,12 +1351,14 @@ function isRecord(value) {
 class ProgressRepository {
     storage;
     levelCount;
+    key;
     static KEY = 'sblizhenie.progress.elements.v1';
     best = {};
     currentLevel;
-    constructor(storage, levelCount, defaultLevel = 0) {
+    constructor(storage, levelCount, defaultLevel = 0, key = ProgressRepository.KEY) {
         this.storage = storage;
         this.levelCount = levelCount;
+        this.key = key;
         this.currentLevel = defaultLevel;
         this.restore();
     }
@@ -1332,16 +1379,18 @@ class ProgressRepository {
     restore() {
         try {
             const store = this.storage();
-            const own = store.getItem(ProgressRepository.KEY);
-            const portal = store.getItem('sblizhenie.progress.portals.v1');
-            const saved = JSON.parse(own || portal || store.getItem('sblizhenie.progress.fire.v1') || store.getItem('sblizhenie.progress.v1') || '{}');
+            const own = store.getItem(this.key);
+            const legacyMode = this.key === ProgressRepository.KEY;
+            const portal = legacyMode ? store.getItem('sblizhenie.progress.portals.v1') : null;
+            const raw = own || portal || (legacyMode ? store.getItem('sblizhenie.progress.fire.v1') || store.getItem('sblizhenie.progress.v1') : null) || '{}';
+            const saved = JSON.parse(raw);
             if (!isRecord(saved))
                 return;
             if (own && typeof saved.level === 'number' && Number.isInteger(saved.level) && saved.level >= 0 && saved.level < this.levelCount)
                 this.currentLevel = saved.level;
             if (!isRecord(saved.completed))
                 return;
-            const max = own ? this.levelCount : portal ? 20 : 10;
+            const max = legacyMode ? own ? this.levelCount : portal ? 20 : 10 : this.levelCount;
             for (const [key, value] of Object.entries(saved.completed)) {
                 const index = Number(key);
                 if (Number.isInteger(index) && index >= 0 && index < Math.min(max, this.levelCount) && typeof value === 'number' && Number.isInteger(value) && value >= 0)
@@ -1352,12 +1401,703 @@ class ProgressRepository {
     }
     save() {
         try {
-            this.storage().setItem(ProgressRepository.KEY, JSON.stringify({ level: this.currentLevel, completed: this.best }));
+            this.storage().setItem(this.key, JSON.stringify({ level: this.currentLevel, completed: this.best }));
         }
         catch { }
     }
 }
 exports.ProgressRepository = ProgressRepository;
+
+},
+"levels/dat/DatCampaignCatalog.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DatCampaignCatalog = void 0;
+const embeddedData_js_1 = require("./embeddedData.js");
+const DatLevelArchive_js_1 = require("./DatLevelArchive.js");
+const SYMBOLS = Object.freeze({
+    [DatLevelArchive_js_1.DatTileType.Empty]: '.',
+    [DatLevelArchive_js_1.DatTileType.Green]: 'A',
+    [DatLevelArchive_js_1.DatTileType.Yellow]: 'B',
+    [DatLevelArchive_js_1.DatTileType.Red]: 'C',
+    [DatLevelArchive_js_1.DatTileType.Orange]: 'D',
+    [DatLevelArchive_js_1.DatTileType.Ice]: 'I',
+    [DatLevelArchive_js_1.DatTileType.Fire]: 'F',
+    [DatLevelArchive_js_1.DatTileType.Wall]: '#',
+    [DatLevelArchive_js_1.DatTileType.Plant]: 'P',
+    [DatLevelArchive_js_1.DatTileType.Wind]: 'W',
+});
+const FLAG_SIDES = [
+    [DatLevelArchive_js_1.DatTileFlag.PlatformDirectionUp, 'top'],
+    [DatLevelArchive_js_1.DatTileFlag.PlatformDirectionDown, 'bottom'],
+    [DatLevelArchive_js_1.DatTileFlag.PlatformDirectionLeft, 'left'],
+    [DatLevelArchive_js_1.DatTileFlag.PlatformDirectionRight, 'right'],
+];
+class DatCampaignCatalog {
+    campaigns;
+    constructor() {
+        this.campaigns = Object.freeze({
+            current: this.buildCampaign('current', 'Новая коллекция · 300', '300 новых', 'sblizhenie.progress.dat.current.v1', embeddedData_js_1.CURRENT_ARCHIVES),
+            old: this.buildCampaign('old', 'Классическая коллекция · 260', '260 старых', 'sblizhenie.progress.dat.old.v1', embeddedData_js_1.OLD_ARCHIVES),
+        });
+    }
+    fromSearch(search) {
+        const value = new URLSearchParams(search).get('campaign');
+        return this.get(value === 'old' ? 'old' : 'current');
+    }
+    get(id) { return this.campaigns[id]; }
+    buildCampaign(id, label, shortLabel, progressKey, sources) {
+        const decoded = sources.flatMap(source => new DatLevelArchive_js_1.DatLevelArchive(source.name, source.bytes).levels);
+        const levels = decoded.map((level, index) => this.toLevelDefinition(level, index, id));
+        return Object.freeze({ id, label, shortLabel, progressKey, levels: Object.freeze(levels) });
+    }
+    toLevelDefinition(level, index, campaign) {
+        const rows = [];
+        const platforms = [];
+        const present = new Set();
+        for (let y = 0; y < level.height; y++) {
+            let row = '';
+            for (let x = 0; x < level.width; x++) {
+                const tile = level.tiles[y * level.width + x];
+                if (!tile)
+                    throw new Error(`${level.archive}: missing tile ${x},${y}.`);
+                const symbol = SYMBOLS[tile.type];
+                if (!symbol)
+                    throw new Error(`${level.archive}: unsupported tile ${tile.type}.`);
+                row += symbol;
+                present.add(tile.type);
+                for (const [flag, side] of FLAG_SIDES)
+                    if (tile.flags & flag)
+                        platforms.push(Object.freeze({ x, y, side }));
+            }
+            rows.push(row);
+        }
+        const features = [
+            present.has(DatLevelArchive_js_1.DatTileType.Ice) ? 'лёд' : '',
+            present.has(DatLevelArchive_js_1.DatTileType.Fire) ? 'огонь' : '',
+            present.has(DatLevelArchive_js_1.DatTileType.Plant) ? 'растения' : '',
+            present.has(DatLevelArchive_js_1.DatTileType.Wind) ? 'ветер' : '',
+        ].filter(Boolean);
+        const sourceNumber = level.archiveIndex + 1;
+        return Object.freeze({
+            title: `Уровень ${String(index + 1).padStart(3, '0')}`,
+            tag: campaign === 'old' ? 'КЛАССИЧЕСКИЙ НАБОР' : 'НОВЫЙ НАБОР',
+            note: `${level.width} × ${level.height} · ${level.archive}, запись ${sourceNumber}${features.length ? ` · ${features.join(', ')}` : ''}.`,
+            rows: Object.freeze(rows),
+            openBoundary: true,
+            wrapHorizontal: true,
+            wrapGravity: true,
+            resolveOnLoad: false,
+            ...(platforms.length ? { platforms: Object.freeze(platforms) } : {}),
+        });
+    }
+}
+exports.DatCampaignCatalog = DatCampaignCatalog;
+
+},
+"levels/dat/DatLevelArchive.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DatLevelArchive = exports.DatTileFlag = exports.DatTileType = void 0;
+(function (DatTileType) {
+    DatTileType[DatTileType["Empty"] = 0] = "Empty";
+    DatTileType[DatTileType["Green"] = 1] = "Green";
+    DatTileType[DatTileType["Yellow"] = 2] = "Yellow";
+    DatTileType[DatTileType["Red"] = 3] = "Red";
+    DatTileType[DatTileType["Orange"] = 4] = "Orange";
+    DatTileType[DatTileType["Ice"] = 5] = "Ice";
+    DatTileType[DatTileType["Fire"] = 6] = "Fire";
+    DatTileType[DatTileType["Wall"] = 7] = "Wall";
+    DatTileType[DatTileType["Plant"] = 10] = "Plant";
+    DatTileType[DatTileType["Wind"] = 11] = "Wind";
+})(exports.DatTileType || (exports.DatTileType = {}));
+(function (DatTileFlag) {
+    DatTileFlag[DatTileFlag["PlatformDirectionUp"] = 1] = "PlatformDirectionUp";
+    DatTileFlag[DatTileFlag["PlatformDirectionDown"] = 2] = "PlatformDirectionDown";
+    DatTileFlag[DatTileFlag["PlatformDirectionLeft"] = 4] = "PlatformDirectionLeft";
+    DatTileFlag[DatTileFlag["PlatformDirectionRight"] = 8] = "PlatformDirectionRight";
+})(exports.DatTileFlag || (exports.DatTileFlag = {}));
+const KNOWN_TYPES = new Set(Object.values(exports.DatTileType).filter((value) => typeof value === 'number'));
+class DatLevelArchive {
+    name;
+    levels;
+    constructor(name, bytes) {
+        this.name = name;
+        this.levels = Object.freeze(this.decode(bytes));
+    }
+    get count() { return this.levels.length; }
+    get(index) {
+        const level = this.levels[index];
+        if (!level)
+            throw new RangeError(`${this.name}: level ${index} is outside the archive.`);
+        return level;
+    }
+    decode(bytes) {
+        const levels = [];
+        let offset = 0;
+        while (offset < bytes.length) {
+            const headerOffset = offset;
+            const header = bytes[offset++];
+            if (header === undefined)
+                throw new Error(`${this.name}: missing level header at byte ${headerOffset}.`);
+            const width = header >> 4;
+            const height = header & 0x0F;
+            if (width <= 0 || height <= 0)
+                throw new Error(`${this.name}: invalid ${width}x${height} header at byte ${headerOffset}.`);
+            const cellCount = width * height;
+            if (offset + cellCount > bytes.length)
+                throw new Error(`${this.name}: truncated level ${levels.length + 1}.`);
+            const tiles = [];
+            for (let cell = 0; cell < cellCount; cell++) {
+                const packed = bytes[offset++];
+                if (packed === undefined)
+                    throw new Error(`${this.name}: truncated tile data.`);
+                const type = packed >> 4;
+                if (!KNOWN_TYPES.has(type))
+                    throw new Error(`${this.name}: unknown tile type ${type} in level ${levels.length + 1}, cell ${cell}.`);
+                tiles.push(Object.freeze({ type: type, flags: packed & 0x0F }));
+            }
+            levels.push(Object.freeze({ width, height, tiles: Object.freeze(tiles), archive: this.name, archiveIndex: levels.length }));
+        }
+        return levels;
+    }
+}
+exports.DatLevelArchive = DatLevelArchive;
+
+},
+"levels/dat/embeddedData.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.OLD_ARCHIVES = exports.CURRENT_ARCHIVES = void 0;
+exports.CURRENT_ARCHIVES = [
+    {
+        name: "1_60.dat",
+        bytes: new Uint8Array([
+            52, 5, 112, 1, 52, 112, 16, 68, 0, 48, 20, 0, 64, 53, 5, 49, 1, 4, 32, 0, 68, 16, 0, 112, 36, 64, 112, 52, 16, 86, 112, 112,
+            112, 49, 1, 112, 112, 0, 64, 32, 4, 0, 0, 32, 64, 4, 112, 0, 112, 112, 4, 112, 0, 0, 112, 52, 112, 0, 0, 112, 85, 5, 65, 1,
+            65, 1, 4, 12, 0, 112, 112, 4, 0, 64, 0, 112, 4, 12, 12, 0, 0, 4, 0, 0, 0, 0, 84, 5, 1, 17, 1, 1, 112, 112, 48, 32,
+            0, 4, 64, 32, 16, 0, 4, 48, 16, 64, 0, 85, 5, 17, 1, 33, 1, 4, 1, 17, 1, 0, 4, 33, 1, 17, 0, 4, 1, 1, 1, 0,
+            112, 0, 1, 0, 112, 53, 37, 17, 0, 52, 64, 0, 112, 112, 112, 20, 32, 0, 68, 48, 0, 85, 112, 0, 1, 1, 1, 112, 1, 49, 5, 0,
+            112, 0, 1, 64, 0, 4, 1, 49, 5, 0, 4, 0, 64, 49, 0, 85, 37, 0, 1, 0, 112, 112, 64, 0, 0, 112, 112, 1, 4, 0, 112, 112,
+            0, 33, 4, 112, 112, 0, 64, 1, 32, 54, 5, 64, 1, 4, 1, 4, 112, 0, 0, 4, 65, 0, 4, 1, 0, 112, 0, 65, 85, 53, 17, 65,
+            33, 1, 5, 1, 1, 1, 0, 4, 0, 0, 0, 0, 100, 96, 96, 96, 96, 48, 1, 112, 112, 112, 85, 5, 65, 17, 49, 97, 4, 112, 112, 112,
+            112, 4, 1, 16, 0, 112, 5, 0, 1, 1, 112, 112, 0, 4, 4, 112, 85, 53, 65, 112, 17, 33, 36, 1, 0, 1, 48, 112, 0, 0, 0, 112,
+            112, 1, 0, 1, 112, 112, 97, 97, 97, 112, 67, 5, 17, 96, 1, 36, 112, 112, 112, 52, 0, 0, 0, 85, 112, 112, 65, 112, 0, 100, 1, 1,
+            1, 0, 68, 0, 0, 4, 0, 112, 64, 0, 4, 112, 112, 112, 64, 1, 1, 85, 112, 1, 1, 49, 17, 4, 0, 0, 16, 64, 4, 84, 80, 112,
+            112, 52, 1, 112, 112, 112, 68, 112, 112, 112, 112, 84, 112, 1, 49, 1, 112, 4, 48, 80, 48, 0, 0, 80, 112, 80, 0, 4, 112, 112, 112, 0,
+            70, 112, 69, 1, 112, 112, 112, 0, 68, 68, 4, 0, 80, 84, 80, 0, 80, 112, 84, 80, 80, 112, 84, 80, 80, 84, 53, 1, 81, 112, 112, 113,
+            4, 1, 0, 116, 112, 4, 0, 0, 116, 112, 84, 80, 80, 49, 54, 21, 81, 1, 5, 1, 0, 4, 16, 0, 20, 1, 1, 84, 0, 0, 5, 0,
+            0, 100, 53, 161, 1, 112, 112, 112, 112, 0, 0, 0, 160, 48, 112, 0, 0, 12, 4, 112, 112, 0, 0, 1, 0, 112, 100, 165, 33, 1, 112, 112,
+            112, 52, 160, 0, 0, 0, 52, 112, 32, 0, 0, 0, 1, 112, 112, 0, 0, 0, 0, 69, 5, 1, 33, 161, 112, 0, 0, 112, 164, 32, 0, 0,
+            112, 0, 0, 112, 4, 0, 32, 160, 69, 112, 1, 1, 17, 112, 0, 0, 112, 164, 0, 0, 160, 112, 0, 160, 112, 112, 16, 1, 112, 70, 1, 1,
+            33, 161, 112, 112, 0, 112, 0, 0, 32, 160, 112, 112, 0, 112, 0, 0, 32, 160, 112, 0, 112, 112, 85, 5, 33, 49, 17, 1, 4, 12, 12, 12,
+            0, 4, 12, 12, 0, 0, 4, 16, 48, 32, 0, 112, 112, 112, 112, 176, 101, 53, 1, 1, 1, 1, 17, 36, 112, 0, 112, 112, 64, 68, 112, 0,
+            112, 112, 32, 20, 112, 112, 112, 112, 48, 180, 112, 112, 112, 112, 176, 102, 21, 1, 49, 112, 112, 112, 52, 0, 176, 0, 112, 112, 112, 0, 0, 0,
+            0, 112, 112, 0, 0, 0, 0, 112, 112, 0, 0, 0, 0, 20, 112, 0, 176, 0, 0, 112, 102, 181, 0, 0, 1, 1, 116, 52, 0, 12, 4, 0,
+            116, 20, 0, 12, 36, 64, 116, 68, 0, 12, 52, 34, 21, 113, 52, 1, 117, 113, 113, 112, 5, 0, 116, 112, 112, 102, 69, 177, 181, 181, 181, 69,
+            112, 176, 0, 0, 0, 0, 112, 112, 176, 0, 0, 0, 112, 112, 112, 176, 0, 0, 112, 112, 112, 112, 176, 0, 112, 112, 112, 112, 112, 176, 85, 53,
+            81, 112, 81, 65, 36, 80, 0, 80, 48, 112, 80, 12, 80, 112, 112, 80, 0, 80, 112, 112, 1, 97, 1, 112, 69, 5, 97, 49, 1, 4, 112, 112,
+            0, 52, 0, 1, 0, 112, 0, 112, 0, 112, 80, 0, 49, 69, 21, 1, 112, 112, 68, 0, 1, 81, 36, 48, 0, 1, 112, 112, 0, 96, 112, 112,
+            0, 96, 101, 53, 1, 112, 112, 112, 112, 112, 16, 64, 32, 80, 52, 112, 80, 80, 84, 80, 112, 112, 80, 1, 5, 80, 112, 96, 1, 112, 112, 1,
+            1, 100, 112, 112, 112, 1, 81, 1, 100, 64, 32, 0, 80, 80, 112, 112, 112, 80, 80, 80, 112, 112, 112, 80, 80, 80, 100, 37, 177, 1, 1, 1,
+            53, 52, 176, 0, 0, 0, 1, 20, 160, 0, 0, 160, 0, 5, 1, 0, 0, 16, 32, 99, 112, 1, 177, 161, 1, 112, 36, 0, 176, 160, 0, 32,
+            112, 0, 176, 160, 0, 112, 86, 112, 161, 49, 177, 112, 4, 160, 16, 176, 0, 4, 160, 64, 176, 0, 4, 160, 48, 176, 0, 4, 160, 16, 176, 0,
+            112, 160, 64, 176, 112, 100, 37, 1, 112, 112, 112, 37, 164, 0, 0, 0, 0, 1, 4, 0, 0, 0, 0, 0, 176, 112, 176, 0, 112, 112, 101, 5,
+            161, 161, 161, 161, 1, 20, 160, 12, 12, 160, 16, 4, 1, 12, 12, 1, 0, 4, 0, 12, 12, 0, 0, 4, 176, 0, 0, 176, 0, 85, 112, 1,
+            161, 1, 112, 5, 0, 160, 0, 0, 36, 0, 160, 0, 32, 20, 0, 160, 0, 16, 112, 97, 1, 1, 112, 84, 112, 65, 17, 49, 112, 5, 1, 161,
+            165, 1, 4, 0, 160, 160, 0, 4, 96, 160, 160, 0, 85, 112, 161, 97, 161, 112, 4, 160, 160, 160, 0, 68, 0, 12, 0, 64, 112, 0, 0, 0,
+            112, 112, 0, 64, 0, 112, 53, 112, 97, 33, 4, 96, 160, 4, 96, 32, 4, 96, 160, 4, 96, 32, 86, 112, 112, 112, 0, 53, 112, 112, 0, 0,
+            112, 112, 0, 0, 1, 0, 112, 160, 160, 48, 160, 100, 1, 0, 0, 160, 112, 0, 96, 1, 112, 101, 53, 65, 85, 81, 21, 49, 20, 1, 0, 0,
+            1, 68, 112, 0, 176, 176, 0, 1, 112, 80, 80, 80, 80, 80, 112, 80, 80, 80, 80, 80, 100, 37, 112, 112, 112, 112, 112, 5, 1, 1, 1, 85,
+            85, 4, 4, 4, 4, 80, 32, 112, 112, 112, 177, 1, 1, 85, 112, 1, 81, 1, 112, 52, 0, 80, 0, 32, 36, 0, 12, 0, 48, 52, 0, 176,
+            0, 32, 112, 0, 176, 0, 112, 102, 37, 1, 112, 112, 112, 112, 84, 80, 0, 112, 112, 112, 112, 80, 0, 0, 112, 112, 112, 80, 0, 0, 0, 112,
+            112, 80, 0, 0, 0, 36, 112, 80, 176, 176, 176, 112, 85, 85, 17, 112, 17, 81, 84, 5, 177, 1, 84, 84, 81, 80, 81, 80, 112, 176, 80, 176,
+            112, 112, 112, 176, 112, 112, 86, 112, 161, 161, 112, 112, 112, 160, 160, 112, 112, 68, 160, 160, 4, 80, 112, 0, 0, 1, 1, 112, 0, 12, 12, 0,
+            112, 0, 0, 0, 69, 85, 4, 161, 161, 161, 112, 112, 160, 160, 160, 64, 112, 80, 80, 80, 112, 112, 80, 64, 80, 112, 0, 80, 80, 80, 112, 69,
+            112, 81, 161, 112, 5, 160, 80, 0, 68, 80, 160, 64, 5, 160, 80, 1, 112, 80, 160, 112, 85, 165, 161, 0, 161, 165, 164, 160, 160, 160, 160, 84,
+            80, 80, 80, 80, 84, 80, 80, 80, 80, 36, 80, 1, 80, 32, 99, 112, 112, 0, 1, 1, 53, 112, 80, 1, 160, 160, 112, 52, 80, 0, 160, 112,
+            112, 99, 53, 1, 1, 1, 1, 1, 112, 96, 96, 96, 96, 0, 180, 1, 1, 1, 1, 52, 85, 112, 177, 177, 177, 112, 180, 0, 32, 0, 176, 180,
+            177, 177, 177, 176, 180, 177, 97, 176, 176, 112, 176, 176, 176, 112, 85, 112, 1, 112, 1, 112, 4, 96, 0, 176, 0, 4, 112, 112, 112, 0, 4, 48,
+            112, 48, 0, 4, 177, 112, 177, 0, 70, 112, 97, 97, 112, 180, 32, 176, 48, 4, 176, 0, 176, 4, 16, 0, 0, 180, 64, 0, 176, 5, 176, 176,
+            1, 100, 53, 177, 4, 1, 97, 97, 36, 176, 12, 12, 96, 96, 68, 176, 0, 0, 96, 96, 20, 176, 1, 4, 96, 96
+        ]),
+    },
+    {
+        name: "61_120.dat",
+        bytes: new Uint8Array([
+            68, 112, 49, 17, 112, 4, 32, 64, 0, 112, 16, 32, 112, 112, 64, 48, 112, 101, 53, 112, 65, 17, 112, 33, 20, 0, 32, 48, 0, 64, 112, 0,
+            12, 12, 0, 112, 4, 0, 0, 0, 0, 0, 112, 0, 112, 112, 0, 112, 68, 5, 17, 33, 1, 112, 64, 48, 0, 112, 16, 64, 16, 112, 53, 1,
+            36, 86, 53, 17, 65, 33, 65, 20, 1, 1, 1, 16, 36, 0, 0, 0, 48, 112, 0, 0, 0, 112, 112, 0, 4, 4, 112, 112, 112, 4, 112, 112,
+            85, 5, 1, 16, 1, 1, 5, 32, 64, 12, 0, 4, 12, 12, 12, 0, 4, 12, 0, 0, 0, 68, 16, 0, 32, 65, 101, 53, 64, 33, 17, 1,
+            1, 36, 16, 48, 32, 0, 0, 112, 112, 112, 112, 0, 0, 0, 1, 49, 116, 4, 0, 4, 0, 64, 116, 4, 0, 86, 53, 17, 0, 112, 112, 36,
+            64, 1, 112, 112, 20, 48, 0, 112, 112, 112, 112, 1, 48, 16, 112, 112, 0, 64, 32, 112, 112, 1, 1, 16, 85, 5, 33, 0, 1, 1, 4, 1,
+            1, 12, 0, 4, 12, 0, 12, 0, 4, 12, 1, 0, 0, 36, 64, 0, 32, 64, 69, 69, 1, 1, 1, 36, 0, 64, 0, 1, 1, 36, 1, 5,
+            64, 1, 1, 4, 32, 0, 0, 84, 53, 1, 0, 1, 112, 112, 36, 48, 0, 0, 112, 1, 1, 4, 0, 0, 32, 0, 33, 4, 54, 53, 33, 112,
+            20, 112, 112, 52, 32, 112, 5, 64, 112, 4, 1, 112, 4, 96, 0, 99, 5, 49, 17, 112, 1, 1, 0, 1, 1, 96, 64, 32, 0, 0, 0, 112,
+            16, 48, 53, 21, 1, 1, 68, 48, 0, 20, 64, 0, 36, 48, 0, 112, 64, 96, 68, 21, 49, 1, 112, 68, 16, 0, 112, 20, 32, 0, 1, 5,
+            1, 0, 101, 85, 69, 1, 97, 1, 17, 36, 0, 12, 0, 48, 52, 0, 0, 0, 32, 112, 0, 4, 0, 112, 112, 0, 112, 0, 112, 85, 112, 1,
+            49, 1, 49, 52, 80, 80, 0, 112, 112, 112, 112, 0, 81, 4, 0, 0, 0, 112, 4, 0, 0, 80, 112, 100, 53, 1, 1, 1, 1, 65, 5, 0,
+            0, 0, 0, 1, 69, 81, 80, 80, 81, 33, 112, 32, 80, 80, 48, 112, 85, 21, 1, 116, 4, 116, 84, 1, 116, 4, 116, 16, 117, 21, 5, 1,
+            80, 116, 85, 0, 0, 113, 112, 113, 4, 117, 85, 69, 1, 116, 112, 112, 84, 0, 65, 1, 1, 84, 80, 80, 64, 0, 113, 84, 80, 80, 117, 112,
+            113, 84, 117, 112, 84, 53, 1, 81, 1, 49, 5, 0, 1, 0, 1, 84, 80, 80, 80, 80, 84, 80, 32, 80, 32, 85, 5, 160, 112, 160, 1, 4,
+            16, 112, 16, 0, 4, 112, 112, 112, 4, 4, 0, 160, 0, 0, 4, 0, 112, 0, 0, 54, 112, 0, 1, 52, 0, 0, 5, 160, 112, 4, 48, 0,
+            4, 1, 0, 53, 0, 112, 85, 5, 0, 64, 0, 1, 0, 160, 160, 160, 0, 0, 160, 165, 164, 0, 0, 160, 68, 164, 0, 4, 0, 1, 0, 0,
+            102, 112, 112, 112, 112, 165, 49, 112, 112, 112, 112, 164, 0, 1, 1, 1, 53, 164, 0, 4, 0, 0, 1, 164, 0, 5, 0, 0, 0, 117, 113, 4,
+            0, 0, 0, 116, 112, 100, 53, 161, 17, 1, 1, 1, 4, 16, 160, 48, 0, 0, 4, 0, 48, 160, 16, 0, 4, 0, 0, 16, 160, 48, 100, 53,
+            1, 177, 1, 1, 65, 20, 0, 0, 0, 48, 16, 68, 1, 4, 0, 5, 48, 112, 0, 180, 0, 4, 112, 68, 112, 64, 48, 1, 4, 48, 64, 0,
+            68, 12, 12, 4, 52, 1, 1, 176, 86, 112, 112, 33, 112, 112, 0, 0, 17, 0, 0, 0, 0, 32, 0, 0, 0, 48, 0, 16, 0, 0, 32, 0,
+            48, 0, 181, 112, 177, 112, 177, 85, 5, 17, 177, 177, 1, 4, 176, 16, 176, 0, 4, 0, 176, 16, 0, 4, 0, 0, 176, 0, 4, 176, 176, 112,
+            112, 100, 5, 65, 5, 49, 5, 1, 4, 52, 4, 68, 4, 4, 4, 4, 0, 4, 48, 4, 112, 177, 1, 177, 1, 112, 101, 112, 97, 97, 97, 97,
+            112, 4, 96, 32, 64, 96, 0, 4, 12, 12, 12, 12, 0, 4, 80, 80, 80, 80, 0, 112, 80, 64, 32, 80, 112, 69, 53, 1, 97, 33, 112, 0,
+            96, 1, 112, 80, 80, 0, 112, 80, 80, 0, 112, 112, 112, 48, 84, 112, 1, 97, 1, 112, 84, 0, 32, 0, 80, 20, 80, 48, 80, 64, 112, 80,
+            112, 80, 112, 85, 112, 17, 112, 33, 112, 4, 48, 112, 16, 0, 0, 64, 96, 48, 0, 4, 112, 84, 1, 0, 4, 112, 112, 112, 0, 85, 112, 64,
+            0, 1, 1, 4, 12, 80, 80, 64, 0, 0, 12, 80, 80, 0, 0, 0, 12, 80, 100, 4, 0, 68, 112, 100, 21, 1, 1, 1, 1, 33, 164, 160,
+            160, 160, 160, 160, 112, 0, 12, 0, 112, 112, 36, 0, 176, 0, 0, 16, 85, 69, 1, 112, 49, 1, 20, 0, 112, 16, 0, 52, 160, 160, 64, 160,
+            180, 0, 112, 160, 0, 180, 0, 112, 160, 0, 86, 5, 161, 0, 161, 1, 4, 53, 4, 53, 4, 4, 4, 4, 4, 4, 4, 4, 52, 4, 4, 4,
+            177, 1, 177, 0, 4, 1, 1, 1, 0, 85, 181, 1, 112, 112, 112, 180, 0, 0, 112, 112, 176, 48, 32, 48, 0, 112, 32, 160, 160, 0, 112, 112,
+            160, 32, 0, 85, 5, 0, 1, 0, 1, 4, 0, 12, 0, 0, 4, 160, 12, 160, 0, 36, 1, 176, 1, 32, 112, 0, 32, 0, 112, 54, 5, 161,
+            65, 4, 160, 1, 4, 160, 0, 4, 12, 0, 4, 96, 0, 68, 96, 0, 86, 112, 161, 49, 161, 112, 4, 160, 0, 160, 0, 4, 48, 160, 48, 0,
+            4, 0, 160, 0, 0, 4, 160, 160, 160, 0, 101, 1, 112, 1, 97, 68, 5, 97, 97, 96, 52, 112, 112, 112, 36, 160, 96, 32, 4, 64, 160, 64,
+            102, 165, 161, 161, 112, 112, 112, 20, 0, 0, 112, 112, 112, 52, 0, 0, 0, 112, 112, 112, 112, 0, 0, 96, 96, 112, 112, 112, 0, 96, 96, 112,
+            16, 0, 0, 96, 48, 69, 69, 33, 161, 49, 164, 12, 12, 0, 52, 160, 32, 48, 165, 0, 160, 65, 5, 97, 1, 112, 84, 85, 1, 112, 1, 49,
+            84, 4, 0, 0, 84, 52, 176, 112, 176, 48, 181, 1, 112, 1, 177, 100, 5, 1, 53, 1, 5, 1, 52, 1, 84, 81, 4, 48, 112, 80, 0, 80,
+            80, 112, 112, 112, 176, 112, 112, 112, 86, 4, 1, 49, 1, 112, 112, 112, 176, 176, 0, 112, 112, 112, 112, 0, 4, 48, 80, 0, 48, 4, 80, 80,
+            112, 112, 4, 112, 112, 112, 112, 101, 5, 177, 80, 80, 177, 1, 4, 176, 81, 81, 176, 0, 112, 176, 80, 80, 176, 112, 4, 176, 80, 80, 176, 0,
+            36, 176, 81, 81, 176, 32, 102, 69, 1, 1, 1, 69, 112, 37, 0, 80, 80, 1, 112, 112, 0, 80, 80, 0, 36, 112, 0, 80, 80, 1, 112, 112,
+            0, 80, 80, 0, 112, 112, 112, 112, 112, 176, 112, 102, 37, 81, 161, 1, 161, 112, 5, 160, 1, 160, 1, 160, 164, 1, 160, 161, 160, 1, 5, 160,
+            161, 160, 1, 160, 164, 1, 160, 1, 160, 1, 112, 160, 1, 160, 1, 36, 85, 5, 33, 1, 33, 1, 4, 160, 160, 160, 0, 4, 12, 0, 12, 0,
+            4, 160, 32, 160, 0, 112, 80, 80, 80, 112, 85, 69, 1, 112, 49, 112, 20, 80, 112, 16, 112, 52, 160, 160, 64, 112, 112, 80, 0, 160, 1, 112,
+            80, 112, 112, 112, 70, 85, 49, 161, 81, 84, 161, 161, 80, 84, 1, 1, 80, 84, 161, 161, 80, 84, 161, 161, 80, 84, 161, 49, 80, 101, 112, 0,
+            1, 1, 0, 112, 112, 0, 16, 0, 0, 112, 112, 112, 112, 112, 112, 112, 164, 16, 112, 112, 16, 160, 164, 0, 80, 80, 0, 160, 85, 5, 181, 97,
+            177, 5, 4, 176, 176, 176, 0, 4, 0, 33, 0, 0, 4, 0, 12, 0, 0, 4, 176, 176, 176, 0, 85, 5, 97, 65, 97, 1, 4, 96, 16, 96,
+            0, 4, 176, 176, 176, 0, 4, 0, 0, 0, 0, 68, 176, 176, 176, 16, 84, 69, 1, 177, 1, 33, 100, 0, 96, 0, 96, 180, 0, 176, 0, 176,
+            36, 0, 96, 0, 64, 86, 37, 1, 1, 1, 97, 20, 12, 1, 12, 64, 68, 12, 0, 12, 16, 36, 12, 0, 12, 64, 4, 0, 0, 0, 0, 181,
+            1, 181, 5, 177, 99, 112, 1, 0, 177, 1, 112, 20, 96, 12, 12, 96, 20, 112, 96, 0, 176, 96, 112
+        ]),
+    },
+    {
+        name: "121_180.dat",
+        bytes: new Uint8Array([
+            84, 5, 48, 1, 16, 1, 4, 12, 96, 12, 4, 36, 1, 12, 1, 64, 20, 4, 0, 0, 52, 70, 4, 97, 97, 112, 4, 97, 97, 48, 0, 12,
+            12, 32, 112, 64, 32, 112, 4, 16, 48, 0, 4, 112, 112, 112, 84, 5, 97, 0, 97, 1, 0, 96, 12, 96, 0, 4, 96, 12, 96, 112, 20, 96,
+            0, 96, 20, 69, 21, 1, 112, 112, 68, 48, 0, 96, 112, 32, 64, 1, 112, 112, 16, 0, 112, 112, 112, 0, 101, 112, 1, 97, 97, 112, 112, 4,
+            48, 16, 64, 32, 0, 4, 12, 12, 12, 12, 0, 4, 0, 12, 0, 0, 0, 112, 0, 0, 0, 0, 112, 100, 37, 1, 1, 1, 1, 65, 20, 0,
+            0, 0, 0, 16, 69, 80, 80, 80, 80, 33, 52, 80, 80, 80, 80, 48, 85, 1, 81, 33, 81, 1, 0, 32, 80, 32, 0, 0, 12, 12, 12, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 85, 5, 1, 81, 112, 112, 4, 16, 80, 81, 81, 112, 1, 1, 80, 80, 112, 0, 0, 1, 17, 4,
+            17, 1, 112, 112, 100, 68, 81, 65, 81, 1, 65, 84, 112, 112, 112, 112, 80, 84, 0, 0, 0, 0, 80, 112, 80, 4, 4, 4, 84, 70, 5, 1,
+            0, 1, 52, 0, 48, 0, 112, 112, 112, 0, 4, 80, 80, 48, 4, 112, 112, 112, 4, 0, 0, 0, 84, 5, 49, 161, 17, 1, 0, 0, 12, 0,
+            0, 0, 16, 160, 64, 0, 4, 64, 0, 48, 16, 84, 112, 1, 17, 1, 112, 0, 64, 161, 64, 160, 4, 112, 112, 16, 0, 4, 112, 112, 112, 16,
+            85, 5, 161, 49, 161, 1, 4, 160, 0, 160, 0, 4, 160, 0, 160, 0, 4, 160, 0, 160, 0, 4, 160, 48, 160, 0, 83, 161, 1, 161, 1, 49,
+            160, 0, 32, 0, 160, 32, 0, 48, 0, 32, 70, 52, 1, 1, 32, 165, 36, 0, 112, 112, 0, 48, 164, 164, 36, 0, 112, 112, 0, 0, 164, 4,
+            48, 0, 1, 101, 112, 176, 176, 1, 1, 65, 112, 112, 176, 176, 176, 48, 4, 0, 1, 64, 112, 112, 52, 0, 0, 112, 112, 112, 68, 0, 112, 112,
+            112, 112, 86, 5, 0, 112, 0, 1, 4, 16, 4, 4, 0, 4, 1, 0, 1, 0, 5, 1, 0, 0, 0, 4, 0, 0, 1, 1, 20, 0, 16, 0,
+            176, 101, 5, 49, 1, 112, 112, 112, 0, 0, 0, 0, 48, 16, 176, 176, 176, 0, 0, 0, 53, 17, 1, 0, 176, 176, 5, 1, 0, 0, 112, 112,
+            100, 1, 1, 112, 33, 1, 33, 0, 32, 0, 1, 17, 1, 0, 16, 0, 112, 112, 112, 176, 112, 176, 112, 112, 112, 70, 21, 65, 1, 1, 4, 181,
+            4, 0, 4, 17, 0, 0, 4, 0, 181, 4, 4, 0, 17, 64, 180, 176, 112, 112, 86, 53, 1, 112, 1, 81, 84, 80, 48, 80, 48, 52, 80, 1,
+            80, 80, 112, 80, 96, 80, 112, 112, 80, 80, 80, 112, 112, 112, 48, 112, 112, 84, 100, 112, 81, 112, 33, 52, 5, 80, 112, 16, 68, 0, 80, 1,
+            80, 112, 0, 1, 0, 112, 100, 53, 1, 1, 1, 1, 17, 20, 80, 4, 96, 84, 48, 52, 80, 1, 1, 80, 16, 112, 80, 84, 80, 84, 112, 85,
+            21, 1, 112, 112, 112, 68, 0, 1, 81, 81, 36, 0, 0, 1, 68, 112, 97, 0, 96, 112, 112, 96, 0, 96, 112, 84, 37, 17, 49, 65, 1, 112,
+            112, 1, 80, 0, 112, 96, 0, 112, 112, 112, 80, 0, 112, 112, 101, 4, 0, 0, 1, 1, 1, 164, 0, 0, 0, 0, 0, 164, 0, 12, 0, 48,
+            4, 5, 0, 4, 176, 5, 0, 4, 1, 0, 112, 0, 53, 85, 5, 161, 161, 161, 49, 4, 176, 176, 176, 0, 4, 160, 160, 160, 0, 52, 176, 160,
+            176, 0, 112, 176, 160, 176, 112, 86, 112, 112, 160, 16, 112, 4, 0, 176, 160, 0, 112, 164, 1, 1, 0, 112, 20, 4, 0, 16, 112, 112, 0, 4,
+            112, 112, 112, 0, 0, 112, 101, 5, 65, 161, 65, 1, 112, 4, 160, 160, 160, 0, 112, 4, 12, 12, 0, 0, 0, 4, 160, 64, 161, 1, 1, 112,
+            112, 112, 112, 176, 176, 85, 5, 1, 48, 1, 1, 4, 0, 5, 4, 0, 4, 48, 164, 52, 0, 4, 0, 161, 0, 0, 180, 0, 1, 0, 176, 100,
+            69, 1, 97, 97, 1, 17, 112, 0, 160, 160, 0, 112, 4, 1, 160, 160, 1, 0, 20, 4, 1, 1, 0, 68, 85, 101, 1, 65, 1, 161, 100, 0,
+            12, 16, 160, 100, 16, 68, 4, 160, 100, 1, 5, 1, 160, 100, 0, 1, 4, 160, 85, 165, 1, 49, 1, 161, 164, 0, 32, 0, 160, 164, 0, 12,
+            0, 160, 164, 0, 96, 48, 160, 164, 32, 96, 0, 160, 99, 37, 161, 101, 97, 165, 17, 4, 16, 160, 160, 32, 0, 5, 1, 0, 160, 1, 1, 86,
+            53, 0, 1, 112, 112, 68, 96, 48, 112, 112, 5, 32, 1, 112, 112, 4, 112, 65, 0, 32, 112, 112, 160, 0, 16, 112, 0, 160, 0, 64, 102, 181,
+            37, 1, 1, 1, 1, 180, 68, 80, 80, 80, 4, 180, 12, 80, 80, 80, 4, 36, 0, 12, 12, 12, 0, 68, 0, 0, 0, 0, 0, 112, 80, 80,
+            80, 80, 80, 85, 4, 112, 112, 112, 0, 180, 0, 64, 0, 80, 112, 0, 0, 0, 112, 4, 64, 176, 64, 0, 4, 112, 112, 112, 0, 84, 112, 1,
+            177, 1, 112, 68, 0, 80, 0, 64, 112, 176, 64, 176, 112, 112, 112, 176, 112, 112, 101, 112, 112, 80, 16, 1, 1, 112, 112, 1, 12, 12, 0, 112,
+            112, 0, 176, 0, 0, 112, 0, 0, 12, 16, 112, 20, 0, 0, 0, 1, 112, 85, 85, 33, 177, 1, 81, 5, 12, 0, 32, 1, 4, 12, 0, 12,
+            0, 4, 80, 176, 12, 0, 4, 80, 32, 0, 0, 85, 53, 161, 1, 112, 112, 68, 160, 0, 0, 112, 52, 160, 0, 80, 0, 112, 0, 1, 1, 1,
+            112, 112, 64, 48, 0, 100, 5, 17, 112, 81, 161, 1, 16, 160, 112, 16, 64, 0, 80, 112, 112, 112, 112, 0, 84, 64, 112, 80, 0, 0, 86, 37,
+            161, 1, 81, 33, 20, 1, 0, 1, 16, 112, 0, 0, 0, 112, 112, 0, 12, 4, 112, 112, 0, 36, 4, 112, 112, 0, 112, 0, 112, 70, 5, 81,
+            81, 81, 20, 1, 1, 165, 164, 0, 0, 164, 165, 0, 0, 164, 165, 0, 4, 161, 165, 0, 0, 21, 102, 165, 160, 112, 112, 112, 112, 52, 80, 0,
+            112, 112, 112, 112, 16, 160, 160, 112, 112, 112, 112, 32, 80, 0, 112, 112, 112, 112, 48, 160, 160, 32, 0, 112, 112, 16, 80, 70, 5, 0, 177, 33,
+            20, 0, 112, 112, 112, 112, 96, 16, 36, 96, 0, 112, 112, 1, 176, 64, 52, 0, 97, 112, 86, 5, 64, 5, 1, 177, 4, 1, 0, 17, 101, 4,
+            64, 0, 32, 1, 112, 112, 1, 48, 0, 112, 1, 0, 1, 1, 112, 0, 4, 0, 0, 70, 112, 49, 17, 112, 112, 32, 64, 0, 4, 176, 176, 112,
+            112, 176, 176, 112, 4, 176, 176, 0, 4, 96, 96, 0, 85, 5, 97, 1, 17, 1, 4, 52, 4, 52, 0, 4, 20, 4, 68, 0, 4, 32, 4, 4,
+            0, 180, 112, 112, 176, 32, 70, 5, 65, 5, 1, 4, 12, 96, 4, 4, 32, 12, 0, 4, 12, 32, 0, 100, 16, 68, 0, 5, 1, 176, 1, 86,
+            53, 97, 1, 97, 49, 5, 96, 0, 96, 112, 4, 96, 12, 96, 0, 112, 96, 0, 96, 0, 4, 96, 0, 96, 0, 4, 96, 0, 96, 48, 85, 112,
+            1, 1, 1, 112, 52, 16, 0, 32, 64, 68, 32, 0, 48, 16, 20, 64, 0, 16, 48, 112, 112, 96, 112, 112, 84, 112, 65, 17, 33, 112, 112, 112,
+            1, 48, 112, 0, 32, 0, 64, 0, 4, 64, 96, 48, 0, 85, 112, 97, 97, 97, 112, 4, 16, 48, 16, 0, 4, 48, 64, 32, 4, 4, 64, 112,
+            112, 0, 4, 112, 112, 96, 0, 85, 5, 0, 112, 0, 1, 4, 112, 112, 112, 0, 100, 64, 97, 64, 96, 21, 112, 112, 112, 48, 52, 0, 112, 1,
+            16, 86, 112, 1, 49, 65, 112, 4, 0, 80, 32, 0, 4, 0, 32, 80, 0, 84, 80, 69, 1, 4, 84, 80, 36, 0, 4, 112, 64, 52, 0, 112,
+            38, 85, 0, 84, 32, 84, 1, 36, 0, 85, 0, 36, 0, 100, 5, 1, 81, 81, 81, 1, 20, 0, 80, 80, 80, 0, 5, 0, 80, 80, 80, 0,
+            4, 0, 80, 16, 80, 16, 85, 5, 33, 112, 81, 1, 4, 12, 48, 80, 0, 4, 80, 80, 80, 0, 4, 80, 80, 12, 0, 4, 80, 80, 32, 48,
+            69, 68, 1, 1, 49, 20, 0, 0, 16, 52, 84, 80, 68, 112, 84, 80, 112, 112, 84, 80, 112
+        ]),
+    },
+    {
+        name: "181_240.dat",
+        bytes: new Uint8Array([
+            102, 5, 161, 17, 112, 112, 112, 4, 0, 161, 48, 112, 112, 112, 0, 0, 161, 32, 112, 112, 112, 0, 0, 161, 48, 112, 160, 17, 0, 0, 112, 112,
+            0, 160, 33, 112, 112, 84, 5, 0, 33, 0, 1, 4, 12, 160, 12, 0, 4, 0, 160, 0, 0, 36, 0, 112, 0, 32, 70, 5, 161, 161, 1, 4,
+            64, 16, 0, 4, 160, 160, 0, 4, 16, 64, 0, 4, 160, 160, 0, 4, 64, 16, 0, 102, 112, 1, 1, 33, 1, 112, 4, 160, 0, 1, 160, 0,
+            36, 1, 0, 0, 1, 32, 112, 0, 1, 0, 0, 112, 112, 0, 112, 112, 0, 112, 112, 0, 112, 112, 0, 112, 85, 112, 1, 0, 1, 112, 4, 0,
+            160, 0, 48, 52, 0, 48, 0, 1, 5, 0, 1, 0, 0, 112, 0, 0, 0, 112, 100, 53, 17, 1, 49, 17, 1, 68, 0, 0, 64, 48, 0, 4,
+            0, 0, 0, 0, 0, 180, 176, 0, 176, 176, 0, 101, 112, 1, 33, 17, 1, 112, 112, 0, 64, 48, 0, 112, 4, 49, 12, 12, 65, 0, 4, 16,
+            12, 12, 32, 0, 112, 1, 176, 176, 1, 112, 100, 1, 49, 112, 112, 17, 1, 4, 16, 48, 16, 48, 0, 112, 1, 0, 0, 1, 112, 112, 0, 177,
+            177, 0, 112, 85, 5, 0, 48, 0, 1, 4, 0, 0, 0, 0, 4, 48, 176, 48, 0, 4, 12, 12, 12, 0, 180, 0, 0, 0, 176, 85, 180, 112,
+            0, 112, 176, 68, 0, 176, 0, 32, 112, 32, 1, 64, 112, 112, 112, 0, 112, 112, 4, 64, 0, 32, 0, 86, 112, 112, 97, 112, 112, 112, 112, 16,
+            80, 112, 4, 80, 80, 80, 0, 4, 80, 16, 80, 0, 112, 80, 80, 112, 112, 112, 112, 16, 112, 112, 84, 112, 97, 81, 97, 112, 68, 12, 80, 12,
+            48, 20, 0, 80, 0, 32, 52, 1, 80, 1, 64, 84, 37, 1, 1, 1, 65, 68, 96, 0, 96, 16, 112, 80, 176, 80, 112, 112, 16, 80, 32, 112,
+            85, 112, 112, 17, 112, 112, 101, 1, 64, 1, 97, 36, 0, 12, 0, 32, 84, 12, 0, 12, 80, 84, 0, 0, 0, 80, 69, 112, 33, 1, 81, 100,
+            64, 0, 80, 21, 1, 80, 80, 112, 80, 80, 80, 112, 80, 80, 80, 70, 53, 161, 1, 112, 112, 160, 160, 0, 4, 160, 160, 112, 112, 160, 160, 0,
+            4, 160, 160, 112, 112, 1, 48, 176, 70, 37, 112, 112, 33, 4, 160, 160, 0, 5, 176, 176, 1, 4, 161, 161, 0, 4, 1, 1, 0, 180, 1, 1,
+            176, 86, 112, 17, 177, 33, 112, 4, 0, 12, 0, 0, 4, 0, 176, 0, 0, 4, 0, 12, 0, 0, 4, 176, 160, 176, 0, 112, 32, 160, 16, 112,
+            84, 165, 17, 177, 65, 161, 5, 0, 176, 0, 1, 164, 0, 176, 16, 160, 21, 64, 176, 0, 1, 85, 5, 33, 161, 112, 5, 4, 1, 32, 1, 0,
+            4, 4, 4, 12, 0, 69, 12, 4, 164, 64, 112, 1, 176, 1, 1, 101, 112, 1, 97, 1, 161, 112, 53, 32, 1, 64, 160, 16, 112, 112, 0, 1,
+            112, 112, 112, 1, 0, 160, 160, 112, 112, 0, 0, 160, 160, 112, 85, 165, 17, 65, 1, 112, 36, 160, 160, 0, 0, 112, 0, 112, 0, 0, 112, 0,
+            112, 0, 112, 112, 112, 112, 96, 112, 100, 5, 4, 1, 1, 1, 37, 164, 1, 0, 0, 0, 1, 164, 32, 0, 0, 96, 0, 164, 1, 4, 0, 100,
+            112, 86, 21, 161, 112, 165, 49, 52, 1, 32, 1, 16, 68, 160, 12, 164, 64, 4, 5, 96, 1, 4, 4, 1, 1, 1, 0, 112, 4, 112, 0, 112,
+            86, 5, 49, 33, 65, 112, 4, 165, 1, 161, 32, 4, 164, 0, 160, 48, 4, 164, 0, 160, 0, 4, 164, 0, 160, 0, 4, 160, 96, 160, 112, 84,
+            5, 49, 1, 33, 1, 4, 33, 81, 49, 0, 4, 49, 1, 33, 0, 180, 1, 1, 1, 0, 84, 112, 112, 1, 1, 1, 5, 17, 65, 0, 81, 20,
+            64, 16, 0, 176, 112, 112, 1, 0, 112, 86, 181, 81, 65, 81, 177, 4, 80, 12, 80, 64, 4, 12, 12, 12, 0, 180, 0, 12, 0, 0, 112, 0,
+            64, 0, 176, 112, 0, 1, 112, 112, 85, 5, 81, 81, 1, 112, 4, 12, 12, 0, 176, 4, 0, 16, 0, 112, 52, 0, 12, 48, 16, 20, 48, 176,
+            1, 112, 101, 112, 65, 1, 1, 112, 112, 112, 112, 0, 4, 1, 1, 84, 112, 1, 68, 4, 0, 68, 1, 0, 1, 84, 0, 112, 112, 176, 0, 1,
+            112, 84, 112, 65, 161, 161, 112, 112, 112, 1, 80, 0, 112, 160, 160, 160, 0, 4, 160, 161, 69, 4, 85, 5, 1, 160, 65, 1, 112, 0, 12, 160,
+            80, 0, 64, 0, 12, 80, 0, 12, 0, 64, 80, 0, 0, 0, 112, 112, 100, 53, 161, 1, 1, 112, 112, 164, 160, 160, 0, 80, 0, 4, 0, 12,
+            0, 84, 80, 112, 0, 0, 0, 84, 48, 85, 37, 161, 1, 112, 112, 4, 160, 80, 0, 112, 164, 160, 12, 12, 32, 112, 0, 0, 1, 84, 112, 112,
+            0, 0, 80, 100, 5, 17, 161, 17, 1, 81, 4, 164, 21, 80, 0, 80, 4, 12, 4, 12, 0, 112, 4, 1, 0, 0, 0, 112, 70, 69, 112, 112,
+            112, 36, 0, 0, 112, 52, 12, 0, 112, 20, 0, 96, 0, 180, 0, 1, 0, 112, 96, 96, 112, 85, 69, 1, 1, 1, 17, 36, 100, 96, 96, 52,
+            52, 100, 96, 96, 36, 20, 5, 1, 1, 68, 181, 0, 0, 0, 177, 85, 112, 1, 1, 1, 17, 100, 0, 5, 1, 52, 100, 5, 0, 0, 68, 100,
+            0, 1, 1, 32, 180, 176, 176, 176, 112, 100, 181, 181, 112, 112, 177, 181, 100, 52, 0, 0, 32, 100, 180, 0, 16, 64, 0, 176, 5, 177, 112, 112,
+            177, 1, 68, 5, 65, 33, 69, 0, 20, 5, 0, 4, 1, 96, 0, 180, 0, 16, 176, 99, 5, 49, 1, 112, 112, 112, 52, 32, 16, 48, 32, 0,
+            112, 48, 32, 16, 48, 112, 83, 69, 1, 1, 1, 65, 36, 0, 0, 0, 16, 112, 16, 112, 32, 112, 100, 21, 112, 112, 112, 1, 17, 5, 0, 0,
+            0, 0, 160, 112, 0, 1, 0, 161, 160, 112, 0, 0, 0, 0, 160, 101, 4, 112, 112, 112, 112, 112, 4, 16, 0, 112, 112, 112, 4, 1, 0, 112,
+            16, 0, 4, 0, 5, 1, 80, 80, 5, 1, 1, 0, 16, 80, 86, 112, 112, 112, 1, 1, 112, 48, 112, 0, 0, 112, 1, 0, 0, 0, 52, 17,
+            33, 0, 0, 20, 32, 16, 0, 0, 112, 112, 112, 176, 0, 53, 53, 97, 1, 68, 16, 0, 112, 112, 0, 36, 48, 0, 112, 64, 0, 101, 5, 65,
+            17, 49, 65, 17, 4, 32, 64, 32, 16, 64, 4, 112, 112, 112, 112, 112, 4, 0, 0, 0, 0, 0, 112, 0, 0, 0, 112, 48, 85, 5, 1, 64,
+            1, 1, 4, 0, 165, 4, 0, 4, 0, 164, 4, 0, 164, 0, 164, 4, 160, 68, 0, 1, 0, 64, 84, 69, 1, 1, 112, 112, 5, 0, 65, 0,
+            112, 4, 1, 1, 65, 0, 69, 0, 4, 1, 64, 84, 5, 112, 1, 112, 1, 4, 0, 32, 0, 0, 4, 32, 112, 32, 0, 180, 1, 112, 1, 176,
+            102, 69, 1, 1, 1, 112, 112, 112, 32, 0, 0, 0, 112, 112, 112, 16, 0, 0, 0, 112, 112, 112, 64, 96, 0, 112, 112, 112, 112, 32, 0, 112,
+            112, 112, 112, 112, 16, 70, 0, 49, 1, 80, 5, 32, 0, 1, 4, 112, 112, 0, 4, 48, 32, 0, 4, 112, 112, 49, 4, 112, 112, 32, 100, 21,
+            65, 33, 1, 1, 1, 52, 32, 16, 0, 0, 0, 4, 0, 0, 48, 32, 64, 180, 176, 176, 64, 16, 32, 101, 5, 1, 112, 112, 5, 1, 36, 0,
+            112, 112, 64, 0, 20, 0, 96, 96, 16, 0, 36, 0, 112, 112, 52, 0, 64, 0, 112, 112, 36, 0, 100, 53, 65, 1, 1, 112, 112, 112, 112, 0,
+            160, 160, 160, 112, 112, 112, 0, 160, 0, 68, 0, 0, 48, 160, 0, 85, 5, 49, 16, 112, 112, 4, 65, 33, 0, 0, 4, 16, 48, 0, 0, 4,
+            68, 32, 0, 4, 96, 112, 1, 0, 5, 102, 5, 49, 112, 1, 49, 1, 4, 16, 112, 32, 16, 0, 4, 32, 112, 16, 1, 0, 0, 80, 80, 80,
+            0, 0, 4, 80, 116, 84, 0, 0, 4, 80, 116, 84, 0, 0, 69, 4, 112, 112, 16, 36, 112, 112, 32, 20, 176, 0, 16, 112, 112, 0, 112, 4,
+            0, 0, 0, 84, 53, 161, 17, 1, 1, 4, 16, 160, 48, 0, 4, 0, 48, 160, 16, 4, 0, 0, 16, 160, 100, 101, 97, 96, 112, 112, 112, 96,
+            96, 97, 64, 96, 0, 112, 64, 12, 12, 32, 96, 112, 112, 1, 96, 16, 96
+        ]),
+    },
+    {
+        name: "241_300.dat",
+        bytes: new Uint8Array([
+            102, 5, 1, 65, 33, 1, 112, 4, 0, 16, 48, 0, 0, 4, 0, 112, 112, 0, 0, 4, 1, 96, 16, 0, 112, 4, 4, 112, 112, 0, 4, 4,
+            0, 112, 112, 0, 0, 100, 112, 65, 17, 49, 112, 4, 5, 1, 1, 1, 1, 0, 0, 0, 160, 160, 160, 1, 4, 96, 160, 160, 160, 0, 86, 5,
+            1, 1, 1, 52, 0, 0, 4, 0, 112, 0, 112, 112, 112, 112, 4, 0, 0, 48, 160, 4, 0, 64, 160, 64, 0, 176, 0, 112, 112, 102, 181, 112,
+            33, 1, 1, 1, 180, 112, 64, 80, 80, 4, 180, 112, 80, 80, 80, 4, 36, 0, 1, 1, 1, 0, 68, 80, 80, 80, 80, 80, 112, 80, 80, 80,
+            80, 80, 101, 5, 1, 1, 33, 17, 49, 4, 0, 0, 16, 32, 16, 4, 0, 0, 112, 112, 112, 4, 0, 0, 0, 0, 0, 112, 0, 112, 0, 112,
+            48, 102, 85, 81, 1, 1, 112, 112, 52, 16, 64, 0, 0, 0, 164, 160, 160, 160, 160, 160, 5, 0, 0, 0, 0, 0, 164, 160, 160, 160, 160, 160,
+            5, 0, 0, 48, 16, 64, 85, 112, 112, 177, 112, 112, 68, 96, 176, 96, 32, 4, 12, 176, 12, 0, 180, 0, 176, 0, 176, 112, 112, 176, 112, 112,
+            69, 53, 1, 1, 33, 36, 160, 160, 48, 4, 160, 160, 32, 4, 0, 0, 0, 180, 0, 0, 176, 86, 53, 161, 112, 161, 33, 4, 5, 96, 1, 4,
+            4, 1, 1, 1, 0, 112, 160, 12, 160, 112, 112, 32, 0, 48, 112, 112, 48, 0, 32, 112, 68, 5, 80, 80, 1, 4, 80, 80, 0, 20, 181, 177,
+            20, 5, 176, 176, 1, 85, 112, 1, 112, 1, 112, 180, 0, 1, 0, 176, 164, 32, 48, 32, 160, 180, 0, 12, 0, 176, 164, 0, 48, 0, 160, 101,
+            5, 49, 1, 33, 1, 65, 36, 1, 17, 1, 49, 17, 5, 0, 1, 65, 1, 49, 4, 0, 32, 1, 17, 65, 113, 112, 1, 0, 117, 113, 85, 112,
+            1, 161, 1, 112, 112, 16, 160, 16, 112, 4, 1, 160, 1, 0, 100, 0, 160, 0, 0, 112, 17, 160, 96, 112, 70, 112, 0, 80, 112, 4, 32, 81,
+            0, 36, 12, 12, 0, 164, 12, 12, 0, 164, 32, 0, 160, 112, 1, 0, 112, 100, 112, 1, 17, 65, 1, 112, 112, 0, 48, 32, 0, 112, 1, 97,
+            12, 12, 97, 1, 0, 176, 176, 96, 176, 0, 85, 112, 1, 1, 1, 112, 180, 0, 0, 0, 176, 84, 0, 48, 0, 80, 180, 1, 12, 1, 176, 84,
+            0, 48, 0, 80, 101, 5, 49, 1, 1, 81, 1, 4, 12, 1, 0, 12, 16, 164, 160, 160, 161, 160, 160, 4, 12, 0, 0, 12, 0, 4, 16, 80,
+            80, 48, 0, 86, 4, 53, 1, 33, 4, 4, 12, 96, 12, 0, 112, 0, 160, 0, 112, 112, 1, 49, 1, 112, 4, 160, 32, 160, 0, 4, 160, 160,
+            160, 0, 102, 101, 65, 17, 1, 1, 1, 112, 112, 112, 65, 0, 0, 4, 33, 17, 49, 4, 0, 4, 1, 65, 1, 12, 0, 4, 1, 1, 1, 0,
+            0, 180, 112, 112, 112, 0, 176, 70, 112, 177, 1, 112, 4, 0, 0, 48, 180, 176, 0, 1, 84, 80, 0, 48, 84, 80, 0, 1, 84, 80, 0, 48,
+            84, 112, 49, 33, 17, 1, 112, 1, 17, 1, 0, 112, 1, 1, 49, 0, 36, 4, 4, 16, 1, 86, 112, 112, 1, 161, 0, 164, 52, 0, 112, 112,
+            112, 32, 0, 164, 112, 112, 112, 160, 68, 0, 112, 112, 32, 160, 0, 112, 112, 64, 48, 0, 84, 112, 112, 33, 1, 112, 112, 112, 64, 32, 1, 1,
+            1, 32, 64, 0, 0, 64, 1, 1, 112, 99, 5, 32, 1, 1, 4, 65, 20, 1, 0, 4, 1, 32, 68, 33, 4, 4, 5, 16, 101, 112, 112, 112,
+            1, 17, 1, 4, 1, 49, 80, 48, 0, 4, 21, 12, 12, 12, 0, 4, 48, 112, 16, 0, 0, 4, 80, 80, 1, 1, 0, 85, 5, 112, 1, 112,
+            112, 52, 17, 0, 65, 49, 20, 112, 0, 112, 112, 68, 112, 0, 112, 112, 5, 176, 1, 112, 112, 100, 101, 1, 17, 1, 65, 112, 112, 0, 112, 0,
+            112, 0, 68, 0, 32, 0, 0, 0, 112, 16, 64, 16, 0, 112, 99, 65, 1, 0, 1, 69, 1, 5, 1, 20, 0, 17, 1, 4, 17, 1, 64, 1,
+            0, 84, 5, 161, 65, 161, 1, 4, 160, 5, 4, 1, 4, 160, 68, 4, 0, 4, 160, 4, 4, 112, 85, 112, 49, 112, 33, 112, 112, 0, 48, 0,
+            112, 4, 180, 4, 180, 4, 4, 33, 0, 49, 0, 180, 1, 176, 1, 176, 84, 37, 97, 1, 1, 112, 112, 17, 96, 0, 0, 112, 112, 49, 96, 0,
+            112, 112, 112, 32, 112, 100, 112, 112, 17, 1, 161, 112, 112, 112, 160, 16, 112, 112, 4, 0, 0, 160, 16, 0, 4, 0, 0, 0, 160, 0, 86, 112,
+            1, 5, 5, 112, 53, 0, 0, 0, 65, 20, 0, 0, 0, 16, 68, 0, 4, 4, 48, 112, 177, 1, 1, 112, 112, 112, 0, 112, 112, 84, 112, 112,
+            112, 65, 1, 4, 80, 96, 80, 0, 4, 16, 80, 64, 0, 4, 64, 112, 80, 176, 102, 37, 161, 49, 1, 1, 65, 112, 0, 1, 112, 112, 112, 112,
+            0, 160, 0, 0, 112, 112, 0, 64, 160, 48, 112, 112, 0, 112, 112, 32, 112, 112, 0, 112, 112, 112, 112, 101, 112, 112, 112, 0, 1, 1, 112, 112,
+            0, 32, 48, 32, 112, 112, 16, 112, 112, 112, 0, 1, 48, 112, 112, 112, 48, 0, 16, 4, 0, 1, 68, 5, 161, 33, 112, 4, 0, 161, 32, 4,
+            80, 0, 161, 112, 32, 80, 112, 84, 5, 1, 181, 177, 177, 68, 0, 0, 112, 1, 112, 0, 1, 68, 0, 112, 0, 176, 176, 176, 85, 5, 81, 80,
+            112, 112, 4, 65, 1, 0, 0, 4, 16, 0, 0, 0, 4, 68, 48, 0, 4, 96, 112, 1, 0, 5, 85, 5, 97, 97, 97, 1, 112, 80, 80, 80,
+            0, 112, 48, 16, 64, 112, 4, 160, 160, 160, 112, 4, 176, 176, 176, 0, 85, 112, 17, 1, 1, 17, 5, 1, 0, 0, 1, 5, 17, 4, 12, 0,
+            112, 1, 17, 12, 0, 112, 112, 1, 17, 112, 102, 4, 160, 4, 48, 4, 176, 5, 160, 4, 1, 4, 176, 4, 176, 52, 0, 5, 160, 180, 1, 5,
+            0, 4, 160, 5, 0, 4, 48, 4, 1, 4, 0, 4, 1, 4, 0, 102, 5, 17, 65, 49, 65, 1, 4, 12, 12, 12, 12, 0, 4, 68, 48, 16,
+            0, 4, 4, 12, 12, 12, 12, 0, 180, 0, 0, 0, 0, 176, 5, 176, 176, 176, 176, 1, 85, 4, 1, 97, 1, 0, 4, 0, 12, 0, 112, 52,
+            84, 80, 80, 0, 112, 80, 52, 84, 0, 4, 80, 85, 48, 0, 86, 1, 1, 0, 1, 112, 36, 0, 0, 0, 64, 112, 0, 0, 37, 112, 112, 4,
+            0, 1, 68, 112, 112, 36, 0, 1, 65, 0, 1, 160, 112, 101, 4, 65, 49, 65, 1, 1, 5, 177, 177, 177, 177, 0, 52, 84, 80, 80, 80, 80,
+            68, 49, 1, 84, 80, 80, 5, 1, 0, 84, 80, 80, 54, 69, 1, 65, 84, 0, 80, 68, 80, 80, 84, 80, 64, 84, 80, 80, 84, 64, 80, 84,
+            5, 161, 49, 161, 33, 4, 160, 0, 160, 0, 4, 160, 0, 160, 112, 36, 160, 96, 160, 0, 101, 112, 181, 1, 112, 1, 161, 112, 68, 0, 160, 0,
+            64, 4, 33, 4, 1, 0, 32, 112, 84, 4, 101, 4, 84, 4, 1, 0, 68, 4, 1, 86, 5, 49, 112, 65, 1, 112, 64, 0, 48, 112, 4, 48,
+            0, 64, 0, 112, 32, 0, 16, 112, 4, 16, 0, 32, 0, 112, 48, 112, 64, 112, 101, 112, 112, 33, 161, 112, 112, 112, 0, 80, 0, 0, 112, 36,
+            160, 160, 160, 0, 32, 164, 0, 161, 161, 160, 160, 164, 0, 112, 112, 0, 0, 70, 69, 81, 177, 17, 5, 80, 176, 1, 69, 80, 176, 17, 5, 80,
+            176, 1, 69, 80, 176, 17, 5, 80, 176, 1, 86, 53, 17, 65, 1, 112, 165, 1, 1, 0, 160, 165, 0, 0, 0, 161, 165, 0, 0, 0, 161, 112,
+            112, 0, 112, 112, 112, 48, 16, 64, 112, 84, 5, 1, 17, 177, 112, 4, 0, 1, 176, 4, 4, 0, 16, 181, 20, 180, 0, 5, 176, 1, 85, 4,
+            97, 177, 97, 69, 112, 160, 160, 160, 112, 112, 80, 80, 80, 112, 112, 80, 64, 80, 112, 0, 80, 80, 80, 112, 100, 69, 33, 97, 65, 112, 112, 4,
+            0, 12, 52, 32, 0, 180, 176, 176, 1, 1, 0, 112, 112, 1, 96, 96, 96, 102, 5, 1, 112, 112, 1, 1, 52, 0, 0, 0, 0, 64, 36, 16,
+            176, 176, 32, 16, 84, 64, 12, 12, 48, 80, 84, 80, 0, 0, 80, 80, 84, 112, 112, 112, 112, 80, 102, 5, 37, 5, 65, 33, 17, 4, 20, 4,
+            16, 48, 32, 0, 52, 4, 48, 64, 48, 4, 1, 0, 64, 32, 64, 4, 0, 0, 112, 112, 112, 4, 32, 0, 112, 112, 112, 102, 112, 1, 97, 97,
+            1, 112, 112, 49, 80, 80, 33, 112, 164, 16, 12, 12, 64, 160, 164, 0, 12, 12, 0, 160, 112, 176, 0, 0, 176, 112, 112, 112, 80, 80, 112, 112,
+            100, 69, 81, 1, 81, 81, 64, 112, 80, 96, 80, 80, 112, 36, 80, 12, 80, 80, 32, 112, 80, 0, 80, 80, 112
+        ]),
+    },
+];
+exports.OLD_ARCHIVES = [
+    {
+        name: "1_50.dat",
+        bytes: new Uint8Array([
+            83, 5, 51, 19, 1, 9, 12, 114, 114, 4, 8, 6, 18, 50, 2, 10, 53, 55, 1, 43, 120, 64, 116, 122, 48, 118, 4, 64, 8, 6, 34, 10,
+            102, 37, 1, 1, 1, 1, 9, 70, 50, 2, 2, 2, 8, 112, 112, 112, 112, 112, 12, 5, 1, 1, 1, 17, 74, 52, 2, 0, 0, 58, 112, 38,
+            117, 54, 26, 116, 112, 101, 5, 19, 1, 1, 35, 9, 12, 112, 4, 8, 112, 12, 4, 51, 2, 2, 67, 8, 12, 118, 114, 114, 122, 12, 6, 35,
+            51, 67, 19, 10, 100, 120, 49, 1, 1, 65, 116, 120, 32, 0, 0, 16, 116, 5, 16, 0, 0, 32, 9, 6, 66, 117, 121, 50, 10, 84, 5, 51,
+            3, 51, 9, 12, 114, 114, 114, 12, 6, 2, 0, 48, 10, 112, 120, 10, 113, 112, 85, 69, 19, 67, 1, 9, 113, 112, 112, 4, 8, 112, 112, 112,
+            4, 8, 112, 120, 1, 0, 8, 112, 120, 2, 18, 74, 85, 71, 1, 51, 1, 25, 122, 8, 122, 24, 115, 22, 66, 0, 50, 10, 112, 122, 8, 114,
+            112, 120, 2, 2, 10, 112, 53, 5, 1, 25, 4, 24, 115, 4, 48, 8, 4, 16, 8, 6, 50, 10, 99, 71, 35, 1, 9, 114, 114, 114, 114, 4,
+            0, 34, 74, 38, 66, 2, 10, 112, 112, 99, 53, 17, 33, 2, 49, 73, 115, 115, 115, 115, 115, 115, 22, 50, 34, 0, 66, 58, 101, 5, 9, 120,
+            49, 1, 9, 4, 0, 57, 121, 0, 8, 4, 0, 74, 120, 64, 8, 4, 8, 120, 1, 48, 8, 2, 42, 120, 2, 34, 2, 100, 5, 1, 67, 35,
+            1, 9, 48, 0, 116, 120, 0, 0, 68, 0, 116, 120, 0, 72, 38, 2, 116, 120, 66, 58, 101, 5, 9, 114, 114, 122, 8, 4, 0, 50, 18, 66,
+            42, 4, 8, 112, 112, 112, 112, 12, 113, 112, 112, 112, 112, 6, 35, 67, 19, 51, 9, 100, 3, 1, 18, 0, 1, 3, 112, 113, 112, 68, 8, 112,
+            120, 1, 9, 115, 115, 114, 67, 18, 0, 1, 2, 18, 100, 5, 33, 9, 114, 114, 114, 2, 18, 48, 0, 0, 0, 112, 120, 34, 2, 0, 40, 112,
+            112, 112, 120, 18, 58, 100, 7, 2, 3, 3, 1, 9, 112, 112, 112, 120, 0, 8, 1, 1, 1, 3, 32, 48, 50, 0, 34, 116, 54, 34, 100, 1,
+            51, 19, 67, 3, 1, 8, 114, 112, 112, 122, 0, 4, 1, 1, 49, 17, 8, 121, 2, 2, 66, 58, 113, 101, 112, 120, 2, 1, 1, 73, 114, 114,
+            120, 0, 50, 42, 4, 0, 1, 42, 112, 112, 52, 0, 8, 112, 112, 112, 70, 34, 8, 112, 112, 112, 102, 5, 1, 0, 0, 1, 9, 6, 50, 18,
+            0, 0, 8, 112, 112, 120, 0, 0, 8, 5, 1, 1, 18, 50, 10, 4, 0, 0, 116, 112, 112, 6, 50, 0, 1, 3, 11, 85, 5, 65, 5, 9,
+            112, 6, 16, 6, 72, 114, 112, 68, 0, 20, 8, 112, 20, 0, 68, 8, 112, 70, 2, 22, 10, 84, 122, 3, 35, 9, 114, 6, 2, 18, 2, 26,
+            6, 18, 34, 2, 10, 22, 2, 18, 2, 42, 69, 5, 51, 3, 11, 38, 2, 2, 56, 6, 0, 2, 42, 6, 2, 2, 10, 113, 54, 42, 113, 102,
+            5, 16, 5, 1, 4, 9, 4, 48, 4, 32, 52, 8, 4, 1, 69, 1, 5, 8, 4, 32, 52, 0, 68, 8, 4, 1, 5, 17, 5, 8, 6, 0,
+            6, 50, 4, 10, 68, 5, 49, 16, 9, 4, 18, 50, 8, 4, 0, 0, 8, 6, 2, 0, 26, 53, 71, 2, 9, 4, 2, 10, 6, 66, 8, 4,
+            2, 10, 6, 0, 74, 102, 5, 0, 0, 0, 0, 9, 0, 32, 24, 32, 16, 0, 0, 58, 113, 113, 52, 0, 0, 8, 114, 114, 5, 0, 0, 0,
+            8, 0, 0, 0, 6, 0, 0, 0, 0, 10, 101, 112, 5, 49, 17, 1, 9, 9, 113, 5, 65, 49, 0, 0, 9, 113, 5, 17, 1, 65, 0, 9,
+            113, 5, 1, 3, 3, 18, 11, 113, 7, 68, 0, 16, 5, 0, 0, 5, 0, 5, 5, 16, 5, 16, 2, 5, 2, 5, 102, 5, 49, 1, 65, 1,
+            25, 4, 1, 17, 1, 49, 9, 5, 0, 1, 65, 1, 57, 4, 3, 0, 1, 17, 73, 113, 120, 1, 0, 119, 113, 112, 7, 2, 2, 10, 112, 100,
+            5, 17, 49, 17, 49, 9, 12, 113, 113, 113, 113, 12, 4, 1, 1, 1, 1, 8, 86, 82, 82, 82, 82, 90, 68, 23, 1, 81, 9, 4, 0, 80,
+            8, 4, 0, 80, 8, 6, 2, 90, 27, 101, 69, 1, 83, 1, 9, 112, 113, 4, 124, 82, 8, 112, 112, 4, 1, 124, 8, 112, 112, 4, 2, 1,
+            8, 114, 112, 6, 124, 82, 82, 74, 86, 69, 17, 33, 1, 9, 54, 66, 18, 34, 8, 112, 112, 112, 120, 88, 112, 112, 112, 120, 88, 112, 112, 112,
+            122, 88, 112, 112, 120, 50, 90, 99, 21, 49, 1, 1, 17, 57, 84, 80, 2, 2, 80, 88, 121, 50, 2, 2, 18, 117, 70, 71, 35, 19, 57, 114,
+            114, 122, 88, 20, 0, 0, 90, 84, 80, 88, 112, 84, 80, 88, 112, 54, 66, 42, 112, 101, 5, 81, 81, 81, 57, 9, 4, 88, 49, 81, 81, 8,
+            4, 82, 83, 59, 80, 8, 12, 51, 83, 82, 82, 8, 6, 82, 82, 50, 90, 10, 85, 21, 1, 33, 1, 25, 84, 0, 80, 0, 88, 36, 0, 16,
+            0, 40, 84, 0, 80, 0, 88, 22, 2, 34, 2, 26, 102, 69, 1, 49, 1, 33, 9, 121, 66, 80, 48, 80, 40, 112, 121, 66, 80, 48, 88, 112,
+            112, 121, 66, 80, 56, 112, 112, 112, 121, 66, 88, 112, 112, 112, 112, 121, 74, 102, 5, 1, 1, 57, 112, 112, 4, 82, 2, 88, 114, 114, 4, 0,
+            0, 48, 0, 8, 4, 16, 0, 80, 0, 8, 113, 121, 8, 1, 1, 8, 112, 120, 58, 2, 18, 10, 84, 21, 1, 17, 1, 25, 52, 0, 80, 0,
+            56, 84, 0, 80, 0, 88, 86, 2, 82, 2, 90, 102, 21, 1, 9, 1, 1, 57, 113, 84, 8, 0, 8, 113, 120, 1, 8, 0, 1, 116, 120, 2,
+            1, 1, 2, 116, 114, 4, 10, 2, 8, 114, 54, 2, 116, 120, 2, 26, 69, 69, 1, 1, 89, 84, 80, 80, 72, 68, 80, 64, 88, 84, 64, 80,
+            72, 70, 82, 82, 90, 100, 85, 1, 1, 1, 1, 89, 54, 80, 0, 0, 80, 42, 120, 18, 80, 80, 18, 116, 112, 120, 34, 50, 116, 112, 84, 5,
+            3, 23, 49, 73, 20, 0, 4, 16, 90, 113, 4, 64, 82, 116, 112, 54, 82, 116, 112, 68, 55, 1, 1, 59, 4, 0, 0, 8, 4, 80, 80, 8,
+            54, 82, 82, 10, 100, 53, 1, 1, 49, 1, 57, 113, 4, 1, 89, 8, 113, 112, 6, 5, 1, 10, 112, 112, 120, 3, 10, 112, 112, 102, 37, 81,
+            81, 89, 112, 112, 22, 82, 82, 88, 114, 114, 112, 112, 92, 80, 0, 24, 112, 112, 86, 82, 0, 90, 112, 37, 80, 88, 88, 112, 112, 86, 82, 82,
+            90, 112, 102, 81, 49, 1, 1, 1, 1, 48, 80, 0, 0, 0, 0, 113, 113, 121, 8, 49, 9, 112, 112, 120, 8, 113, 113, 112, 112, 120, 8, 112,
+            112, 112, 112, 120, 10, 112, 112, 70, 5, 9, 120, 8, 4, 0, 19, 10, 4, 8, 112, 114, 4, 84, 5, 9, 84, 125, 0, 8, 22, 83, 18, 8
+        ]),
+    },
+    {
+        name: "51_100.dat",
+        bytes: new Uint8Array([
+            102, 21, 65, 1, 1, 1, 9, 5, 1, 1, 1, 1, 8, 4, 2, 0, 66, 34, 74, 28, 120, 8, 112, 112, 112, 113, 120, 0, 3, 116, 112, 112,
+            120, 106, 112, 112, 112, 100, 55, 3, 1, 1, 3, 59, 120, 2, 0, 0, 50, 116, 112, 120, 0, 50, 116, 112, 112, 120, 98, 116, 112, 112, 68, 122,
+            1, 1, 105, 4, 0, 0, 24, 4, 32, 0, 56, 6, 18, 2, 117, 101, 5, 17, 65, 49, 1, 9, 6, 34, 50, 34, 2, 8, 4, 0, 0, 0,
+            0, 8, 4, 0, 0, 0, 0, 8, 22, 98, 98, 66, 98, 106, 101, 53, 17, 1, 1, 1, 9, 22, 34, 2, 2, 0, 8, 4, 0, 0, 0, 0,
+            8, 4, 2, 0, 98, 0, 10, 38, 117, 14, 121, 106, 113, 102, 120, 35, 1, 0, 1, 9, 5, 124, 18, 0, 0, 8, 4, 9, 120, 50, 0, 8,
+            4, 0, 9, 120, 50, 8, 0, 0, 0, 9, 120, 34, 54, 10, 99, 4, 75, 112, 100, 114, 120, 0, 0, 116, 114, 102, 9, 2, 2, 5, 106, 54,
+            0, 0, 0, 0, 26, 120, 66, 0, 0, 34, 116, 102, 5, 1, 97, 97, 1, 11, 70, 0, 34, 18, 0, 78, 120, 8, 112, 112, 4, 116, 120, 8,
+            112, 112, 4, 116, 120, 8, 112, 112, 4, 116, 120, 10, 112, 112, 6, 116, 100, 69, 19, 35, 49, 1, 59, 5, 2, 2, 34, 2, 8, 12, 98, 10,
+            2, 98, 12, 54, 66, 18, 2, 2, 10, 101, 5, 99, 1, 19, 99, 9, 4, 98, 98, 0, 98, 8, 4, 98, 0, 98, 98, 8, 4, 98, 98, 0,
+            98, 8, 6, 98, 18, 98, 98, 10, 68, 4, 105, 97, 8, 2, 42, 50, 2, 4, 64, 20, 8, 0, 58, 34, 0, 100, 5, 99, 0, 17, 65, 9,
+            6, 124, 8, 113, 20, 8, 112, 112, 14, 112, 52, 8, 3, 3, 9, 112, 22, 2, 85, 97, 9, 112, 5, 97, 48, 8, 112, 4, 16, 16, 8, 112,
+            4, 32, 32, 8, 112, 4, 64, 66, 10, 112, 6, 50, 85, 5, 1, 1, 1, 73, 68, 0, 0, 0, 24, 52, 0, 0, 0, 56, 5, 96, 0, 96,
+            9, 22, 98, 2, 98, 10, 102, 112, 120, 1, 1, 1, 73, 114, 122, 0, 0, 0, 40, 4, 96, 8, 115, 115, 28, 4, 117, 4, 0, 0, 56, 12,
+            114, 4, 8, 113, 113, 38, 66, 98, 106, 112, 112, 70, 5, 96, 0, 9, 121, 96, 0, 117, 114, 113, 113, 114, 54, 97, 1, 74, 22, 96, 0, 42,
+            70, 96, 0, 58, 102, 5, 33, 17, 33, 17, 9, 4, 18, 34, 18, 34, 8, 4, 0, 0, 0, 0, 8, 4, 96, 96, 96, 96, 8, 4, 96, 96,
+            96, 96, 8, 6, 98, 18, 34, 98, 10, 102, 5, 0, 116, 120, 96, 9, 4, 1, 9, 3, 1, 8, 5, 48, 10, 122, 0, 26, 6, 1, 2, 0,
+            2, 8, 4, 66, 6, 8, 0, 8, 6, 8, 120, 2, 0, 10, 67, 37, 99, 1, 57, 20, 0, 98, 72, 70, 2, 2, 26, 68, 71, 3, 49, 9,
+            4, 96, 18, 10, 6, 98, 32, 8, 6, 98, 18, 10, 85, 69, 81, 1, 81, 89, 84, 80, 0, 80, 72, 68, 80, 0, 80, 88, 84, 80, 96, 80,
+            72, 70, 82, 82, 82, 90, 100, 122, 81, 81, 17, 81, 118, 52, 82, 64, 80, 80, 56, 121, 34, 82, 82, 86, 117, 55, 10, 120, 2, 2, 107, 102,
+            85, 1, 1, 1, 1, 89, 84, 0, 0, 0, 0, 72, 22, 98, 0, 0, 106, 26, 112, 120, 0, 0, 116, 112, 112, 120, 0, 0, 116, 112, 112, 120,
+            2, 2, 116, 112, 85, 5, 35, 51, 99, 116, 92, 114, 114, 114, 114, 86, 18, 66, 0, 88, 112, 112, 4, 16, 88, 112, 112, 6, 66, 90, 68, 5,
+            33, 17, 9, 4, 64, 48, 8, 4, 80, 80, 8, 102, 82, 82, 106, 99, 114, 114, 85, 9, 114, 114, 102, 50, 80, 0, 34, 106, 112, 120, 82, 10,
+            112, 112, 99, 5, 81, 49, 65, 81, 9, 100, 80, 32, 16, 80, 104, 86, 82, 18, 50, 82, 90, 102, 120, 3, 3, 3, 9, 114, 5, 50, 98, 56,
+            0, 8, 4, 84, 80, 81, 89, 8, 4, 84, 48, 80, 88, 8, 6, 9, 82, 82, 5, 10, 120, 2, 2, 2, 10, 112, 68, 120, 10, 56, 112, 122,
+            0, 72, 114, 6, 82, 82, 42, 102, 0, 0, 58, 102, 5, 97, 17, 1, 1, 8, 4, 97, 1, 1, 1, 9, 84, 117, 70, 0, 0, 8, 84, 116,
+            120, 50, 0, 8, 52, 116, 112, 120, 18, 8, 86, 116, 112, 112, 120, 8, 100, 120, 1, 33, 65, 1, 116, 5, 82, 50, 18, 82, 9, 4, 8, 112,
+            112, 4, 8, 86, 106, 112, 112, 102, 90, 84, 5, 83, 49, 99, 9, 22, 0, 66, 0, 26, 120, 0, 0, 0, 116, 120, 50, 18, 50, 116, 101, 120,
+            1, 1, 1, 9, 112, 5, 50, 18, 66, 34, 11, 12, 112, 112, 112, 112, 112, 102, 1, 1, 65, 17, 57, 120, 82, 82, 82, 42, 113, 102, 101, 97,
+            9, 112, 112, 112, 70, 82, 8, 112, 112, 112, 114, 114, 4, 1, 1, 9, 100, 96, 0, 0, 0, 8, 70, 82, 2, 96, 96, 8, 112, 112, 120, 82,
+            66, 10, 69, 69, 1, 97, 57, 21, 96, 1, 73, 53, 1, 96, 57, 85, 96, 1, 89, 23, 3, 98, 75, 101, 122, 33, 1, 1, 33, 118, 52, 16,
+            0, 0, 16, 56, 121, 64, 0, 0, 64, 117, 112, 121, 96, 80, 117, 112, 112, 120, 98, 82, 116, 112, 84, 5, 97, 1, 97, 9, 4, 80, 80, 80,
+            8, 6, 66, 16, 66, 10, 112, 120, 82, 116, 112, 86, 5, 81, 81, 1, 9, 68, 80, 80, 0, 8, 113, 113, 113, 4, 104, 112, 120, 1, 104, 113,
+            120, 1, 104, 113, 112, 7, 2, 82, 3, 75, 102, 71, 81, 1, 1, 9, 112, 84, 80, 0, 0, 8, 114, 84, 80, 0, 0, 8, 72, 84, 64, 80,
+            0, 0, 9, 84, 1, 80, 0, 0, 8, 86, 99, 82, 2, 2, 10, 101, 5, 1, 17, 65, 49, 9, 4, 16, 64, 48, 80, 8, 22, 66, 50, 82,
+            82, 8, 0, 2, 0, 0, 8, 0, 10, 112, 6, 98, 10, 2, 102, 69, 17, 1, 17, 33, 25, 38, 50, 0, 34, 18, 58, 114, 122, 8, 114, 114,
+            114, 4, 2, 0, 0, 2, 8, 12, 120, 0, 8, 120, 8, 38, 124, 2, 10, 120, 74, 100, 5, 67, 35, 17, 51, 9, 6, 50, 0, 50, 66, 8,
+            4, 1, 2, 2, 0, 8, 22, 10, 112, 120, 2, 42, 100, 53, 1, 1, 1, 1, 73, 121, 0, 16, 32, 0, 117, 5, 0, 64, 48, 0, 9, 6,
+            34, 117, 121, 18, 10, 85, 5, 41, 49, 1, 41, 4, 9, 1, 0, 9, 12, 48, 0, 24, 8, 13, 1, 0, 9, 9, 22, 2, 2, 2, 10, 85,
+            112, 120, 1, 1, 73, 122, 1, 0, 48, 42, 4, 0, 16, 74, 112, 4, 48, 42, 112, 112, 38, 26, 112, 112, 112, 85, 69, 3, 1, 49, 73, 28,
+            121, 8, 121, 24, 52, 1, 0, 1, 56, 121, 0, 0, 8, 113, 7, 10, 121, 2, 11, 68, 5, 1, 34, 75, 4, 26, 112, 112, 84, 76, 114, 112,
+            38, 19, 0, 75, 85, 39, 9, 114, 112, 12, 120, 80, 9, 112, 12, 120, 34, 0, 3, 10, 112, 120, 0, 8, 112, 112, 120, 34, 2, 9, 102, 5,
+            2, 9, 9, 2, 9, 4, 0, 8, 40, 0, 8, 4, 0, 8, 56, 0, 8, 36, 0, 8, 72, 0, 72, 52, 0, 8, 24, 0, 56, 38, 0, 10,
+            58, 0, 26, 101, 36, 1, 1, 1, 1, 56, 5, 0, 16, 64, 0, 9, 4, 1, 1, 1, 1, 8, 4, 0, 48, 32, 0, 8, 4, 2, 70, 26,
+            2, 8
+        ]),
+    },
+    {
+        name: "101_150.dat",
+        bytes: new Uint8Array([
+            100, 37, 0, 1, 1, 0, 73, 5, 4, 0, 0, 8, 9, 4, 9, 0, 0, 5, 8, 70, 0, 43, 71, 0, 42, 84, 5, 1, 17, 1, 25, 4,
+            2, 66, 2, 58, 4, 0, 0, 0, 8, 86, 82, 82, 66, 58, 98, 5, 65, 33, 49, 1, 9, 6, 18, 50, 66, 18, 42, 100, 37, 17, 1, 1,
+            17, 73, 52, 68, 0, 0, 56, 40, 121, 17, 2, 2, 17, 117, 112, 121, 98, 10, 113, 112, 86, 21, 1, 124, 1, 9, 84, 80, 124, 80, 88, 84,
+            80, 124, 80, 88, 84, 80, 124, 80, 88, 84, 80, 1, 80, 88, 86, 82, 2, 82, 26, 85, 5, 65, 4, 49, 9, 4, 5, 65, 9, 8, 4, 4,
+            50, 8, 8, 4, 2, 2, 66, 8, 54, 2, 8, 2, 10, 86, 37, 1, 124, 1, 41, 69, 80, 85, 84, 73, 5, 80, 92, 80, 9, 4, 80, 92,
+            80, 8, 4, 84, 80, 88, 8, 6, 86, 82, 90, 10, 85, 120, 25, 120, 57, 112, 5, 50, 3, 34, 9, 4, 8, 114, 4, 8, 38, 0, 48, 0,
+            26, 120, 10, 113, 6, 116, 69, 12, 1, 8, 112, 4, 73, 0, 9, 4, 40, 16, 8, 113, 68, 9, 72, 5, 18, 8, 42, 69, 5, 9, 17, 9,
+            4, 72, 48, 8, 4, 56, 16, 8, 4, 72, 48, 8, 6, 58, 18, 10, 53, 5, 33, 25, 4, 64, 9, 84, 80, 88, 69, 25, 88, 38, 74, 90,
+            100, 5, 1, 65, 49, 1, 9, 20, 32, 48, 32, 16, 56, 84, 80, 80, 80, 80, 88, 38, 50, 18, 66, 18, 42, 84, 112, 120, 65, 116, 112, 120,
+            1, 18, 1, 116, 5, 48, 0, 64, 25, 38, 18, 66, 34, 58, 102, 112, 112, 13, 112, 13, 112, 13, 112, 84, 81, 8, 114, 52, 81, 80, 80, 0,
+            24, 84, 88, 121, 88, 121, 88, 92, 113, 120, 24, 112, 113, 113, 112, 120, 58, 112, 112, 82, 53, 17, 1, 65, 41, 70, 34, 2, 50, 26, 68, 5,
+            33, 9, 114, 4, 16, 42, 8, 6, 66, 4, 40, 120, 2, 66, 26, 102, 69, 9, 114, 114, 5, 41, 22, 0, 2, 66, 0, 26, 120, 8, 96, 0,
+            4, 116, 120, 8, 96, 0, 4, 116, 5, 0, 1, 17, 0, 9, 6, 42, 113, 113, 70, 10, 102, 117, 20, 64, 0, 0, 0, 1, 117, 20, 64, 0,
+            0, 0, 1, 117, 20, 64, 0, 0, 0, 1, 117, 20, 64, 0, 0, 0, 1, 117, 20, 0, 0, 0, 0, 1, 127, 101, 112, 5, 105, 97, 9, 112,
+            5, 96, 3, 3, 96, 9, 100, 64, 2, 2, 64, 104, 36, 48, 2, 2, 16, 40, 22, 66, 2, 2, 66, 26, 100, 5, 1, 0, 0, 1, 9, 20,
+            0, 1, 1, 0, 56, 52, 117, 113, 113, 121, 24, 22, 3, 1, 1, 3, 58, 86, 5, 19, 49, 41, 112, 4, 116, 121, 72, 112, 4, 1, 1, 24,
+            114, 4, 50, 66, 50, 40, 4, 116, 112, 112, 92, 6, 116, 112, 120, 90, 102, 5, 51, 81, 9, 112, 112, 4, 116, 121, 0, 116, 112, 4, 116, 120,
+            0, 9, 112, 4, 51, 83, 18, 0, 9, 4, 116, 112, 112, 4, 24, 6, 51, 83, 3, 10, 113, 85, 122, 1, 33, 17, 8, 4, 2, 9, 113, 113,
+            38, 2, 8, 112, 112, 20, 0, 8, 114, 112, 113, 6, 34, 2, 9, 102, 5, 9, 112, 112, 112, 112, 4, 66, 1, 9, 112, 112, 12, 120, 16, 32,
+            9, 112, 12, 112, 113, 52, 0, 9, 12, 112, 112, 113, 4, 104, 6, 3, 99, 3, 10, 113, 85, 5, 1, 51, 35, 59, 4, 8, 114, 114, 112, 4,
+            0, 34, 58, 112, 4, 8, 114, 114, 114, 6, 2, 50, 34, 58, 86, 5, 1, 1, 1, 9, 4, 0, 18, 50, 26, 4, 8, 112, 112, 112, 4, 0,
+            1, 1, 9, 4, 0, 82, 82, 58, 22, 10, 112, 112, 112, 102, 122, 1, 33, 51, 27, 112, 4, 2, 74, 112, 112, 112, 12, 112, 112, 112, 112, 112,
+            12, 112, 112, 21, 1, 105, 4, 9, 112, 113, 4, 117, 6, 2, 3, 3, 58, 112, 101, 5, 9, 112, 112, 5, 9, 36, 0, 118, 122, 64, 8, 20,
+            0, 98, 98, 16, 8, 52, 8, 112, 112, 52, 8, 66, 10, 112, 112, 70, 2, 52, 54, 1, 42, 120, 104, 112, 122, 80, 118, 36, 82, 56, 86, 120,
+            67, 18, 51, 9, 112, 112, 112, 120, 104, 112, 112, 112, 120, 72, 112, 112, 112, 120, 56, 101, 105, 120, 1, 42, 113, 102, 97, 2, 116, 86, 13, 112,
+            112, 120, 8, 12, 120, 1, 3, 42, 4, 65, 10, 112, 112, 4, 34, 9, 112, 112, 12, 120, 66, 35, 9, 14, 112, 112, 120, 8, 70, 100, 116, 112,
+            112, 52, 116, 112, 112, 20, 116, 112, 112, 68, 118, 114, 114, 38, 0, 16, 56, 4, 10, 66, 42, 86, 120, 25, 122, 89, 114, 5, 56, 0, 20, 9,
+            4, 82, 0, 50, 8, 12, 112, 108, 112, 12, 8, 112, 113, 112, 4, 6, 116, 112, 120, 10, 101, 120, 1, 1, 33, 9, 112, 5, 0, 0, 64, 0,
+            9, 4, 64, 0, 16, 0, 56, 0, 56, 113, 113, 4, 16, 6, 42, 112, 120, 2, 58, 102, 120, 1, 1, 1, 9, 114, 5, 0, 0, 48, 0, 8,
+            4, 56, 113, 113, 20, 8, 4, 72, 114, 114, 36, 8, 6, 32, 0, 0, 64, 10, 120, 18, 2, 2, 50, 116, 102, 5, 81, 81, 65, 25, 114, 12,
+            113, 113, 113, 84, 24, 4, 1, 67, 19, 74, 113, 4, 8, 112, 112, 112, 112, 4, 8, 112, 112, 112, 112, 6, 10, 112, 112, 112, 112, 102, 120, 1,
+            49, 97, 9, 114, 5, 0, 34, 18, 0, 8, 4, 8, 112, 114, 4, 8, 52, 8, 120, 64, 12, 113, 20, 0, 1, 9, 43, 114, 113, 6, 10, 113,
+            112, 14, 102, 5, 9, 114, 5, 49, 25, 4, 0, 16, 48, 16, 117, 4, 8, 113, 113, 113, 112, 4, 9, 112, 112, 112, 112, 5, 8, 112, 112, 112,
+            112, 6, 10, 112, 112, 112, 112, 101, 122, 1, 17, 67, 41, 112, 52, 0, 88, 112, 113, 112, 121, 82, 82, 83, 89, 114, 112, 112, 114, 114, 84, 8,
+            120, 51, 18, 66, 42, 113, 102, 53, 33, 0, 0, 49, 25, 38, 50, 1, 1, 18, 42, 112, 112, 4, 8, 112, 112, 112, 112, 4, 8, 112, 112, 112,
+            112, 4, 9, 112, 112, 112, 112, 5, 8, 112, 112, 101, 69, 9, 112, 112, 5, 41, 52, 8, 112, 112, 4, 24, 20, 8, 112, 112, 4, 56, 50, 0,
+            1, 1, 0, 18, 120, 35, 102, 10, 67, 116, 102, 21, 9, 112, 5, 1, 73, 85, 0, 1, 0, 26, 113, 85, 0, 0, 74, 112, 112, 85, 0, 26,
+            112, 112, 112, 5, 74, 112, 112, 112, 112, 6, 116, 112, 112, 112, 112, 101, 13, 112, 120, 41, 112, 13, 28, 112, 120, 72, 112, 60, 92, 112, 120, 24,
+            112, 92, 36, 9, 1, 48, 1, 72, 113, 6, 98, 3, 10, 113, 102, 5, 116, 112, 112, 120, 9, 70, 1, 116, 114, 5, 74, 120, 8, 112, 84, 0,
+            116, 120, 0, 81, 66, 0, 116, 5, 8, 113, 120, 2, 9, 6, 117, 112, 112, 120, 10, 102, 5, 8, 112, 112, 4, 9, 4, 56, 112, 112, 68, 8,
+            113, 22, 67, 1, 50, 8, 112, 112, 112, 113, 112, 12, 112, 112, 112, 112, 5, 8, 120, 1, 19, 51, 8, 113, 86, 55, 2, 67, 19, 9, 112, 112,
+            112, 120, 88, 112, 112, 120, 81, 74, 120, 81, 81, 58, 112, 85, 18, 117, 112, 112, 54, 0, 3, 3, 11, 101, 5, 1, 17, 49, 1, 9, 4, 0,
+            56, 32, 0, 8, 4, 0, 40, 16, 0, 8, 4, 0, 24, 48, 0, 8, 6, 3, 11, 3, 3, 10, 102, 122, 49, 81, 81, 17, 118, 12, 123, 80,
+            80, 119, 12, 4, 0, 80, 80, 0, 8, 4, 16, 80, 80, 48, 8, 12, 123, 80, 80, 119, 12, 121, 18, 82, 82, 50, 117, 85, 5, 1, 51, 19,
+            75, 4, 8, 112, 112, 112, 68, 0, 1, 1, 9, 52, 0, 66, 18, 10, 22, 10, 112, 112, 112, 102, 112, 112, 114, 122, 1, 9, 112, 120, 80, 80,
+            0, 56, 5, 1, 80, 80, 0, 24, 4, 0, 80, 80, 16, 56, 4, 0, 80, 88, 113, 113, 54, 10, 113, 113, 112, 112
+        ]),
+    },
+    {
+        name: "151_200.dat",
+        bytes: new Uint8Array([
+            102, 55, 9, 0, 0, 21, 9, 120, 0, 18, 0, 48, 8, 112, 115, 120, 0, 66, 8, 5, 8, 112, 115, 120, 8, 4, 32, 1, 0, 97, 8, 6,
+            74, 0, 0, 38, 10, 52, 5, 49, 73, 4, 32, 24, 0, 66, 34, 102, 22, 58, 102, 37, 67, 1, 9, 114, 114, 1, 8, 50, 66, 0, 8, 2,
+            0, 0, 8, 18, 2, 54, 34, 16, 64, 0, 8, 112, 120, 50, 34, 0, 8, 112, 112, 112, 120, 66, 42, 102, 5, 1, 57, 114, 112, 112, 4, 1,
+            65, 40, 114, 112, 6, 0, 1, 49, 72, 114, 120, 2, 0, 1, 33, 8, 112, 120, 2, 0, 1, 8, 112, 112, 120, 2, 2, 74, 102, 5, 1, 9,
+            0, 65, 9, 4, 0, 0, 1, 9, 8, 4, 16, 0, 64, 8, 8, 1, 52, 0, 16, 8, 2, 4, 68, 0, 48, 0, 8, 6, 3, 3, 9, 2,
+            10, 101, 5, 1, 37, 9, 0, 9, 0, 0, 5, 0, 34, 2, 0, 32, 0, 8, 0, 0, 1, 1, 4, 9, 0, 0, 6, 0, 6, 10, 0, 10,
+            102, 1, 9, 0, 0, 0, 0, 0, 8, 50, 1, 9, 48, 0, 0, 0, 0, 8, 34, 0, 0, 1, 9, 32, 0, 1, 9, 0, 8, 50, 0, 0,
+            8, 34, 0, 0, 0, 102, 53, 17, 33, 49, 65, 9, 113, 113, 113, 113, 121, 8, 5, 3, 35, 19, 67, 10, 4, 0, 0, 0, 0, 8, 4, 1,
+            1, 0, 8, 8, 6, 2, 2, 2, 10, 58, 84, 53, 81, 81, 3, 10, 20, 48, 88, 112, 112, 54, 18, 82, 9, 112, 112, 112, 112, 6, 9, 102,
+            5, 50, 1, 0, 1, 9, 4, 118, 4, 50, 0, 8, 4, 18, 0, 118, 4, 58, 4, 118, 4, 18, 8, 114, 4, 0, 0, 118, 4, 10, 6, 0,
+            2, 1, 2, 116, 102, 37, 1, 9, 114, 114, 114, 52, 0, 8, 4, 0, 56, 38, 2, 8, 4, 0, 40, 112, 52, 40, 4, 2, 58, 112, 38, 58,
+            32, 56, 112, 112, 112, 112, 54, 42, 112, 102, 71, 35, 19, 49, 3, 9, 114, 114, 122, 88, 114, 12, 4, 2, 0, 18, 2, 26, 4, 124, 88, 112,
+            112, 112, 4, 124, 88, 112, 112, 112, 54, 67, 42, 112, 112, 112, 102, 21, 1, 89, 81, 1, 25, 113, 4, 9, 1, 8, 113, 120, 1, 0, 0, 49,
+            116, 120, 2, 8, 0, 82, 116, 114, 4, 10, 2, 8, 114, 54, 2, 10, 2, 2, 26, 86, 69, 1, 1, 81, 89, 20, 0, 2, 18, 74, 84, 8,
+            112, 112, 112, 84, 0, 81, 81, 9, 84, 0, 66, 18, 10, 86, 10, 112, 112, 112, 102, 5, 9, 1, 1, 1, 57, 37, 0, 9, 32, 0, 73, 5,
+            0, 64, 11, 0, 41, 53, 0, 42, 0, 0, 9, 5, 8, 0, 0, 0, 41, 7, 66, 11, 2, 2, 11, 70, 120, 16, 0, 116, 5, 1, 0, 9,
+            52, 0, 1, 24, 5, 1, 0, 56, 54, 0, 1, 25, 120, 0, 0, 117, 54, 5, 19, 9, 4, 124, 24, 84, 67, 88, 84, 124, 88, 68, 49, 88,
+            22, 3, 58, 70, 5, 1, 51, 9, 4, 18, 0, 8, 4, 0, 50, 8, 4, 18, 0, 8, 4, 0, 50, 8, 6, 18, 2, 10, 102, 5, 12, 8,
+            9, 8, 9, 3, 74, 8, 8, 0, 3, 6, 50, 10, 0, 50, 10, 2, 2, 0, 66, 2, 2, 50, 0, 0, 2, 10, 66, 14, 8, 8, 10, 8,
+            10, 102, 5, 16, 0, 0, 64, 9, 12, 115, 22, 0, 50, 8, 4, 8, 66, 8, 122, 10, 102, 8, 122, 18, 8, 8, 124, 2, 8, 0, 0, 8,
+            55, 4, 0, 0, 0, 10, 102, 37, 8, 112, 112, 4, 73, 52, 8, 114, 114, 4, 24, 20, 0, 0, 0, 0, 72, 70, 58, 0, 8, 34, 58, 120,
+            0, 10, 2, 0, 116, 120, 0, 98, 2, 0, 116, 68, 53, 33, 1, 9, 38, 16, 0, 8, 52, 32, 0, 8, 22, 58, 99, 14, 54, 21, 1, 73,
+            69, 0, 41, 37, 0, 25, 69, 0, 57, 21, 0, 41, 121, 98, 117, 102, 5, 1, 1, 81, 1, 9, 54, 0, 80, 80, 80, 8, 84, 80, 80, 80,
+            80, 56, 84, 80, 80, 80, 80, 88, 84, 80, 80, 80, 80, 88, 86, 82, 82, 82, 82, 58, 102, 5, 74, 112, 112, 70, 9, 4, 8, 114, 114, 4,
+            8, 4, 0, 96, 0, 0, 8, 4, 0, 32, 16, 0, 8, 4, 24, 113, 113, 36, 8, 6, 9, 112, 112, 5, 10, 102, 112, 112, 120, 48, 17, 9,
+            112, 5, 1, 1, 9, 8, 112, 4, 0, 16, 8, 8, 1, 52, 0, 64, 8, 2, 4, 68, 0, 48, 10, 112, 6, 19, 3, 9, 112, 112, 102, 114,
+            114, 114, 5, 73, 112, 4, 0, 0, 50, 26, 112, 54, 66, 18, 0, 8, 112, 120, 0, 0, 66, 18, 59, 120, 0, 0, 0, 0, 10, 120, 2, 10,
+            113, 113, 113, 102, 112, 5, 49, 1, 9, 112, 112, 4, 16, 0, 8, 112, 112, 4, 64, 0, 8, 112, 112, 4, 16, 0, 8, 112, 112, 6, 66, 2,
+            10, 112, 55, 67, 51, 67, 51, 75, 101, 5, 2, 50, 18, 2, 9, 4, 116, 112, 112, 120, 8, 4, 3, 19, 51, 3, 8, 6, 2, 0, 0, 2,
+            10, 54, 0, 0, 0, 0, 26, 102, 101, 97, 65, 97, 105, 112, 100, 97, 17, 97, 104, 112, 100, 97, 33, 97, 96, 9, 102, 1, 17, 97, 17, 8,
+            112, 4, 49, 97, 49, 8, 112, 6, 35, 99, 3, 10, 69, 120, 49, 65, 116, 5, 32, 16, 9, 4, 64, 48, 8, 4, 16, 32, 8, 121, 50, 66,
+            117, 101, 5, 25, 112, 112, 69, 9, 4, 40, 112, 112, 36, 8, 36, 72, 114, 114, 68, 56, 22, 48, 0, 0, 32, 26, 120, 18, 2, 2, 18, 116,
+            102, 102, 99, 99, 99, 99, 9, 112, 112, 112, 112, 120, 8, 101, 105, 105, 105, 97, 8, 96, 104, 104, 104, 32, 0, 96, 48, 16, 64, 48, 0, 108,
+            113, 113, 113, 121, 10, 102, 120, 1, 1, 49, 33, 9, 5, 0, 16, 66, 18, 8, 4, 2, 66, 116, 112, 12, 4, 118, 114, 5, 1, 8, 4, 0,
+            0, 0, 0, 10, 6, 98, 50, 34, 106, 112, 102, 5, 124, 1, 1, 19, 9, 4, 35, 0, 0, 124, 8, 4, 124, 0, 0, 19, 8, 4, 35, 0,
+            0, 124, 8, 4, 124, 0, 0, 19, 8, 6, 35, 2, 2, 124, 10, 102, 0, 32, 56, 112, 4, 80, 0, 64, 24, 112, 4, 80, 0, 48, 40, 112,
+            4, 80, 115, 115, 115, 112, 115, 115, 0, 16, 72, 112, 4, 80, 0, 48, 24, 112, 4, 80, 102, 122, 65, 57, 114, 114, 114, 4, 18, 66, 2, 98,
+            42, 4, 0, 50, 18, 0, 8, 100, 0, 64, 0, 96, 8, 5, 1, 1, 1, 1, 8, 113, 113, 113, 6, 34, 117, 102, 5, 0, 1, 1, 0, 9,
+            4, 58, 0, 0, 54, 8, 4, 0, 0, 16, 0, 8, 4, 0, 16, 64, 0, 8, 4, 9, 64, 48, 5, 8, 6, 0, 50, 66, 0, 10, 101, 13,
+            114, 114, 114, 114, 13, 4, 2, 34, 50, 34, 8, 4, 0, 118, 114, 4, 8, 4, 34, 18, 50, 2, 8, 14, 113, 113, 113, 113, 30, 102, 1, 33,
+            1, 49, 17, 49, 12, 113, 12, 113, 115, 121, 12, 112, 12, 120, 9, 120, 108, 112, 108, 120, 10, 120, 108, 114, 108, 114, 114, 122, 34, 2, 18, 2,
+            2, 2, 102, 101, 67, 35, 18, 50, 105, 108, 112, 112, 112, 112, 108, 108, 120, 3, 3, 116, 108, 108, 114, 114, 114, 120, 104, 100, 96, 96, 8, 120,
+            72, 102, 98, 98, 0, 1, 42, 102, 0, 49, 65, 33, 81, 80, 32, 117, 115, 121, 80, 80, 64, 116, 14, 120, 82, 82, 50, 116, 114, 114, 120, 0,
+            0, 116, 6, 10, 120, 0, 0, 118, 114, 114, 122, 0, 86, 5, 19, 51, 67, 9, 4, 118, 114, 120, 8, 4, 80, 8, 120, 8, 4, 80, 58, 120,
+            8, 4, 80, 8, 120, 8, 6, 82, 66, 51, 26, 102, 5, 2, 0, 0, 0, 9, 76, 120, 0, 0, 0, 56, 60, 112, 113, 113, 121, 72, 76, 120,
+            3, 3, 124, 56, 60, 114, 114, 114, 122, 72, 70, 0, 0, 0, 0, 58, 102, 4, 67, 35, 19, 1, 8, 6, 116, 112, 120, 0, 10, 4, 116, 53,
+            35, 2, 8, 0, 118, 113, 113, 4, 0, 54, 18, 67, 124, 0, 10, 12, 114, 114, 122, 34, 8, 102, 5, 2, 0, 0, 0, 9, 12, 120, 0, 50,
+            0, 8, 12, 120, 58, 120, 50, 8, 12, 114, 114, 112, 120, 8, 84, 0, 8, 114, 5, 88, 22, 0, 0, 0, 0, 26, 102, 5, 3, 51, 3, 3,
+            9, 8, 114, 114, 112, 120, 0, 0, 0, 74, 120, 67, 0, 0, 0, 0, 73, 120, 0, 8, 115, 115, 115, 5, 0, 22, 2, 2, 2, 50, 26, 102,
+            5, 0, 2, 2, 0, 9, 4, 26, 114, 114, 22, 8, 4, 0, 64, 56, 122, 8, 4, 56, 113, 71, 16, 8, 12, 115, 114, 114, 115, 12, 6, 0,
+            0, 0, 0, 10, 102, 5, 1, 0, 18, 1, 57, 4, 0, 32, 124, 32, 9, 4, 58, 115, 120, 1, 8, 6, 0, 8, 120, 32, 9, 4, 58, 115,
+            114, 115, 12, 6, 2, 0, 0, 2, 26, 102, 5, 32, 1, 1, 64, 9, 4, 74, 113, 113, 54, 8, 0, 124, 1, 1, 124, 0, 0, 124, 2, 2,
+            124, 0, 36, 9, 114, 114, 5, 40, 54, 0, 2, 2, 0, 74
+        ]),
+    },
+    {
+        name: "201_260.dat",
+        bytes: new Uint8Array([
+            101, 21, 9, 114, 122, 1, 25, 54, 2, 0, 0, 2, 74, 112, 120, 0, 8, 112, 112, 5, 67, 0, 0, 35, 9, 46, 120, 2, 2, 124, 58, 69,
+            69, 112, 112, 33, 36, 0, 0, 64, 64, 112, 0, 112, 36, 0, 0, 0, 112, 112, 0, 112, 98, 1, 1, 49, 33, 17, 49, 16, 112, 112, 112, 48,
+            32, 85, 5, 0, 17, 48, 1, 4, 48, 112, 16, 0, 4, 112, 112, 112, 0, 4, 0, 112, 0, 0, 4, 0, 0, 0, 0, 85, 112, 17, 1, 112,
+            112, 112, 112, 0, 112, 112, 52, 16, 0, 48, 16, 5, 1, 0, 112, 112, 52, 0, 0, 0, 112, 53, 21, 0, 1, 68, 112, 0, 20, 0, 0, 68,
+            112, 0, 20, 0, 0, 83, 68, 33, 1, 1, 112, 20, 48, 0, 21, 48, 112, 1, 1, 64, 32, 99, 5, 65, 33, 112, 65, 1, 0, 17, 1, 36,
+            17, 0, 4, 112, 112, 68, 112, 0, 85, 112, 0, 48, 1, 112, 112, 112, 112, 0, 112, 0, 0, 112, 0, 48, 112, 0, 1, 1, 112, 48, 1, 112,
+            4, 0, 68, 69, 1, 33, 49, 5, 0, 69, 1, 52, 4, 1, 4, 36, 112, 0, 0, 85, 112, 17, 1, 33, 1, 112, 5, 33, 1, 0, 4, 32,
+            1, 17, 0, 4, 5, 0, 1, 4, 4, 4, 0, 0, 4, 69, 5, 1, 33, 112, 112, 1, 48, 0, 4, 0, 32, 112, 112, 1, 48, 0, 4, 0,
+            32, 112, 101, 112, 112, 112, 112, 21, 1, 4, 1, 1, 0, 48, 0, 4, 20, 112, 112, 112, 0, 4, 48, 0, 16, 0, 4, 4, 1, 112, 5, 1,
+            0, 102, 5, 1, 0, 0, 1, 1, 4, 0, 16, 48, 0, 0, 4, 0, 5, 1, 4, 0, 4, 0, 52, 16, 4, 0, 4, 0, 1, 1, 0, 0,
+            68, 0, 0, 0, 64, 48, 54, 21, 81, 1, 5, 1, 0, 4, 16, 0, 20, 1, 1, 84, 0, 0, 5, 0, 0, 85, 1, 81, 33, 81, 1, 0,
+            32, 80, 32, 0, 0, 112, 112, 112, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 68, 53, 1, 1, 49, 5, 1, 0, 1, 4, 0, 0, 0,
+            36, 80, 80, 32, 84, 53, 1, 112, 1, 65, 112, 0, 80, 0, 112, 69, 0, 80, 0, 33, 112, 32, 112, 48, 112, 84, 53, 1, 1, 112, 112, 113,
+            4, 0, 48, 116, 112, 80, 0, 1, 116, 112, 112, 112, 0, 49, 68, 21, 1, 81, 112, 112, 1, 80, 112, 4, 0, 80, 17, 20, 0, 80, 112, 70,
+            85, 1, 1, 49, 52, 0, 0, 1, 112, 112, 0, 0, 84, 0, 0, 48, 5, 0, 112, 112, 84, 0, 112, 112, 70, 5, 1, 65, 1, 4, 0, 32,
+            0, 4, 0, 48, 0, 84, 69, 1, 84, 84, 36, 0, 84, 84, 48, 0, 80, 102, 5, 0, 1, 1, 0, 1, 52, 1, 4, 0, 4, 0, 112, 0,
+            52, 1, 5, 0, 112, 0, 1, 0, 4, 112, 5, 0, 4, 48, 0, 112, 84, 1, 112, 112, 0, 80, 70, 5, 1, 0, 1, 52, 0, 48, 0, 112,
+            112, 112, 0, 4, 80, 80, 48, 4, 112, 112, 112, 4, 0, 0, 0, 84, 5, 17, 49, 17, 1, 4, 48, 64, 32, 0, 4, 112, 112, 112, 0, 4,
+            0, 0, 96, 0, 85, 5, 49, 1, 97, 1, 4, 1, 64, 1, 0, 4, 16, 1, 32, 0, 4, 112, 112, 112, 0, 4, 0, 0, 0, 0, 101, 53,
+            1, 1, 112, 1, 49, 5, 0, 48, 96, 4, 1, 4, 0, 1, 96, 112, 0, 112, 0, 0, 1, 0, 4, 112, 112, 0, 0, 112, 112, 100, 5, 33,
+            1, 1, 65, 9, 4, 16, 0, 0, 48, 8, 4, 48, 0, 0, 64, 8, 6, 34, 98, 2, 18, 10, 85, 112, 1, 1, 1, 112, 5, 32, 16, 32,
+            1, 4, 1, 1, 1, 0, 4, 96, 0, 96, 0, 112, 96, 32, 96, 112, 86, 53, 1, 112, 112, 112, 20, 0, 112, 64, 0, 36, 0, 112, 48, 0,
+            112, 0, 0, 1, 0, 112, 0, 101, 97, 4, 112, 1, 96, 96, 1, 100, 112, 112, 5, 1, 17, 97, 112, 112, 4, 112, 48, 32, 4, 0, 0, 0,
+            64, 112, 112, 1, 0, 112, 112, 112, 53, 53, 97, 1, 68, 16, 0, 112, 112, 0, 36, 48, 0, 112, 64, 0, 68, 21, 65, 1, 112, 52, 16, 0,
+            1, 112, 5, 97, 4, 5, 64, 1, 0, 85, 69, 1, 112, 1, 33, 36, 0, 112, 0, 64, 68, 0, 0, 0, 32, 112, 0, 101, 4, 112, 112, 0,
+            1, 0, 112, 83, 1, 4, 1, 37, 65, 4, 112, 0, 68, 16, 4, 1, 96, 1, 112, 84, 5, 0, 112, 4, 0, 84, 112, 112, 112, 0, 52, 0,
+            96, 0, 64, 112, 0, 112, 0, 112, 101, 48, 80, 48, 112, 1, 1, 80, 80, 80, 112, 0, 112, 112, 112, 112, 112, 0, 112, 1, 1, 1, 96, 4,
+            0, 112, 112, 112, 48, 4, 112, 85, 112, 65, 1, 1, 81, 112, 112, 0, 0, 1, 68, 80, 0, 96, 0, 112, 80, 64, 112, 64, 112, 64, 112, 112,
+            112, 84, 21, 81, 1, 81, 21, 5, 80, 112, 80, 1, 20, 80, 112, 80, 0, 5, 80, 96, 80, 0, 85, 112, 0, 1, 0, 112, 100, 0, 4, 4,
+            80, 52, 4, 112, 0, 36, 68, 1, 112, 1, 16, 112, 0, 0, 0, 112, 69, 112, 1, 97, 49, 4, 80, 80, 16, 4, 80, 80, 112, 4, 80, 80,
+            16, 48, 112, 112, 112, 84, 112, 97, 1, 81, 80, 112, 96, 0, 36, 84, 36, 96, 0, 112, 112, 112, 112, 0, 1, 1, 101, 21, 112, 112, 112, 112,
+            17, 36, 81, 97, 1, 81, 33, 112, 80, 81, 81, 80, 112, 112, 80, 80, 80, 80, 112, 112, 80, 112, 112, 80, 112, 86, 53, 33, 1, 65, 33, 68,
+            16, 0, 32, 48, 112, 81, 0, 1, 81, 112, 80, 112, 96, 84, 112, 80, 80, 81, 80, 112, 112, 64, 16, 112, 85, 5, 33, 0, 1, 1, 4, 1,
+            1, 112, 0, 4, 112, 0, 112, 0, 4, 112, 1, 0, 0, 36, 64, 0, 32, 64, 53, 5, 0, 1, 52, 1, 0, 112, 5, 0, 4, 0, 49, 52,
+            1, 1, 86, 112, 112, 1, 65, 112, 112, 64, 0, 32, 112, 36, 1, 0, 1, 32, 112, 0, 0, 4, 112, 112, 0, 0, 1, 112, 112, 112, 64, 0,
+            112, 101, 5, 17, 116, 120, 33, 9, 0, 34, 3, 3, 18, 0, 8, 112, 112, 112, 112, 0, 84, 80, 82, 82, 80, 88, 86, 82, 116, 120, 82, 26,
+            85, 4, 65, 0, 49, 1, 4, 112, 0, 112, 0, 4, 4, 16, 36, 0, 5, 0, 112, 1, 0, 4, 5, 0, 96, 4, 101, 4, 112, 112, 112, 112,
+            112, 4, 0, 17, 1, 112, 112, 4, 1, 80, 112, 16, 0, 4, 0, 112, 112, 80, 80, 5, 1, 1, 16, 80, 80, 69, 69, 1, 1, 1, 36, 0,
+            64, 0, 1, 1, 36, 1, 5, 64, 1, 1, 4, 32, 0, 0, 85, 53, 1, 116, 4, 116, 84, 0, 116, 4, 116, 48, 117, 53, 1, 1, 80, 116,
+            84, 0, 0, 113, 112, 113, 4, 117, 85, 21, 1, 64, 1, 1, 68, 0, 112, 0, 16, 112, 0, 0, 0, 112, 16, 0, 0, 4, 112, 64, 112, 4,
+            100, 112, 85, 5, 9, 112, 5, 1, 36, 0, 122, 0, 64, 68, 0, 98, 0, 16, 48, 8, 112, 4, 48, 5, 10, 112, 4, 1, 53, 37, 1, 33,
+            5, 104, 1, 112, 80, 112, 4, 80, 0, 36, 82, 40, 101, 5, 33, 85, 112, 112, 112, 4, 1, 48, 112, 112, 112, 4, 0, 1, 0, 0, 0, 112,
+            80, 80, 80, 80, 32, 112, 112, 80, 80, 80, 52, 102, 69, 1, 1, 1, 112, 112, 112, 32, 0, 0, 0, 112, 112, 112, 16, 0, 0, 0, 112, 112,
+            112, 64, 96, 0, 112, 112, 112, 112, 32, 0, 112, 112, 112, 112, 112, 16, 101, 112, 112, 5, 65, 116, 112, 5, 1, 80, 80, 17, 1, 4, 80, 81,
+            117, 5, 0, 4, 1, 117, 112, 4, 0, 113, 20, 116, 112, 68, 117, 84, 5, 64, 1, 0, 1, 4, 48, 4, 52, 0, 4, 1, 32, 1, 0, 36,
+            0, 48, 0, 64, 85, 85, 81, 1, 81, 49, 68, 80, 0, 80, 16, 84, 80, 96, 80, 48, 112, 80, 96, 80, 112, 112, 16, 96, 80, 112
+        ]),
+    },
+];
 
 },
 "levels/LevelParser.js": function(module, exports, require) {
@@ -1367,19 +2107,19 @@ exports.LevelParser = void 0;
 const Grid_js_1 = require("../domain/Grid.js");
 class LevelParser {
     parse(level) {
-        if (!level || !Array.isArray(level.rows) || level.rows.length < 3 ||
+        if (!level || !Array.isArray(level.rows) || level.rows.length < (level.openBoundary ? 1 : 3) ||
             level.rows.some(r => typeof r !== 'string'))
-            throw new Error('A level must contain at least three string rows.');
+            throw new Error(level.openBoundary ? 'A DAT level must contain at least one string row.' : 'A level must contain at least three string rows.');
         const height = level.rows.length, width = level.rows[0].length;
-        if (width < 3 || level.rows.some(r => r.length !== width))
-            throw new Error('Level rows must have equal width, at least three cells.');
+        if (width < (level.openBoundary ? 1 : 3) || level.rows.some(r => r.length !== width))
+            throw new Error(level.openBoundary ? 'DAT level rows must have equal, non-zero width.' : 'Level rows must have equal width, at least three cells.');
         const walls = new Set(), blocks = [];
         for (let y = 0; y < height; y++)
             for (let x = 0; x < width; x++) {
                 const c = level.rows[y][x];
                 if (!'#.ABCDFXIJQPW'.includes(c))
                     throw new Error('Unknown tile: ' + c);
-                if ((x === 0 || y === 0 || x === width - 1 || y === height - 1) && c !== '#')
+                if (!level.openBoundary && (x === 0 || y === 0 || x === width - 1 || y === height - 1) && c !== '#')
                     throw new Error('The outer boundary must be sealed; portals replace wall edges.');
                 if (c === '#')
                     walls.add(Grid_js_1.Grid.cell(x, y, width));
@@ -1394,7 +2134,40 @@ class LevelParser {
             }
         if (level.portals !== undefined && !Array.isArray(level.portals))
             throw new Error('portals must be an array.');
-        const board = { width, height, walls, portals: [], portalEdges: new Map() };
+        if (level.platforms !== undefined && !Array.isArray(level.platforms))
+            throw new Error('platforms must be an array.');
+        let platformEdges;
+        let platforms;
+        if (level.platforms?.length) {
+            platformEdges = new Set();
+            const savedPlatforms = [];
+            for (const platform of level.platforms) {
+                if (!platform || !Number.isInteger(platform.x) || !Number.isInteger(platform.y) || !Object.hasOwn(Grid_js_1.DIRECTIONS, platform.side) ||
+                    platform.x < 0 || platform.y < 0 || platform.x >= width || platform.y >= height)
+                    throw new Error('Platform edges must reference a valid board cell and side.');
+                savedPlatforms.push(Object.freeze({ x: platform.x, y: platform.y, side: platform.side }));
+                const [dx, dy] = Grid_js_1.DIRECTIONS[platform.side];
+                platformEdges.add(Grid_js_1.Grid.edgeKey(platform.x, platform.y, dx, dy));
+                const nx = platform.x + dx, ny = platform.y + dy;
+                if (nx >= 0 && ny >= 0 && nx < width && ny < height) {
+                    platformEdges.add(Grid_js_1.Grid.edgeKey(nx, ny, -dx, -dy));
+                }
+                else {
+                    if (level.wrapHorizontal && platform.x === 0 && platform.side === 'left')
+                        platformEdges.add(Grid_js_1.Grid.edgeKey(width - 1, platform.y, 1, 0));
+                    if (level.wrapGravity && platform.y === 0 && platform.side === 'top')
+                        platformEdges.add(Grid_js_1.Grid.edgeKey(platform.x, height - 1, 0, 1));
+                }
+            }
+            platforms = Object.freeze(savedPlatforms);
+        }
+        const board = {
+            width, height, walls, portals: [], portalEdges: new Map(),
+            ...(platformEdges ? { platformEdges } : {}),
+            ...(platforms ? { platforms } : {}),
+            ...(level.wrapHorizontal ? { wrapHorizontal: true } : {}),
+            ...(level.wrapGravity ? { wrapGravity: true } : {}),
+        };
         const ids = new Set();
         for (const pair of (level.portals || [])) {
             if (!pair || !pair.a || !pair.b)
@@ -1445,10 +2218,12 @@ class LevelRepository {
             if (!level.title || !level.note || !level.tag)
                 throw new Error(`Level ${index + 1} has incomplete metadata.`);
             const portals = level.portals?.map(pair => Object.freeze({ ...pair, a: Object.freeze({ ...pair.a }), b: Object.freeze({ ...pair.b }) }));
+            const platforms = level.platforms?.map(platform => Object.freeze({ ...platform }));
             return Object.freeze({
                 ...level, title: level.title, note: level.note, tag: level.tag,
                 rows: Object.freeze([...level.rows]),
                 ...(portals ? { portals: Object.freeze(portals) } : {}),
+                ...(platforms ? { platforms: Object.freeze(platforms) } : {}),
                 ...(level.solution ? { solution: Object.freeze(level.solution.map(step => Object.freeze({ ...step }))) } : {}),
             });
         }));
@@ -2952,12 +3727,26 @@ const GameController_js_1 = require("./application/GameController.js");
 const PuzzleEngine_js_1 = require("./engine/PuzzleEngine.js");
 const ProgressRepository_js_1 = require("./infrastructure/ProgressRepository.js");
 const LevelRepository_js_1 = require("./levels/LevelRepository.js");
+const DatCampaignCatalog_js_1 = require("./levels/dat/DatCampaignCatalog.js");
 const DomElements_js_1 = require("./presentation/DomElements.js");
 try {
+    const catalog = new DatCampaignCatalog_js_1.DatCampaignCatalog();
+    const campaign = catalog.fromSearch(window.location.search);
     const elements = new DomElements_js_1.DomElements(document);
-    const levels = new LevelRepository_js_1.LevelRepository();
-    const progress = new ProgressRepository_js_1.ProgressRepository(() => window.localStorage, levels.count, levels.defaultIndex);
+    const levels = new LevelRepository_js_1.LevelRepository(campaign.levels);
+    const progress = new ProgressRepository_js_1.ProgressRepository(() => window.localStorage, levels.count, levels.defaultIndex, campaign.progressKey);
     const app = new GameController_js_1.GameController(elements, new PuzzleEngine_js_1.PuzzleEngine(), levels, progress);
+    document.title = `Сближение — ${campaign.shortLabel}`;
+    document.getElementById('campaignEyebrow')?.replaceChildren(document.createTextNode(campaign.label.toUpperCase()));
+    document.getElementById('editionLabel')?.replaceChildren(document.createTextNode(`${levels.count} УРОВНЕЙ · DAT`));
+    for (const node of document.querySelectorAll('[data-campaign]')) {
+        const active = node.dataset.campaign === campaign.id;
+        node.classList.toggle('active', active);
+        if (active)
+            node.setAttribute('aria-current', 'page');
+        else
+            node.removeAttribute('aria-current');
+    }
     app.start();
     window.Sblizhenie = Object.freeze({
         loadLevel: (index) => app.loadLevel(index),
@@ -2972,7 +3761,7 @@ try {
 catch (error) {
     const status = document.getElementById('statusMessage');
     if (status) {
-        status.textContent = '\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c \u0438\u0433\u0440\u0443. \u041f\u0440\u043e\u0432\u0435\u0440\u044c\u0442\u0435 \u043a\u043e\u043d\u0441\u043e\u043b\u044c \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430.';
+        status.textContent = 'Не удалось запустить игру. Проверьте консоль браузера.';
         status.classList.add('lost');
     }
     console.error(error);
@@ -3131,6 +3920,47 @@ class CanvasRenderer {
         this.ctx.beginPath();
         this.ctx.arc(px + CanvasRenderer.TILE / 2, py + CanvasRenderer.TILE / 2, 1.2, 0, Math.PI * 2);
         this.ctx.fill();
+    }
+    drawPlatforms() {
+        if (!this.session.board.platforms?.length)
+            return;
+        const seen = new Set();
+        this.ctx.save();
+        this.ctx.lineCap = 'round';
+        for (const platform of this.session.board.platforms) {
+            const { x, y, side } = platform;
+            const canonical = side === 'right' && x + 1 < this.session.board.width ? `${x + 1},${y}:left`
+                : side === 'bottom' && y + 1 < this.session.board.height ? `${x},${y + 1}:top`
+                    : `${x},${y}:${side}`;
+            if (seen.has(canonical))
+                continue;
+            seen.add(canonical);
+            const left = x * CanvasRenderer.TILE, top = y * CanvasRenderer.TILE;
+            let x1 = left, y1 = top, x2 = left, y2 = top;
+            if (side === 'top' || side === 'bottom') {
+                y1 = y2 = top + (side === 'bottom' ? CanvasRenderer.TILE : 0);
+                x1 = left + 5;
+                x2 = left + CanvasRenderer.TILE - 5;
+            }
+            else {
+                x1 = x2 = left + (side === 'right' ? CanvasRenderer.TILE : 0);
+                y1 = top + 5;
+                y2 = top + CanvasRenderer.TILE - 5;
+            }
+            this.ctx.strokeStyle = '#a8b69a33';
+            this.ctx.lineWidth = 7;
+            this.ctx.beginPath();
+            this.ctx.moveTo(x1, y1);
+            this.ctx.lineTo(x2, y2);
+            this.ctx.stroke();
+            this.ctx.strokeStyle = '#b9d7ad';
+            this.ctx.lineWidth = 2.2;
+            this.ctx.beginPath();
+            this.ctx.moveTo(x1, y1);
+            this.ctx.lineTo(x2, y2);
+            this.ctx.stroke();
+        }
+        this.ctx.restore();
     }
     drawFire(x, y, out = false) {
         const px = x * CanvasRenderer.TILE, py = y * CanvasRenderer.TILE;
@@ -3669,8 +4499,9 @@ class CanvasRenderer {
                 }
             }
         }
+        this.drawPlatforms();
         this.session.board.portals.forEach((pair, index) => { this.drawPortal(pair.a, pair.id, index); this.drawPortal(pair.b, pair.id, index); });
-        if (this.session.levelIndex === 0 && this.session.moves === 0 && !this.ui.busy && this.session.selectedId === null) {
+        if (this.session.levelIndex === 0 && !this.session.levels.get(0).openBoundary && this.session.moves === 0 && !this.ui.busy && this.session.selectedId === null) {
             this.ctx.save();
             this.ctx.textAlign = 'center';
             this.ctx.fillStyle = '#a7b3a3';
@@ -3897,18 +4728,28 @@ class GameView {
     }
     get canvas() { return this.elements.get('board'); }
     createNavigation() {
-        for (const id of ['levelGrid', 'fireLevelGrid', 'portalLevelGrid', 'elementLevelGrid'])
+        const gridIds = ['levelGrid', 'fireLevelGrid', 'portalLevelGrid', 'elementLevelGrid'];
+        for (const id of gridIds)
             this.elements.get(id).replaceChildren();
+        const digits = this.levels.count >= 100 ? 3 : 2;
         for (let i = 0; i < this.levels.count; i++) {
             const level = this.levels.get(i), button = document.createElement('button');
             button.type = 'button';
             button.className = 'level-button';
             button.dataset.level = String(i);
-            button.textContent = String(i + 1).padStart(2, '0');
+            button.textContent = String(i + 1).padStart(digits, '0');
             button.title = level.title;
             if (level.chapter)
                 button.classList.add(level.chapter === 'portals' ? 'portal-level' : level.chapter === 'elements' ? 'element-level' : 'fire-level');
             this.elements.get(level.chapter === 'elements' ? 'elementLevelGrid' : level.chapter === 'portals' ? 'portalLevelGrid' : level.chapter === 'fire' ? 'fireLevelGrid' : 'levelGrid').append(button);
+        }
+        const primary = this.elements.get('levelGrid');
+        primary.classList.toggle('many-levels', primary.childElementCount > 60);
+        for (const id of ['fireLevelGrid', 'portalLevelGrid', 'elementLevelGrid']) {
+            const grid = this.elements.get(id), empty = grid.childElementCount === 0;
+            grid.hidden = empty;
+            if (grid.previousElementSibling instanceof HTMLElement)
+                grid.previousElementSibling.hidden = empty;
         }
     }
     updateLevelNavigation() {
@@ -3962,6 +4803,8 @@ class GameView {
         const sideNames = { top: 'сверху', bottom: 'снизу', left: 'слева', right: 'справа' };
         for (const pair of this.session.board.portals)
             descriptions.push(`Двери ${pair.id}: ${sideNames[pair.a.side]} у клетки ${pair.a.x + 1}, ${pair.a.y + 1}; ${sideNames[pair.b.side]} у клетки ${pair.b.x + 1}, ${pair.b.y + 1}. Занятый выход блокирует проход`);
+        if (this.session.board.platforms?.length)
+            descriptions.push(`На поле ${this.session.board.platforms.length} направленных граней платформ; через них блоки не проходят`);
         this.elements.get('boardDescription').textContent = descriptions.join('. ') || 'Поле очищено.';
         const won = !this.ui.busy && status.kind === 'won';
         this.elements.get('winOverlay').hidden = !won || this.ui.reviewingWin;
@@ -3981,7 +4824,8 @@ class GameView {
         const index = this.session.levelIndex;
         const hasFire = this.session.blocks.some(this.engine.isFire), hasPortals = this.session.board.portals.length > 0;
         const hasElements = this.session.blocks.some(b => this.engine.isIce(b) || this.engine.isPlant(b) || this.engine.isWind(b));
-        this.ui.message = hasElements ? 'Уберите все цветные блоки. Лёд, растения, ветер и огонь могут остаться.' : hasPortals ? 'Проходите сквозь двери с одинаковым номером. Гравитация всегда направлена вниз.' : hasFire ? 'Огонь теперь можно двигать. Он падает и обжигает только сверху.' : 'Соедините одинаковые блоки и очистите поле.';
+        const hasPlatforms = Boolean(this.session.board.platformEdges?.size);
+        this.ui.message = hasElements ? 'Уберите все цветные блоки. Лёд, растения, ветер и огонь могут остаться.' : hasPortals ? 'Проходите сквозь двери с одинаковым номером. Гравитация всегда направлена вниз.' : hasFire ? 'Огонь теперь можно двигать. Он падает и обжигает только сверху.' : hasPlatforms ? 'Соединяйте одинаковые блоки. Светлые грани платформ перекрывают движение между клетками.' : 'Соедините одинаковые блоки и очистите поле.';
         this.ui.messageKind = hasElements ? 'element' : hasPortals ? 'portal' : hasFire ? 'fire' : '';
         document.body.classList.toggle('fire-mode', hasFire);
         document.body.classList.toggle('portal-mode', hasPortals);
