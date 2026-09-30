@@ -2,165 +2,250 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
-<meta name="theme-color" content="#12191f">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0d151d">
 <meta name="description" content="Сближение — мобильная версия классической коллекции из 260 уровней.">
 <title>Сближение — классика</title>
 <style>
 :root {
   color-scheme: dark;
-  --bg: #10171d;
-  --panel: #162027;
-  --panel-2: #1b272f;
-  --line: #2a3942;
-  --text: #eef3ec;
-  --muted: #8da0a7;
-  --accent: #c7e8bc;
-  --accent-2: #8fded8;
-  --danger: #e28f7f;
-  --shadow: 0 24px 70px #0007;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bg: #0f1922;
+  --bg-deep: #0a1219;
+  --panel: #192532;
+  --panel-soft: #1d2a38;
+  --line: #344454;
+  --line-soft: #253542;
+  --text: #f1f3f6;
+  --muted: #9da7b4;
+  --quiet: #6e7a89;
+  --accent: #c8e5ac;
+  --accent-soft: #93b495;
+  --mint: #aad5c7;
+  --violet: #b9a9df;
+  --coral: #e79a84;
+  --gold: #e7d18f;
+  --shadow: 0 22px 55px rgba(0,0,0,.34);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; min-height: 100%; background: #091015; color: var(--text); }
-body { min-height: 100dvh; overflow: hidden; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; background: #070d13; color: var(--text); }
+body { position: fixed; inset: 0; touch-action: manipulation; -webkit-text-size-adjust: 100%; }
 button, dialog { font: inherit; }
-button { -webkit-tap-highlight-color: transparent; }
-button:focus-visible, canvas:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+button { -webkit-tap-highlight-color: transparent; user-select: none; }
+button:focus-visible, canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 [hidden] { display: none !important; }
 .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important; }
 
 .mobile-shell {
+  position: fixed;
+  inset: 0;
   width: min(100%, 560px);
   height: 100dvh;
+  height: 100svh;
   margin: 0 auto;
-  background:
-    radial-gradient(circle at 70% -10%, #29434a55, transparent 34%),
-    linear-gradient(180deg, #121b21 0%, #0e151a 100%);
-  position: relative;
   overflow: hidden;
+  background:
+    radial-gradient(circle at 52% 23%, rgba(36,58,74,.24), transparent 36%),
+    linear-gradient(180deg, #111c26 0%, #0c161f 100%);
+  isolation: isolate;
 }
+@supports (height: 100dvh) { .mobile-shell { height: 100dvh; } }
 @media (min-width: 700px) {
-  body { display: grid; place-items: center; padding: 24px; overflow: auto; background: #081015; }
-  .mobile-shell { height: min(920px, calc(100dvh - 48px)); border: 1px solid #26353d; border-radius: 30px; box-shadow: var(--shadow); }
+  body { display: grid; place-items: center; background: #070d13; }
+  .mobile-shell { position: relative; inset: auto; height: min(920px, calc(100dvh - 32px)); border: 1px solid #273746; border-radius: 34px; box-shadow: 0 32px 90px #000a; }
 }
-.app-screen { height: 100%; min-height: 0; animation: screenIn .22s ease-out; }
-@keyframes screenIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.app-screen { position: relative; width: 100%; height: 100%; min-height: 0; overflow: hidden; animation: screenIn .2s ease-out; }
+@keyframes screenIn { from { opacity: .25; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+.star-field { position: absolute; inset: 0; z-index: -1; opacity: .55; pointer-events: none; background-image: radial-gradient(circle, rgba(128,160,180,.16) 0 1px, transparent 1.3px); background-size: 29px 29px; mask-image: linear-gradient(to bottom, #000 0 78%, transparent 100%); }
 
-/* Home */
-.home-screen { position: relative; display: flex; flex-direction: column; padding: max(18px, env(safe-area-inset-top)) 20px max(18px, env(safe-area-inset-bottom)); overflow: auto; }
-.home-glow { position: absolute; width: 340px; height: 340px; right: -150px; top: 100px; background: radial-gradient(circle, #77d8cf24, transparent 68%); pointer-events: none; }
-.home-topbar, .screen-header, .game-topbar { display: flex; align-items: center; gap: 12px; position: relative; z-index: 2; }
-.home-topbar { justify-content: space-between; }
-.wordmark { display: inline-flex; align-items: center; gap: 9px; font-weight: 760; letter-spacing: -.03em; font-size: 20px; }
-.wordmark > span:last-child > span { color: #e3b67c; }
-.wordmark-mark { display: inline-flex; gap: 3px; }
-.wordmark-mark i { display: block; width: 12px; height: 24px; border: 2px solid #9eb4a1; border-radius: 9px 4px; transform: rotate(22deg); }
-.wordmark-mark i:last-child { transform: rotate(-22deg); opacity: .7; }
-.circle-button, .back-button { border: 1px solid var(--line); background: #172128cc; color: var(--text); display: grid; place-items: center; cursor: pointer; }
-.circle-button { width: 40px; height: 40px; border-radius: 50%; font-weight: 700; }
-.back-button { width: 42px; height: 42px; border-radius: 14px; font-size: 21px; }
-.home-main { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 38px 0 20px; position: relative; z-index: 1; }
-.eyebrow, .screen-kicker, .level-kicker, .transition-kicker { margin: 0; color: #8ca09b; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
-.home-main h1 { margin: 10px 0 16px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(40px, 11vw, 58px); line-height: .98; letter-spacing: -.045em; font-weight: 500; }
-.home-main h1 span { color: #b7c9b4; }
-.home-copy { max-width: 420px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
-.home-art { margin: 38px auto 30px; width: min(92%, 400px); height: 96px; position: relative; display: flex; align-items: center; justify-content: center; gap: 0; }
-.art-block { width: 62px; height: 62px; border-radius: 14px; display: grid; place-items: center; color: #243238; font-size: 22px; box-shadow: 0 10px 24px #0006, inset 0 1px #fff5; position: relative; z-index: 2; }
-.art-block.coral { background: #d98e7e; }
-.art-block.mint { background: #9fc8ae; }
-.art-line { height: 2px; flex: 1; min-width: 80px; max-width: 190px; background: linear-gradient(90deg, #8fded800, #8fded888 25%, #8fded888 75%, #8fded800); }
-.art-door { width: 18px; height: 64px; position: relative; }
-.art-door::before, .art-door::after { content: ""; position: absolute; left: 8px; width: 3px; height: 19px; background: #8fded8; border-radius: 4px; box-shadow: 0 0 12px #8fded8; }
-.art-door::before { top: 6px; }.art-door::after { bottom: 6px; }
-.progress-card { background: #172129d9; border: 1px solid #283840; border-radius: 18px; padding: 15px 16px 14px; backdrop-filter: blur(12px); }
-.progress-card > div:first-child { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; color: var(--muted); font-size: 13px; }
-.progress-card strong { color: var(--text); font-size: 14px; }
-.progress-track, .levels-progress { height: 5px; background: #26343b; border-radius: 999px; overflow: hidden; }
-.progress-track { margin-top: 12px; }
-.progress-track span, .levels-progress span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #9ed0b1, #8fded8); border-radius: inherit; transition: width .25s ease; }
-.home-actions, .transition-actions { display: grid; gap: 10px; margin-top: 14px; }
-.primary-button, .secondary-button, .text-button { border: 0; min-height: 52px; border-radius: 16px; cursor: pointer; font-weight: 760; }
-.primary-button { background: var(--accent); color: #162019; box-shadow: 0 8px 28px #95c78a24; }
-.secondary-button { background: #1b272e; color: var(--text); border: 1px solid #314149; }
-.text-button { background: transparent; color: #9db0b5; }
-.home-footer { display: flex; justify-content: space-between; color: #667980; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding-top: 14px; }
+.eyebrow, .chapter-kicker, .level-kicker, .transition-kicker {
+  margin: 0;
+  color: #c5d9a7;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+}
+.square-icon-button {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+  border: 1px solid #334454;
+  border-radius: 19px;
+  background: rgba(24,36,48,.72);
+  color: #f1f3f6;
+  display: grid;
+  place-items: center;
+  font-size: 31px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: inset 0 1px rgba(255,255,255,.025);
+}
+.square-icon-button.small { width: 44px; height: 44px; border-radius: 15px; font-size: 18px; }
+.primary-button, .secondary-button, .text-button {
+  min-height: 56px;
+  border-radius: 19px;
+  border: 0;
+  font-weight: 730;
+  cursor: pointer;
+}
+.primary-button { background: #c7e4ac; color: #192219; box-shadow: 0 10px 28px rgba(177,215,153,.14); }
+.secondary-button { color: #f0f3f6; background: #1c2935; border: 1px solid #354657; }
+.text-button { background: transparent; color: #9ba6b3; }
 
-/* Level browser */
-.levels-screen { display: flex; flex-direction: column; padding: max(18px, env(safe-area-inset-top)) 16px max(12px, env(safe-area-inset-bottom)); }
-.screen-header { min-height: 48px; }
-.screen-header > div { flex: 1; }
-.screen-header h1 { margin: 1px 0 0; font-size: 23px; letter-spacing: -.03em; }
-.level-progress { color: #9db0b5; font-size: 12px; font-weight: 750; }
-.levels-progress { margin: 14px 2px 0; }
-.levels-note { margin: 13px 2px 12px; color: #7f9299; font-size: 12px; line-height: 1.45; }
-.level-grid { flex: 1; overflow-y: auto; overscroll-behavior: contain; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: 54px; gap: 8px; padding: 4px 2px max(18px, env(safe-area-inset-bottom)); scrollbar-width: thin; }
-.level-button { position: relative; border: 1px solid #283840; background: #172129; color: #9cabb0; border-radius: 14px; font-size: 12px; font-weight: 760; cursor: pointer; }
-.level-button i { position: absolute; right: 6px; top: 5px; width: 15px; height: 15px; border-radius: 50%; display: none; place-items: center; font-size: 9px; font-style: normal; background: #97caa7; color: #142018; }
-.level-button.completed { color: #d7e0dc; border-color: #385047; }
+/* Home: deliberately no scrolling in either axis. */
+.home-screen { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding: max(17px, env(safe-area-inset-top)) 20px max(15px, env(safe-area-inset-bottom)); overflow: hidden; touch-action: none; }
+.home-topbar { display: flex; align-items: center; justify-content: space-between; min-height: 46px; }
+.wordmark { display: inline-flex; align-items: center; gap: 9px; font-size: 19px; font-weight: 770; letter-spacing: -.025em; }
+.wordmark > span:last-child > span { color: #d9b16f; }
+.wordmark-mark { display: inline-flex; gap: 2px; height: 26px; align-items: center; }
+.wordmark-mark i { display: block; width: 10px; height: 23px; border: 2px solid #9cb2a0; border-radius: 9px 4px; transform: rotate(22deg); }
+.wordmark-mark i:last-child { transform: rotate(-22deg); opacity: .75; }
+.home-main { min-height: 0; display: grid; align-content: center; grid-template-rows: auto auto auto minmax(118px, 1fr) auto auto; text-align: center; }
+.home-main .eyebrow { color: #b7c8d0; }
+.home-main h1 { margin: 12px 0 7px; font-size: clamp(42px, 12.5vw, 58px); line-height: .98; letter-spacing: -.045em; font-weight: 760; }
+.home-copy { max-width: 330px; margin: 0 auto; color: var(--muted); font-size: 14px; line-height: 1.45; }
+.home-art { align-self: center; margin-top: 8px; }
+.home-progress { width: 100%; max-width: 390px; margin: 0 auto; padding: 12px 1px 0; }
+.home-progress > div:first-child { display: flex; align-items: baseline; justify-content: space-between; color: #9ba6b3; font-size: 12px; }
+.home-progress strong { color: #e9edf0; font-size: 13px; }
+.progress-track { height: 4px; margin-top: 10px; border-radius: 99px; overflow: hidden; background: #283845; }
+.progress-track span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, #b6d79f, #9acbc2); transition: width .25s ease; }
+.home-actions { width: 100%; max-width: 390px; margin: 14px auto 0; display: grid; gap: 9px; }
+.home-footer { display: flex; justify-content: space-between; color: #647382; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; padding-top: 10px; }
+
+/* Reusable decorative blocks from the reference. */
+.chapter-art { position: relative; width: 286px; height: 184px; margin: 0 auto; }
+.showcase-block { position: absolute; top: 34px; width: 112px; height: 112px; display: grid; place-items: center; border-radius: 24px; border: 1px solid rgba(255,255,255,.34); box-shadow: 0 18px 25px rgba(0,0,0,.26), inset 0 2px rgba(255,255,255,.35), inset 0 -3px rgba(48,54,62,.14); }
+.showcase-block::before { content: ""; position: absolute; left: 15px; top: 13px; width: 28px; height: 3px; border-radius: 99px; background: rgba(255,255,255,.26); transform: rotate(8deg); }
+.showcase-block.coral { left: 8px; top: 55px; transform: rotate(-9deg); background: linear-gradient(150deg,#f2aa96,#dc8977); }
+.showcase-block.mint { left: 88px; z-index: 2; transform: rotate(6deg); background: linear-gradient(150deg,#bce2d3,#91c5b2); }
+.showcase-block.violet { right: 5px; top: 56px; transform: rotate(11deg); background: linear-gradient(150deg,#c9bce9,#aa98d3); }
+.shape { display: block; width: 39px; height: 39px; border: 3px solid #2a3b43; }
+.shape.circle { border-radius: 50%; }
+.shape.diamond { width: 34px; height: 34px; transform: rotate(45deg); }
+.shape.triangle { width: 0; height: 0; border: 0; position: relative; transform: translateY(-2px); }
+.shape.triangle::before { content: ""; position: absolute; left: -23px; top: -20px; width: 0; height: 0; border-left: 23px solid transparent; border-right: 23px solid transparent; border-bottom: 40px solid #2a3b43; }
+.shape.triangle::after { content: ""; position: absolute; left: -17px; top: -12px; width: 0; height: 0; border-left: 17px solid transparent; border-right: 17px solid transparent; border-bottom: 29px solid #b2a1d9; }
+
+/* Chapter / level picker, one 10-level page at a time. */
+.levels-screen { display: grid; grid-template-rows: auto minmax(0, 1fr); padding: max(16px, env(safe-area-inset-top)) 20px max(12px, env(safe-area-inset-bottom)); }
+.levels-topbar { min-height: 61px; display: grid; grid-template-columns: 58px 1fr 58px; align-items: center; gap: 10px; }
+.levels-topbar h1 { margin: 0; text-align: center; font-size: 23px; letter-spacing: -.035em; }
+.level-progress { color: #aab2bf; text-align: right; font-size: 13px; }
+.levels-main { min-height: 0; display: grid; grid-template-rows: auto minmax(142px, 1fr) auto auto auto; align-items: center; padding-top: 13px; }
+.chapter-copy { text-align: center; align-self: start; }
+.chapter-kicker { color: #c5bde4; }
+.chapter-copy h2 { margin: 14px 0 10px; font-size: clamp(34px, 10vw, 45px); line-height: 1; letter-spacing: -.045em; }
+.chapter-copy p:last-child { margin: 0; color: #a4adba; font-size: 14px; line-height: 1.45; }
+.levels-screen .chapter-art { align-self: center; }
+.chapter-levels { width: 100%; align-self: end; }
+.chapter-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; color: #a7b0bc; font-size: 12px; }
+.chapter-meta span:last-child { color: #c7bddf; letter-spacing: .08em; }
+.level-grid { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); grid-template-rows: repeat(2, 68px); gap: 9px; overflow: visible; }
+.level-button { position: relative; min-width: 0; border: 1px solid #3b4a5b; border-radius: 20px; background: linear-gradient(160deg,#213041,#1a2634); color: #f0f3f6; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 1px rgba(255,255,255,.025); }
+.level-button .level-number { font-size: 25px; line-height: 1; font-weight: 690; letter-spacing: -.02em; }
+.level-button small { min-height: 15px; margin-top: 7px; color: #93a0ad; font-size: 9px; text-transform: lowercase; }
+.level-button i { position: absolute; right: 7px; top: 7px; width: 14px; height: 14px; border-radius: 50%; display: none; place-items: center; font-size: 8px; font-style: normal; background: #b7d69f; color: #18221a; }
 .level-button.completed i { display: grid; }
-.level-button.active { background: #21322f; border-color: #8bc8a0; color: #eff8ef; box-shadow: inset 0 0 0 1px #8bc8a055; }
-@media (max-width: 360px) { .level-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.level-button.active { background: linear-gradient(160deg,#314538,#25362f); border-color: #bddc9f; box-shadow: 0 0 0 1px rgba(189,220,159,.25), 0 0 18px rgba(181,216,154,.1); }
+.level-button.active small { color: #cfdfa9; }
+.chapter-pager { width: 100%; min-height: 63px; display: grid; grid-template-columns: 58px 1fr 58px; align-items: center; gap: 12px; margin-top: 14px; }
+.pager-button { width: 58px; height: 58px; border-radius: 18px; font-size: 28px; }
+.pager-button:disabled { opacity: .24; }
+.chapter-dots { display: flex; justify-content: center; gap: 28px; align-items: center; overflow: hidden; }
+.chapter-dots i { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 99px; background: #435163; transition: width .18s ease, background .18s ease; }
+.chapter-dots i.active { width: 24px; background: #c3b4e5; }
+.levels-note { margin: 4px 0 0; text-align: center; color: #8e99a6; font-size: 11px; }
 
-/* Game */
-.game-screen { display: flex; flex-direction: column; min-height: 0; padding-top: max(10px, env(safe-area-inset-top)); }
-.game-topbar { padding: 0 14px; }
-.game-heading { flex: 1; min-width: 0; }
-.game-heading h2 { margin: 1px 0 0; font-size: 19px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.game-stats { display: flex; gap: 7px; padding: 10px 14px 8px; }
-.game-stats > div { min-width: 0; flex: 1; border: 1px solid #24343c; background: #151f26; border-radius: 12px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
-.game-stats strong { font-size: 17px; }.game-stats span { color: #71858c; font-size: 10px; }
-.game-main { flex: 1; min-height: 0; overflow-y: auto; padding: 0 14px 10px; overscroll-behavior: contain; }
-.stage { display: grid; place-items: center; min-height: 0; padding: 6px 0; }
-canvas#board { display: block; width: min(100%, 440px); max-height: 48dvh; border-radius: 18px; border: 1px solid #2b3a43; box-shadow: 0 14px 30px #0005; background: #151c23; touch-action: none; }
-.mechanic-stack { display: grid; gap: 7px; margin-top: 4px; }
-.mechanic-strip { border-radius: 12px; padding: 8px 10px; display: flex; gap: 8px; align-items: baseline; font-size: 11px; line-height: 1.35; border: 1px solid #2a3941; background: #172128; color: #8fa1a7; }
-.mechanic-strip b { color: #dce7e1; }
-.door-strip { border-color: #305050; background: #142526; }
-.element-chips { display: flex; gap: 6px; flex-wrap: wrap; }
-.element-chips span { border: 1px solid #294049; background: #17262d; color: #9db5ba; border-radius: 999px; padding: 6px 9px; font-size: 10px; }
-.selection-line { min-height: 34px; display: flex; align-items: center; gap: 9px; color: #9caeb3; font-size: 12px; padding: 8px 2px 2px; }
-.selection-dot { width: 10px; height: 10px; border: 1.5px solid #647780; border-radius: 50%; flex: 0 0 auto; }
-.status-message { margin-top: 4px; min-height: 42px; border-radius: 12px; padding: 10px 11px; background: #131d23; border: 1px solid #223139; color: #7f9298; font-size: 11px; line-height: 1.4; }
-.status-message.hint { border-color: #365044; color: #a9c5b0; }.status-message.lost { border-color: #5a3d3b; color: #d99b91; }.status-message.portal { border-color: #2e5354; color: #9fd9d6; }
-.touch-controls { background: linear-gradient(180deg, #10171d00 0, #10171df2 14%); padding: 8px 14px max(12px, env(safe-area-inset-bottom)); }
-.move-controls { display: grid; grid-template-columns: 1fr 58px 1fr; gap: 8px; align-items: stretch; }
-.move-button { min-height: 58px; border: 1px solid #314149; border-radius: 16px; background: #1a262d; color: #edf2ec; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; }
-.move-button span { font-size: 24px; }.move-button b { font-size: 13px; }
-.move-button:disabled { opacity: .34; cursor: default; }
-.move-hint { display: grid; place-items: center; color: #5f747b; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; position: relative; }
-.move-hint i { width: 24px; height: 1px; background: #33444b; }
-.game-toolbar { margin-top: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
-.tool-button { min-height: 46px; border-radius: 13px; border: 1px solid #26363e; background: #151f26; color: #83979d; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
-.tool-button span { font-size: 16px; }.tool-button b { font-size: 10px; }.tool-button:disabled { opacity: .32; cursor: default; }
+/* Game screen follows the supplied mobile mockup and never page-scrolls. */
+.game-screen { display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; padding: max(14px, env(safe-area-inset-top)) 18px max(10px, env(safe-area-inset-bottom)); }
+.game-topbar { min-height: 74px; display: grid; grid-template-columns: 58px 1fr 58px; gap: 12px; align-items: center; }
+.game-heading { min-width: 0; text-align: center; }
+.game-heading h2 { margin: 11px 0 0; font-size: clamp(23px, 6.8vw, 30px); line-height: 1; letter-spacing: -.035em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.game-menu-button .mini-grid { width: 22px; height: 22px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+.mini-grid i { border: 2px solid #edf1f5; border-radius: 3px; }
+.pause-button span, .pause-button span::after { content: ""; display: block; width: 4px; height: 23px; border-radius: 5px; background: #f0f2f6; }
+.pause-button span { position: relative; transform: translateX(-5px); }
+.pause-button span::after { position: absolute; left: 10px; top: 0; }
+.game-stats-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.48fr) 43px; gap: 9px; align-items: center; padding: 12px 40px 10px; }
+.stat-card { min-height: 55px; border: 1px solid #3b4c5c; border-radius: 18px; background: rgba(24,36,48,.62); display: flex; align-items: center; justify-content: center; gap: 12px; padding: 0 14px; color: #9ea8b5; font-size: 14px; white-space: nowrap; }
+.stat-card strong { color: #f0f2f6; font-size: 24px; line-height: 1; font-weight: 620; }
+.remaining-card { gap: 9px; }
+.remaining-card i { color: #a9d4cb; font-size: 25px; font-style: normal; line-height: 1; }
+.inline-help { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #84909d; color: #aab3bd; background: transparent; font-weight: 750; font-size: 18px; cursor: pointer; }
+#burntStat { display: none !important; }
+.game-main { min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto auto; overflow: hidden; }
+.stage { min-height: 0; width: 100%; display: grid; place-items: center; overflow: hidden; padding: 4px 0 7px; }
+canvas#board { display: block; max-width: 100%; max-height: 100%; border-radius: 16px; border: 1px solid #2d3b47; background: #131b23; box-shadow: 0 12px 28px rgba(0,0,0,.24); touch-action: none; }
+.mechanic-stack { display: none !important; }
+.status-row { min-height: 43px; position: relative; display: grid; place-items: center; padding: 4px 29px 0; }
+.status-message { width: 100%; min-height: 0; margin: 0; padding: 0; border: 0; background: none; color: #a5adb8; text-align: center; font-size: 13px; line-height: 1.45; }
+.status-message.portal { color: #acd6d1; }.status-message.hint { color: #d8ca93; }.status-message.lost { color: #d9a39a; }.status-message.element { color: #b4c7d0; }.status-message.fire { color: #deb38a; }
+.status-info { position: absolute; right: 3px; top: 50%; width: 25px; height: 25px; margin-top: -10px; border: 1.5px solid #667687; border-radius: 50%; color: #7f8d9b; display: grid; place-items: center; font: 700 12px/1 Georgia,serif; }
+.selection-line { min-height: 31px; display: flex; justify-content: center; align-items: center; gap: 8px; color: #9da7b3; font-size: 13px; padding: 3px 0 0; }
+.selection-dot { width: 8px; height: 8px; border: 1.5px solid #718293; border-radius: 50%; }
+.touch-controls { padding-top: 7px; }
+.move-controls { display: grid; grid-template-columns: minmax(0,1fr) 76px minmax(0,1fr); gap: 9px; align-items: stretch; }
+.move-button { min-height: 62px; border-radius: 22px; border: 1px solid #526153; background: #202d3b; color: #9aa493; display: flex; justify-content: center; align-items: center; gap: 13px; cursor: pointer; }
+.move-button span { font-size: 35px; font-weight: 300; line-height: .7; }
+.move-button b { font-size: 18px; font-weight: 690; }
+.move-button:disabled { opacity: .38; cursor: default; }
+.move-hint { display: grid; place-items: center; color: #77828f; text-align: center; font-size: 10px; line-height: 1.25; }
+.game-toolbar { min-height: 63px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #24323f; display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; }
+.tool-button { border: 0; background: transparent; color: #aeb6c0; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.tool-button span { color: #bec5ce; font-size: 25px; line-height: 1; }
+.tool-button b { font-size: 13px; font-weight: 520; }
+.tool-button.hint-tool, .tool-button.hint-tool span { color: #e1ca83; }
+.tool-button:disabled { opacity: .33; cursor: default; }
 
-/* Completion transition */
-.transition-screen { padding: max(28px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at 50% 34%, #6ab9a82b, transparent 30%), linear-gradient(180deg, #121b21, #0d151a); }
-.transition-symbol { width: 86px; height: 86px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 26px; color: #d8f2ce; font-size: 42px; border: 1px solid #4c6a5c; background: #1c2d29; box-shadow: 0 0 50px #77c8a720; }
-.transition-screen h2 { margin: 10px 0 8px; font-family: Georgia, serif; font-size: 43px; font-weight: 500; letter-spacing: -.04em; }
-.transition-screen > p { margin: 0; color: #8da0a7; font-size: 14px; }
-.transition-actions { width: min(100%, 360px); margin-top: 32px; }
+/* Completion */
+.transition-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: max(28px, env(safe-area-inset-top)) 25px max(24px, env(safe-area-inset-bottom)); }
+.transition-symbol { width: 88px; height: 88px; margin-bottom: 25px; display: grid; place-items: center; border-radius: 26px; color: #d6e8bd; font-size: 44px; border: 1px solid #617358; background: #263629; box-shadow: 0 15px 45px rgba(0,0,0,.25); }
+.transition-screen h2 { margin: 13px 0 9px; font-size: 45px; line-height: 1; letter-spacing: -.05em; }
+.transition-screen > p { margin: 0; color: #9ea8b4; font-size: 14px; }
+.transition-actions { width: min(100%, 370px); display: grid; gap: 10px; margin-top: 34px; }
 
 /* Help sheet */
-dialog { width: min(calc(100% - 20px), 540px); max-height: min(82dvh, 720px); margin: auto auto max(10px, env(safe-area-inset-bottom)); border: 1px solid #33434b; border-radius: 26px 26px 18px 18px; padding: 12px 18px 18px; background: #172128; color: var(--text); box-shadow: 0 30px 80px #000b; }
-dialog::backdrop { background: #05090dbb; backdrop-filter: blur(4px); }
-.dialog-handle { width: 42px; height: 4px; margin: 0 auto 14px; background: #405158; border-radius: 99px; }
+dialog { width: min(calc(100% - 20px), 540px); max-height: min(82dvh, 720px); margin: auto auto max(10px, env(safe-area-inset-bottom)); border: 1px solid #394959; border-radius: 28px 28px 20px 20px; padding: 12px 18px 18px; background: #182430; color: var(--text); box-shadow: 0 30px 80px #000c; }
+dialog::backdrop { background: rgba(4,8,12,.78); backdrop-filter: blur(4px); }
+.dialog-handle { width: 42px; height: 4px; margin: 0 auto 14px; background: #4a5a68; border-radius: 99px; }
 .dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
-.dialog-header h2 { margin: 4px 0 0; font-family: Georgia, serif; font-size: 30px; font-weight: 500; }
-.rules-list { display: grid; gap: 8px; margin: 18px 0; max-height: 48dvh; overflow-y: auto; }
-.rules-list p { margin: 0; padding: 11px 12px; border-radius: 13px; background: #131c22; color: #93a5aa; font-size: 12px; line-height: 1.45; border: 1px solid #24333a; }
-.rules-list b { color: #dce6df; }
+.dialog-header h2 { margin: 6px 0 0; font-size: 30px; letter-spacing: -.035em; }
+.rules-list { display: grid; gap: 8px; margin: 18px 0; max-height: 48dvh; overflow-y: auto; overscroll-behavior: contain; }
+.rules-list p { margin: 0; padding: 11px 12px; border-radius: 14px; background: #121c25; color: #9aa7b2; font-size: 12px; line-height: 1.45; border: 1px solid #293946; }
+.rules-list b { color: #e3e8eb; }
 #playBtn { width: 100%; }
 
-@media (max-height: 700px) {
-  .game-stats { padding-top: 6px; padding-bottom: 4px; }
-  .game-stats > div { padding-top: 6px; padding-bottom: 6px; }
-  canvas#board { max-height: 42dvh; }
-  .status-message { min-height: 36px; padding-top: 8px; padding-bottom: 8px; }
-  .move-button { min-height: 52px; }
-  .tool-button { min-height: 42px; }
+@media (max-width: 370px) {
+  .levels-screen, .game-screen { padding-left: 14px; padding-right: 14px; }
+  .game-stats-row { padding-left: 18px; padding-right: 18px; }
+  .level-grid { gap: 7px; grid-template-rows: repeat(2, 62px); }
+  .level-button { border-radius: 17px; }
+  .level-button .level-number { font-size: 22px; }
+  .chapter-art { transform: scale(.9); }
+  .move-button b { font-size: 16px; }
 }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; transition-duration: .001ms !important; } }
+@media (max-height: 730px) {
+  .home-main { grid-template-rows: auto auto auto minmax(88px, .8fr) auto auto; }
+  .home-art { transform: scale(.82); }
+  .home-main h1 { font-size: 40px; }
+  .levels-main { padding-top: 5px; grid-template-rows: auto minmax(100px,.8fr) auto auto auto; }
+  .chapter-copy h2 { margin-top: 10px; font-size: 32px; }
+  .levels-screen .chapter-art { transform: scale(.76); }
+  .level-grid { grid-template-rows: repeat(2, 58px); }
+  .chapter-pager { min-height: 52px; margin-top: 8px; }
+  .pager-button { width: 50px; height: 50px; }
+  .game-topbar { min-height: 62px; }
+  .game-stats-row { padding-top: 6px; padding-bottom: 5px; }
+  .stat-card { min-height: 48px; }
+  .move-button { min-height: 54px; }
+  .game-toolbar { min-height: 52px; margin-top: 7px; padding-top: 7px; }
+  .status-row { min-height: 36px; }
+  .selection-line { min-height: 26px; }
+}
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration:.001ms !important; transition-duration:.001ms !important; scroll-behavior:auto !important; } }
 
 </style>
 <link rel="icon" href="data:,">
@@ -168,52 +253,94 @@ dialog::backdrop { background: #05090dbb; backdrop-filter: blur(4px); }
 <body>
 <div class="mobile-shell">
   <section class="app-screen home-screen is-active" id="homeScreen" aria-labelledby="homeTitle">
-    <div class="home-glow" aria-hidden="true"></div>
+    <div class="star-field" aria-hidden="true"></div>
     <header class="home-topbar">
       <div class="wordmark"><span class="wordmark-mark"><i></i><i></i></span><span>сближение<span>.</span></span></div>
-      <button class="circle-button" id="helpBtn" type="button" aria-label="Правила игры">?</button>
+      <button class="square-icon-button small" id="helpBtn" type="button" aria-label="Правила игры">?</button>
     </header>
+
     <main class="home-main">
       <p class="eyebrow">КЛАССИЧЕСКАЯ КОЛЛЕКЦИЯ</p>
-      <h1 id="homeTitle">260 уровней.<br><span>Один ход за раз.</span></h1>
-      <p class="home-copy">Сдвигайте блоки, используйте платформы и двери на краях поля. Без таймера и штрафов за раздумья.</p>
-      <div class="home-art" aria-hidden="true">
-        <span class="art-block coral">●</span><span class="art-door left"></span><span class="art-line"></span><span class="art-door right"></span><span class="art-block mint">◆</span>
+      <h1 id="homeTitle">Сближение</h1>
+      <p class="home-copy">260 головоломок о совпадениях, падениях, платформах и дверях.</p>
+
+      <div class="chapter-art home-art" aria-hidden="true">
+        <span class="showcase-block coral"><i class="shape circle"></i></span>
+        <span class="showcase-block mint"><i class="shape diamond"></i></span>
+        <span class="showcase-block violet"><i class="shape triangle"></i></span>
       </div>
-      <section class="progress-card" aria-label="Прогресс прохождения">
+
+      <section class="home-progress" aria-label="Прогресс прохождения">
         <div><span>Пройдено</span><strong id="homeProgressText">0 / 260</strong></div>
-        <div class="progress-track"><span id="homeProgressBar"></span></div>
+        <div class="progress-track" aria-hidden="true"><span id="homeProgressBar"></span></div>
       </section>
+
       <div class="home-actions">
         <button class="primary-button" id="continueBtn" type="button">Продолжить · уровень 001</button>
-        <button class="secondary-button" id="openLevelsBtn" type="button">Выбрать уровень</button>
+        <button class="secondary-button" id="openLevelsBtn" type="button">Выбор уровня</button>
       </div>
     </main>
-    <footer class="home-footer"><span>КЛАССИКА · 260</span><span>∞ без таймера</span></footer>
+
+    <footer class="home-footer"><span>КЛАССИКА · 260</span><span>БЕЗ ТАЙМЕРА</span></footer>
   </section>
 
   <section class="app-screen levels-screen" id="levelsScreen" hidden aria-labelledby="levelsTitle">
-    <header class="screen-header">
-      <button class="back-button" id="levelsBackBtn" type="button" aria-label="Назад">←</button>
-      <div><p class="screen-kicker">КЛАССИКА</p><h1 id="levelsTitle">Уровни</h1></div>
+    <div class="star-field" aria-hidden="true"></div>
+    <header class="levels-topbar">
+      <button class="square-icon-button" id="levelsBackBtn" type="button" aria-label="Назад">←</button>
+      <h1 id="levelsTitle">Выбор уровня</h1>
       <span class="level-progress" id="progressText">0 / 260</span>
     </header>
-    <div class="levels-progress"><span id="progressBar"></span></div>
-    <p class="levels-note">Все уровни доступны сразу. Галочка отмечает лучший завершённый результат.</p>
-    <div class="level-grid" id="levelGrid" aria-label="Список уровней"></div>
+    <span id="progressBar" hidden></span>
+
+    <main class="levels-main">
+      <section class="chapter-copy" aria-live="polite">
+        <p class="chapter-kicker" id="chapterKicker">ГЛАВА 01</p>
+        <h2 id="chapterTitle">Первые шаги</h2>
+        <p id="chapterDescription">Совпадения, падения и цепные реакции.</p>
+      </section>
+
+      <div class="chapter-art" aria-hidden="true">
+        <span class="showcase-block coral"><i class="shape circle"></i></span>
+        <span class="showcase-block mint"><i class="shape diamond"></i></span>
+        <span class="showcase-block violet"><i class="shape triangle"></i></span>
+      </div>
+
+      <section class="chapter-levels" aria-label="Уровни главы">
+        <div class="chapter-meta">
+          <span id="chapterProgressText">Пройдено 0 из 10</span>
+          <span id="chapterRangeText">01 — 10</span>
+        </div>
+        <div class="level-grid" id="levelGrid" aria-label="Список уровней"></div>
+      </section>
+
+      <nav class="chapter-pager" aria-label="Листать главы">
+        <button class="square-icon-button pager-button" id="chapterPrevBtn" type="button" aria-label="Предыдущая глава">←</button>
+        <div class="chapter-dots" id="chapterDots" aria-hidden="true"></div>
+        <button class="square-icon-button pager-button" id="chapterNextBtn" type="button" aria-label="Следующая глава">→</button>
+      </nav>
+      <p class="levels-note">Все уровни открыты. Листайте главы.</p>
+    </main>
   </section>
 
   <section class="app-screen game-screen" id="gameScreen" hidden aria-label="Игра">
+    <div class="star-field" aria-hidden="true"></div>
     <header class="game-topbar">
-      <button class="back-button" id="gameBackBtn" type="button" aria-label="К списку уровней">←</button>
-      <div class="game-heading"><span class="level-kicker" id="levelKicker">УРОВЕНЬ 001 / 260</span><h2 id="boardTitle">Уровень 001</h2></div>
-      <button class="circle-button" id="gameHelpBtn" type="button" aria-label="Правила игры">?</button>
+      <button class="square-icon-button game-menu-button" id="gameBackBtn" type="button" aria-label="К выбору уровней">
+        <span class="mini-grid" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      </button>
+      <div class="game-heading">
+        <span class="level-kicker" id="levelKicker">УРОВЕНЬ 1 / 260</span>
+        <h2 id="boardTitle">Уровень 001</h2>
+      </div>
+      <button class="square-icon-button pause-button" id="gamePauseBtn" type="button" aria-label="Пауза и выбор уровня"><span aria-hidden="true"></span></button>
     </header>
 
-    <div class="game-stats" aria-label="Статистика уровня">
-      <div><strong id="moveCount">0</strong><span>ходов</span></div>
-      <div><strong id="blockCount">0</strong><span id="blockCountLabel">цветных</span></div>
-      <div id="burntStat" hidden><strong id="burntCount">0</strong><span>горелых</span></div>
+    <div class="game-stats-row" aria-label="Статистика уровня">
+      <div class="stat-card"><span>Ходы</span><strong id="moveCount">0</strong></div>
+      <div class="stat-card remaining-card"><i aria-hidden="true">◇</i><span>Осталось</span><strong id="blockCount">0</strong><span id="blockCountLabel" class="sr-only">цветных</span></div>
+      <button class="inline-help" id="gameHelpBtn" type="button" aria-label="Правила уровня">?</button>
+      <div id="burntStat" hidden><strong id="burntCount">0</strong></div>
     </div>
 
     <main class="game-main">
@@ -231,45 +358,49 @@ dialog::backdrop { background: #05090dbb; backdrop-filter: blur(4px); }
         </div>
       </div>
 
-      <div class="selection-line" id="selectionLine"><span class="selection-dot" id="selectionDot"></span><span id="selectionText">Коснитесь блока, чтобы выбрать его</span></div>
-      <div class="status-message" id="statusMessage" role="status" aria-live="polite">Соединяйте одинаковые цветные блоки.</div>
+      <div class="status-row">
+        <div class="status-message" id="statusMessage" role="status" aria-live="polite">Соединяйте одинаковые цветные блоки.</div>
+        <span class="status-info" aria-hidden="true">i</span>
+      </div>
+      <div class="selection-line" id="selectionLine"><span class="selection-dot" id="selectionDot"></span><span id="selectionText">Коснитесь блока</span></div>
     </main>
 
     <div class="touch-controls">
       <div class="move-controls" aria-label="Перемещение выбранного блока">
         <button class="move-button" id="leftBtn" type="button" disabled><span aria-hidden="true">←</span><b>Влево</b></button>
-        <div class="move-hint"><span>1 клетка</span><i></i></div>
+        <div class="move-hint"><span>на 1<br>клетку</span></div>
         <button class="move-button" id="rightBtn" type="button" disabled><b>Вправо</b><span aria-hidden="true">→</span></button>
       </div>
       <div class="game-toolbar">
-        <button class="tool-button" id="undoBtn" type="button" disabled><span>↶</span><b>Отменить</b></button>
-        <button class="tool-button" id="resetBtn" type="button"><span>↻</span><b>Заново</b></button>
-        <button class="tool-button" id="hintBtn" type="button"><span>✧</span><b id="hintLabel">Подсказка</b></button>
+        <button class="tool-button" id="undoBtn" type="button" disabled><span aria-hidden="true">↶</span><b>Отмена</b></button>
+        <button class="tool-button hint-tool" id="hintBtn" type="button"><span aria-hidden="true">♧</span><b id="hintLabel">Подсказка</b></button>
+        <button class="tool-button" id="resetBtn" type="button"><span aria-hidden="true">▱</span><b>Правила</b></button>
       </div>
     </div>
   </section>
 
   <section class="app-screen transition-screen" id="transitionScreen" hidden aria-labelledby="transitionTitle">
-    <div class="transition-symbol" aria-hidden="true">✧</div>
-    <span class="transition-kicker" id="transitionKicker">УРОВЕНЬ 001 ПРОЙДЕН</span>
+    <div class="star-field" aria-hidden="true"></div>
+    <div class="transition-symbol" aria-hidden="true">◇</div>
+    <span class="transition-kicker" id="transitionKicker">УРОВЕНЬ 1 ПРОЙДЕН</span>
     <h2 id="transitionTitle">Сошлось.</h2>
     <p id="transitionDescription">Решение за 0 ходов.</p>
     <div class="transition-actions">
       <button class="primary-button" id="nextBtn" type="button">Следующий уровень →</button>
       <button class="secondary-button" id="transitionReplayBtn" type="button">Пройти ещё раз</button>
-      <button class="text-button" id="transitionLevelsBtn" type="button">К списку уровней</button>
+      <button class="text-button" id="transitionLevelsBtn" type="button">К выбору уровней</button>
     </div>
   </section>
 </div>
 
 <dialog id="helpDialog" aria-labelledby="helpTitle">
   <div class="dialog-handle" aria-hidden="true"></div>
-  <header class="dialog-header"><div><p class="eyebrow">КАК ИГРАТЬ</p><h2 id="helpTitle">Сначала контакт.</h2></div><button class="circle-button" id="closeHelpBtn" type="button" aria-label="Закрыть">×</button></header>
+  <header class="dialog-header"><div><p class="eyebrow">КАК ИГРАТЬ</p><h2 id="helpTitle">Сначала контакт.</h2></div><button class="square-icon-button small" id="closeHelpBtn" type="button" aria-label="Закрыть">×</button></header>
   <div class="rules-list">
     <p><b>Двигайте влево и вправо.</b> Выберите блок и сдвиньте его на одну свободную клетку. После хода работает физика.</p>
     <p><b>Одинаковые цвета исчезают при касании.</b> Проверка происходит до следующего падения или входа в дверь.</p>
     <p><b>Светлая платформа</b> блокирует переход только между двумя доступными клетками. Линии вдоль стен не показываются.</p>
-    <p><b>Открытый край — дверь.</b> Горизонтальная дверь переносит блок на противоположную сторону. При падении нижняя дверь возвращает блок сверху.</p>
+    <p><b>Дверь на краю</b> переносит блок на противоположную сторону. Парные двери отмечены одинаковым номером.</p>
     <p><b>Специальные элементы</b> сохраняют механику классической игры: огонь, лёд, растения и ветер взаимодействуют с соседними клетками.</p>
   </div>
   <button class="primary-button" id="playBtn" type="button">Понятно</button>
@@ -363,7 +494,14 @@ class GameController {
             return;
         this.cancelPending();
         this.ui.screen = 'levels';
+        this.view.selectChapterForLevel(this.session.levelIndex);
         this.view.updateLevelNavigation();
+        this.view.render();
+    }
+    changeLevelChapter(direction) {
+        if (this.destroyed || this.ui.screen !== 'levels')
+            return;
+        this.view.changeChapter(direction);
         this.view.render();
     }
     loadLevel(index) {
@@ -4184,42 +4322,68 @@ class CanvasRenderer {
         this.ctx.stroke();
         this.ctx.restore();
     }
-    drawBoundaryDoor(end) {
-        const dirs = { left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] };
-        const [dx, dy] = dirs[end.side];
-        const x = (end.x + .5 + dx * .5) * CanvasRenderer.TILE, y = (end.y + .5 + dy * .5) * CanvasRenderer.TILE;
+    drawBoundaryDoor(end, label) {
+        const tile = CanvasRenderer.TILE;
+        const cx = (end.x + .5) * tile, cy = (end.y + .5) * tile;
+        const color = '#9ce9e4';
         const horizontal = end.side === 'top' || end.side === 'bottom';
+        const edgeX = end.side === 'left' ? end.x * tile : end.side === 'right' ? (end.x + 1) * tile : cx;
+        const edgeY = end.side === 'top' ? end.y * tile : end.side === 'bottom' ? (end.y + 1) * tile : cy;
+        const inwardX = end.side === 'left' ? 1 : end.side === 'right' ? -1 : 0;
+        const inwardY = end.side === 'top' ? 1 : end.side === 'bottom' ? -1 : 0;
         this.ctx.save();
-        this.ctx.translate(x, y);
-        this.ctx.strokeStyle = '#8fded8';
-        this.ctx.shadowColor = '#72d6d0';
-        this.ctx.shadowBlur = 10;
-        this.ctx.lineWidth = 3;
+        this.ctx.fillStyle = '#0f1b24';
+        if (horizontal)
+            this.ctx.fillRect(cx - 28, edgeY + (inwardY < 0 ? -25 : 0), 56, 25);
+        else
+            this.ctx.fillRect(edgeX + (inwardX < 0 ? -25 : 0), cy - 28, 25, 56);
+        this.ctx.strokeStyle = '#20313c';
+        this.ctx.lineWidth = 1;
+        if (horizontal)
+            this.ctx.strokeRect(cx - 27.5, edgeY + (inwardY < 0 ? -24.5 : .5), 55, 24);
+        else
+            this.ctx.strokeRect(edgeX + (inwardX < 0 ? -24.5 : .5), cy - 27.5, 24, 55);
+        this.ctx.strokeStyle = color;
+        this.ctx.shadowColor = color;
+        this.ctx.shadowBlur = 8;
+        this.ctx.lineWidth = 2.5;
+        this.ctx.lineJoin = 'round';
         this.ctx.lineCap = 'round';
         this.ctx.beginPath();
         if (horizontal) {
-            this.ctx.moveTo(-22, 0);
-            this.ctx.lineTo(-7, 0);
-            this.ctx.moveTo(7, 0);
-            this.ctx.lineTo(22, 0);
+            this.ctx.moveTo(cx - 24, edgeY);
+            for (let k = 1; k <= 10; k++)
+                this.ctx.lineTo(cx - 24 + k * 4.8, edgeY + (k === 10 ? 0 : k % 2 ? -3 : 3));
         }
         else {
-            this.ctx.moveTo(0, -22);
-            this.ctx.lineTo(0, -7);
-            this.ctx.moveTo(0, 7);
-            this.ctx.lineTo(0, 22);
+            this.ctx.moveTo(edgeX, cy - 24);
+            for (let k = 1; k <= 10; k++)
+                this.ctx.lineTo(edgeX + (k === 10 ? 0 : k % 2 ? -3 : 3), cy - 24 + k * 4.8);
         }
         this.ctx.stroke();
         this.ctx.shadowBlur = 0;
-        this.ctx.fillStyle = '#d7fffb';
+        this.ctx.fillStyle = color;
         for (const sign of [-1, 1]) {
-            this.ctx.beginPath();
             if (horizontal)
-                this.ctx.arc(sign * 25, 0, 2.2, 0, Math.PI * 2);
+                this.roundRect(cx + sign * 27 - 2, edgeY - 8, 4, 16, 2);
             else
-                this.ctx.arc(0, sign * 25, 2.2, 0, Math.PI * 2);
+                this.roundRect(edgeX - 8, cy + sign * 27 - 2, 16, 4, 2);
             this.ctx.fill();
         }
+        const badgeX = edgeX + inwardX * 15;
+        const badgeY = edgeY + inwardY * 15;
+        this.ctx.fillStyle = '#10212a';
+        this.ctx.strokeStyle = '#75aaa9';
+        this.ctx.lineWidth = 1.2;
+        this.ctx.beginPath();
+        this.ctx.arc(badgeX, badgeY, 9, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.stroke();
+        this.ctx.fillStyle = color;
+        this.ctx.font = 'bold 10px "Segoe UI",Arial,sans-serif';
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillText(label, badgeX, badgeY + .5);
         this.ctx.restore();
     }
     drawPortal(end, label, index) {
@@ -4323,8 +4487,9 @@ class CanvasRenderer {
         this.drawPlatforms();
         this.session.board.portals.forEach((pair, index) => {
             if (pair.boundary) {
-                this.drawBoundaryDoor(pair.a);
-                this.drawBoundaryDoor(pair.b);
+                const label = String(index + 1);
+                this.drawBoundaryDoor(pair.a, label);
+                this.drawBoundaryDoor(pair.b, label);
             }
             else {
                 this.drawPortal(pair.a, pair.id, index);
@@ -4398,10 +4563,24 @@ class CanvasRenderer {
     resizeCanvas() {
         if (!this.session.board)
             return;
-        const width = this.canvas.getBoundingClientRect().width;
+        const stage = this.canvas.parentElement;
+        const rect = stage?.getBoundingClientRect();
+        const availableWidth = Math.max(1, rect?.width ?? this.canvas.getBoundingClientRect().width);
+        const availableHeight = Math.max(1, rect?.height ?? availableWidth);
+        const boardRatio = this.session.board.width / this.session.board.height;
+        let cssWidth = availableWidth;
+        let cssHeight = cssWidth / boardRatio;
+        if (cssHeight > availableHeight) {
+            cssHeight = availableHeight;
+            cssWidth = cssHeight * boardRatio;
+        }
+        cssWidth = Math.max(1, Math.floor(cssWidth));
+        cssHeight = Math.max(1, Math.floor(cssHeight));
+        this.canvas.style.width = `${cssWidth}px`;
+        this.canvas.style.height = `${cssHeight}px`;
         const ratio = Math.min(window.devicePixelRatio || 1, 2);
-        this.canvas.width = Math.max(1, Math.round(width * ratio));
-        this.canvas.height = Math.max(1, Math.round(width * this.session.board.height / this.session.board.width * ratio));
+        this.canvas.width = Math.max(1, Math.round(cssWidth * ratio));
+        this.canvas.height = Math.max(1, Math.round(cssHeight * ratio));
         this.draw();
     }
 }
@@ -4426,7 +4605,16 @@ const TAGS = {
     progressText: 'span',
     levelGrid: 'div',
     progressBar: 'span',
+    chapterKicker: 'p',
+    chapterTitle: 'h2',
+    chapterDescription: 'p',
+    chapterProgressText: 'span',
+    chapterRangeText: 'span',
+    chapterPrevBtn: 'button',
+    chapterNextBtn: 'button',
+    chapterDots: 'div',
     gameBackBtn: 'button',
+    gamePauseBtn: 'button',
     gameHelpBtn: 'button',
     levelKicker: 'span',
     boardTitle: 'h2',
@@ -4544,6 +4732,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameView = void 0;
 const BlockAppearance_js_1 = require("./BlockAppearance.js");
 const RussianText_js_1 = require("./RussianText.js");
+const CHAPTERS = [
+    { title: 'Первые шаги', description: 'Совпадения, падения и цепные реакции.' },
+    { title: 'Новые пути', description: 'Ищите короткий маршрут к совпадению.' },
+    { title: 'Точки опоры', description: 'Положение каждого блока имеет значение.' },
+    { title: 'Тесные места', description: 'Свободная клетка иногда важнее хода.' },
+    { title: 'Через край', description: 'Края поля становятся частью маршрута.' },
+    { title: 'Два направления', description: 'Один сдвиг меняет всю конструкцию.' },
+    { title: 'Скрытый ритм', description: 'Следите за порядком падений и контактов.' },
+    { title: 'Перестановки', description: 'Перемещайте блоки, не разрушая план.' },
+    { title: 'Цепная реакция', description: 'Одно совпадение открывает следующее.' },
+    { title: 'Точная позиция', description: 'Иногда решает одна свободная клетка.' },
+    { title: 'Новый поворот', description: 'Знакомые правила в другой композиции.' },
+    { title: 'Между стен', description: 'Опоры задают форму будущего движения.' },
+    { title: 'Смена маршрута', description: 'Проверяйте путь до того, как сделать ход.' },
+    { title: 'Открытые края', description: 'Двери связывают противоположные стороны.' },
+    { title: 'Пара ходов', description: 'Сначала подготовьте поле, затем сближайте.' },
+    { title: 'Плотнее', description: 'Чем меньше места, тем важнее порядок.' },
+    { title: 'Другой угол', description: 'Смотрите на поле как на единую систему.' },
+    { title: 'Не спешите', description: 'Решение часто начинается не с очевидного хода.' },
+    { title: 'Шаг в сторону', description: 'Освободите путь прежде, чем искать пару.' },
+    { title: 'Снова рядом', description: 'Возвращайте блоки туда, где они взаимодействуют.' },
+    { title: 'Тонкий расчёт', description: 'Сохраняйте нужные опоры до последнего.' },
+    { title: 'Свободный край', description: 'Используйте двери как часть геометрии поля.' },
+    { title: 'На расстоянии', description: 'Дальние блоки тоже могут быстро встретиться.' },
+    { title: 'Последний манёвр', description: 'Каждый лишний сдвиг меняет финальную позицию.' },
+    { title: 'Почти вместе', description: 'Финальные главы требуют точного порядка.' },
+    { title: 'Финальная глава', description: 'Все знакомые приёмы работают вместе.' },
+];
 class GameView {
     elements;
     session;
@@ -4551,6 +4767,8 @@ class GameView {
     engine;
     levels;
     progress;
+    chapterSize = 10;
+    chapterIndex = 0;
     constructor(elements, session, ui, engine, levels, progress) {
         this.elements = elements;
         this.session = session;
@@ -4560,6 +4778,7 @@ class GameView {
         this.progress = progress;
     }
     get canvas() { return this.elements.get('board'); }
+    get chapterCount() { return Math.ceil(this.levels.count / this.chapterSize); }
     showScreen(screen) {
         const ids = [
             ['home', 'homeScreen'], ['levels', 'levelsScreen'], ['game', 'gameScreen'], ['complete', 'transitionScreen'],
@@ -4573,31 +4792,79 @@ class GameView {
         document.body.dataset.screen = screen;
     }
     createNavigation() {
+        this.selectChapterForLevel(this.session.levelIndex);
+        this.renderChapterNavigation();
+    }
+    selectChapterForLevel(levelIndex) {
+        this.chapterIndex = Math.max(0, Math.min(this.chapterCount - 1, Math.floor(levelIndex / this.chapterSize)));
+    }
+    changeChapter(direction) {
+        const next = Math.max(0, Math.min(this.chapterCount - 1, this.chapterIndex + direction));
+        if (next === this.chapterIndex)
+            return;
+        this.chapterIndex = next;
+        this.updateLevelNavigation();
+    }
+    chapterNumber(value) {
+        return String(value).padStart(value >= 100 ? 3 : 2, '0');
+    }
+    renderChapterNavigation() {
+        const start = this.chapterIndex * this.chapterSize;
+        const end = Math.min(start + this.chapterSize, this.levels.count);
         const grid = this.elements.get('levelGrid');
         grid.replaceChildren();
-        for (let i = 0; i < this.levels.count; i++) {
+        for (let i = start; i < end; i++) {
             const button = document.createElement('button');
             button.type = 'button';
             button.className = 'level-button';
             button.dataset.level = String(i);
-            button.innerHTML = `<span>${String(i + 1).padStart(3, '0')}</span><i aria-hidden="true">✓</i>`;
+            button.innerHTML = `<span class="level-number">${this.chapterNumber(i + 1)}</span><small></small><i aria-hidden="true">✓</i>`;
             grid.append(button);
+        }
+        const copy = CHAPTERS[this.chapterIndex] ?? { title: `Глава ${this.chapterIndex + 1}`, description: 'Классические уровни Сближения.' };
+        this.elements.get('chapterKicker').textContent = `ГЛАВА ${String(this.chapterIndex + 1).padStart(2, '0')}`;
+        this.elements.get('chapterTitle').textContent = copy.title;
+        this.elements.get('chapterDescription').textContent = copy.description;
+        this.elements.get('chapterRangeText').textContent = `${this.chapterNumber(start + 1)} — ${this.chapterNumber(end)}`;
+        this.elements.get('chapterPrevBtn').disabled = this.chapterIndex === 0;
+        this.elements.get('chapterNextBtn').disabled = this.chapterIndex === this.chapterCount - 1;
+        const dots = this.elements.get('chapterDots');
+        dots.replaceChildren();
+        const first = Math.max(0, Math.min(this.chapterCount - 3, this.chapterIndex - 1));
+        const last = Math.min(this.chapterCount, first + Math.min(3, this.chapterCount));
+        for (let i = first; i < last; i++) {
+            const dot = document.createElement('i');
+            dot.classList.toggle('active', i === this.chapterIndex);
+            dots.append(dot);
         }
     }
     updateLevelNavigation() {
+        this.renderChapterNavigation();
         const completed = this.progress.completed;
         const buttons = this.elements.get('levelGrid').querySelectorAll('button[data-level]');
-        buttons.forEach((button, index) => {
+        buttons.forEach(button => {
+            const index = Number(button.dataset.level);
             const done = Object.prototype.hasOwnProperty.call(completed, index);
             const active = index === this.session.levelIndex;
             button.classList.toggle('active', active);
             button.classList.toggle('completed', done);
+            const small = button.querySelector('small');
+            if (small)
+                small.textContent = active ? 'сейчас' : done ? 'готово' : '·';
             if (active)
                 button.setAttribute('aria-current', 'step');
             else
                 button.removeAttribute('aria-current');
             button.setAttribute('aria-label', `Уровень ${index + 1}${done ? ', пройден' : ''}${active ? ', текущий' : ''}`);
         });
+        const start = this.chapterIndex * this.chapterSize;
+        const end = Math.min(start + this.chapterSize, this.levels.count);
+        let chapterCompleted = 0;
+        for (let i = start; i < end; i++) {
+            if (Object.prototype.hasOwnProperty.call(completed, i))
+                chapterCompleted++;
+        }
+        this.elements.get('chapterProgressText').textContent = `Пройдено ${chapterCompleted} из ${end - start}`;
         const count = Object.keys(completed).length;
         const text = `${count} / ${this.levels.count}`;
         const width = `${100 * count / this.levels.count}%`;
@@ -4613,11 +4880,10 @@ class GameView {
         const selected = this.session.blocks.find(b => b.id === this.session.selectedId);
         const active = this.engine.activeCount(this.session.blocks);
         const burnt = this.session.blocks.filter(b => b.burnt).length;
-        const hasFire = this.session.blocks.some(this.engine.isFire);
         this.elements.get('moveCount').textContent = String(this.session.moves);
         this.elements.get('blockCount').textContent = String(active);
         this.elements.get('burntCount').textContent = String(burnt);
-        this.elements.get('burntStat').hidden = !hasFire && !burnt;
+        this.elements.get('burntStat').hidden = true;
         this.elements.get('blockCountLabel').textContent = 'цветных';
         this.elements.get('leftBtn').disabled = this.ui.busy || status.kind !== 'playing' || !selected || !this.engine.canMove(this.session.board, this.session.blocks, this.session.selectedId, -1);
         this.elements.get('rightBtn').disabled = this.ui.busy || status.kind !== 'playing' || !selected || !this.engine.canMove(this.session.board, this.session.blocks, this.session.selectedId, 1);
@@ -4626,10 +4892,10 @@ class GameView {
         this.elements.get('hintLabel').textContent = this.ui.hintBusy ? 'Ищу…' : 'Подсказка';
         const dot = this.elements.get('selectionDot');
         dot.style.backgroundColor = selected ? BlockAppearance_js_1.BlockAppearance.for(selected).color : 'transparent';
-        dot.style.borderColor = selected ? BlockAppearance_js_1.BlockAppearance.for(selected).color : '#647780';
+        dot.style.borderColor = selected ? BlockAppearance_js_1.BlockAppearance.for(selected).color : '#718293';
         this.elements.get('selectionText').textContent = this.ui.busy ? 'Ход выполняется…' : selected && status.kind === 'playing'
-            ? `${BlockAppearance_js_1.BlockAppearance.for(selected).name} · свайпните или нажмите стрелку`
-            : status.kind === 'won' ? 'Все цветные блоки убраны' : 'Коснитесь блока, чтобы выбрать его';
+            ? `${BlockAppearance_js_1.BlockAppearance.for(selected).name} выбран`
+            : status.kind === 'won' ? 'Все цветные блоки убраны' : 'Коснитесь блока';
         let text = this.ui.message, kind = this.ui.messageKind;
         if (!this.ui.busy && status.kind === 'lost') {
             text = status.reason === 'singleton' ? 'Остался блок без пары. Отмените ход и попробуйте другой путь.'
@@ -4647,14 +4913,14 @@ class GameView {
         const descriptions = this.session.blocks.map(b => `${BlockAppearance_js_1.BlockAppearance.for(b).description}: столбец ${b.x + 1}, строка ${b.y + 1}${b.id === this.session.selectedId ? ', выбран' : ''}`);
         const boundaryDoors = this.session.board.portals.filter(pair => pair.boundary).length;
         if (boundaryDoors)
-            descriptions.push(`Открытых граничных дверей: ${boundaryDoors}. Горизонтальная дверь переносит на противоположный край; нижняя дверь возвращает падающий блок сверху`);
+            descriptions.push(`Пар граничных дверей: ${boundaryDoors}. Одинаковый номер обозначает один маршрут`);
         const internalPlatforms = this.visiblePlatformCount();
         if (internalPlatforms)
             descriptions.push(`Платформ между проходимыми клетками: ${internalPlatforms}`);
         this.elements.get('boardDescription').textContent = descriptions.join('. ') || 'Поле очищено.';
         if (this.ui.screen === 'complete') {
             const allDone = Object.keys(this.progress.completed).length === this.levels.count;
-            this.elements.get('transitionKicker').textContent = `УРОВЕНЬ ${String(this.session.levelIndex + 1).padStart(3, '0')} ПРОЙДЕН`;
+            this.elements.get('transitionKicker').textContent = `УРОВЕНЬ ${this.session.levelIndex + 1} ПРОЙДЕН`;
             this.elements.get('transitionTitle').textContent = allDone ? 'Классика пройдена.' : 'Сошлось.';
             this.elements.get('transitionDescription').textContent = `Решение за ${RussianText_js_1.RussianText.moves(this.session.moves)}.${burnt ? ` Осталось ${burnt} ${RussianText_js_1.RussianText.plural(burnt, ['горелый блок', 'горелых блока', 'горелых блоков'])}.` : ''}`;
             this.elements.get('nextBtn').textContent = this.session.levelIndex < this.levels.count - 1 ? 'Следующий уровень →' : allDone ? 'С начала →' : 'К непройденному →';
@@ -4666,22 +4932,22 @@ class GameView {
         const hasDoors = this.session.board.portals.some(pair => pair.boundary);
         const hasElements = this.session.blocks.some(b => this.engine.isIce(b) || this.engine.isPlant(b) || this.engine.isWind(b));
         const hasPlatforms = this.visiblePlatformCount() > 0;
-        this.ui.message = hasElements ? 'Уберите цветные блоки. Специальные элементы могут остаться.'
-            : hasDoors ? 'Открытый край — дверь на противоположную сторону. Совпадения срабатывают до падения и входа в дверь.'
+        this.ui.message = hasDoors ? 'Одинаковые номера — одна пара дверей. Пересеките проём.'
+            : hasElements ? 'Уберите цветные блоки. Специальные элементы могут остаться.'
                 : hasFire ? 'Огонь можно двигать. Он обжигает только сверху.'
-                    : hasPlatforms ? 'Светлая платформа перекрывает переход между двумя клетками.'
-                        : 'Соединяйте одинаковые цветные блоки.';
-        this.ui.messageKind = hasElements ? 'element' : hasDoors ? 'portal' : hasFire ? 'fire' : '';
+                    : hasPlatforms ? 'Светлая платформа перекрывает переход между клетками.'
+                        : 'Соедините одинаковые блоки. Совпадение — по сторонам.';
+        this.ui.messageKind = hasDoors ? 'portal' : hasElements ? 'element' : hasFire ? 'fire' : '';
         this.elements.get('elementsMechanic').hidden = !hasElements;
         this.elements.get('iceChip').hidden = !this.session.blocks.some(this.engine.isIce);
         this.elements.get('plantChip').hidden = !this.session.blocks.some(this.engine.isPlant);
         this.elements.get('windChip').hidden = !this.session.blocks.some(this.engine.isWind);
         this.elements.get('fireMechanic').hidden = !hasFire;
         this.elements.get('portalMechanic').hidden = !hasDoors;
-        this.elements.get('portalMechanicText').textContent = 'Нет платформы на краю — блок входит в дверь и появляется с противоположной стороны.';
+        this.elements.get('portalMechanicText').textContent = 'Одинаковые номера обозначают одну пару дверей.';
         const level = this.levels.get(index);
         this.elements.get('boardTitle').textContent = level.title;
-        this.elements.get('levelKicker').textContent = `УРОВЕНЬ ${String(index + 1).padStart(3, '0')} / ${this.levels.count}`;
+        this.elements.get('levelKicker').textContent = `УРОВЕНЬ ${index + 1} / ${this.levels.count}`;
         this.canvas.style.aspectRatio = `${this.session.board.width} / ${this.session.board.height}`;
         this.canvas.setAttribute('aria-label', `Игровое поле. Уровень ${index + 1}. ${this.session.board.width} на ${this.session.board.height} клеток.`);
     }
@@ -4738,14 +5004,16 @@ class InputController {
         this.elements.get('continueBtn').addEventListener('click', () => this.actions.loadLevel(this.session.levelIndex), options);
         this.elements.get('openLevelsBtn').addEventListener('click', () => this.actions.showLevels(), options);
         this.elements.get('levelsBackBtn').addEventListener('click', () => this.actions.showHome(), options);
+        this.elements.get('chapterPrevBtn').addEventListener('click', () => this.actions.changeLevelChapter(-1), options);
+        this.elements.get('chapterNextBtn').addEventListener('click', () => this.actions.changeLevelChapter(1), options);
         this.elements.get('gameBackBtn').addEventListener('click', () => this.actions.showLevels(), options);
+        this.elements.get('gamePauseBtn').addEventListener('click', () => this.actions.showLevels(), options);
         this.elements.get('transitionLevelsBtn').addEventListener('click', () => this.actions.showLevels(), options);
         this.elements.get('transitionReplayBtn').addEventListener('click', () => this.actions.loadLevel(this.session.levelIndex), options);
         this.elements.get('nextBtn').addEventListener('click', () => this.actions.nextLevel(), options);
         this.elements.get('leftBtn').addEventListener('click', () => { void this.actions.requestMove(-1); }, options);
         this.elements.get('rightBtn').addEventListener('click', () => { void this.actions.requestMove(1); }, options);
         this.elements.get('undoBtn').addEventListener('click', () => this.actions.undo(), options);
-        this.elements.get('resetBtn').addEventListener('click', () => this.actions.loadLevel(this.session.levelIndex), options);
         this.elements.get('hintBtn').addEventListener('click', () => this.actions.requestHint(), options);
         const grid = this.elements.get('levelGrid');
         grid.addEventListener('click', event => {
@@ -4760,6 +5028,7 @@ class InputController {
         };
         this.elements.get('helpBtn').addEventListener('click', openHelp, options);
         this.elements.get('gameHelpBtn').addEventListener('click', openHelp, options);
+        this.elements.get('resetBtn').addEventListener('click', openHelp, options);
         this.elements.get('closeHelpBtn').addEventListener('click', () => help.close(), options);
         this.elements.get('playBtn').addEventListener('click', () => {
             help.close();
