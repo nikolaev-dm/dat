@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#101922">
 <meta name="description" content="Сближение — 260 классических уровней и встроенный мобильный редактор уровней.">
 <title>Сближение · Классика</title>
@@ -614,15 +614,114 @@ body[data-screen="editor"] .app::before { opacity: .24; }
   .app { height: min(var(--app-height), 920px); border: 1px solid #263746; border-radius: 30px; box-shadow: 0 30px 90px #0009; }
 }
 
+/* Rewards, thumb controls and touch-safety. */
+.app, .screen, .game-deck, .game-toolbar, .editor-test-deck,
+button, canvas, .selection-line, .feedback, .reward-summary, .result-dialog {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+input, textarea { -webkit-user-select: text; user-select: text; }
+.game-toolbar { grid-template-columns: repeat(4,minmax(0,1fr)); }
+.restart-tool { color: #b9cdb8; }
+.restart-tool:not(:disabled) { background: linear-gradient(180deg,#31403322,transparent); border-radius: 11px; }
+.secret-trigger { border: 0; background: none; cursor: default; touch-action: manipulation; }
+.secret-trigger:active { transform: none !important; }
+
+.reward-summary {
+  display: grid; grid-template-columns: auto auto minmax(0,1fr); align-items: center; gap: 8px;
+  margin-top: 10px; padding: 8px 9px; border: 1px solid #3545549a; border-radius: 13px;
+  background: #111d278f; color: var(--muted); min-height: 42px;
+}
+.reward-summary > div { display: grid; grid-template-columns: 16px auto; grid-template-rows: auto auto; align-items: center; column-gap: 5px; min-width: 58px; }
+.reward-summary > div .icon { grid-row: 1/3; width: 16px; height: 16px; color: #d7c57e; }
+.reward-summary > div:nth-child(2) .icon { color: #b8d9aa; }
+.reward-summary strong { color: #e7edf2; font-size: 12px; line-height: 1; font-variant-numeric: tabular-nums; }
+.reward-summary span { font-size: 7px; line-height: 1.2; margin-top: 2px; }
+.reward-summary > button { justify-self: end; display: inline-flex; align-items: center; gap: 3px; min-height: 32px; color: #b9c6d1; font-size: 9px; padding: 0 4px; }
+.reward-summary > button .icon { width: 14px; height: 14px; }
+
+.level-stars { display: block; min-height: 11px; margin-top: 2px; color: #e2ca75; font-size: 8px; letter-spacing: .4px; line-height: 1; }
+.level-button:not(.completed) .level-stars { opacity: .28; }
+
+.result-stars { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 35px; margin: 0 0 4px; color: #53606b; font-size: 31px; line-height: 1; text-shadow: 0 2px 7px #0008; }
+.result-stars span { transform: translateY(1px); }
+.result-stars span:nth-child(2) { font-size: 36px; transform: translateY(-2px); }
+.result-stars .earned { color: #ead17b; text-shadow: 0 0 15px #e5c96833, 0 2px 7px #0008; }
+.result-stats { grid-template-columns: repeat(3,1fr); margin-bottom: 12px; }
+.result-stats strong { font-size: 22px; }
+.iq-note { color: #8fa0ae; font-size: 9px; line-height: 1.45; margin: -2px 5px 12px; }
+.result-achievement { margin: 0 0 13px; padding: 9px 10px; border: 1px solid #7e9f6c78; border-radius: 11px; background: #28392c8a; color: #cfe6bc; font-size: 10px; line-height: 1.35; }
+
+.achievements-dialog { text-align: left; }
+.achievements-list { display: grid; gap: 7px; max-height: min(56vh,460px); overflow: auto; overscroll-behavior: contain; padding-right: 2px; }
+.achievement-row { display: grid; grid-template-columns: 31px minmax(0,1fr); gap: 9px; align-items: center; min-height: 55px; padding: 8px 10px; border: 1px solid #344554; border-radius: 13px; background: #121e2988; opacity: .53; }
+.achievement-row.unlocked { opacity: 1; border-color: #728d6678; background: #22322a9c; }
+.achievement-mark { width: 29px; height: 29px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #202d38; color: #7f8e9a; font-size: 16px; }
+.achievement-row.unlocked .achievement-mark { background: #34472f; color: #e2cd7c; }
+.achievement-row strong, .achievement-row small { display: block; }
+.achievement-row strong { font-size: 11px; font-weight: 650; color: #dde5eb; }
+.achievement-row small { margin-top: 3px; font-size: 8px; line-height: 1.35; color: #8fa0ad; }
+
+/* The easter egg is intentionally visual-only: no flashing and no audio. */
+.secret-screamer { width: 100vw; height: var(--app-height); max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #05080c; color: #f6f1e8; overflow: hidden; }
+.secret-screamer::backdrop { background: #020305; }
+.secret-screamer[open] { animation: secret-in .16s cubic-bezier(.18,.89,.28,1.25); }
+.secret-screamer > button { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: radial-gradient(circle at 50% 44%,#60262b 0,#171015 32%,#05080c 68%); touch-action: manipulation; }
+.secret-screamer strong { font-size: clamp(48px,18vw,84px); letter-spacing: .08em; color: #f0dbd5; text-shadow: 0 0 26px #c4515199; }
+.secret-screamer p { color: #c5b8b8; font-size: 12px; }
+.screamer-face { position: relative; display: block; width: min(54vw,240px); aspect-ratio: 1; border: 2px solid #cf777177; border-radius: 48% 52% 44% 56% / 42% 44% 56% 58%; box-shadow: inset 0 0 65px #9d333344, 0 0 55px #a6343438; transform: rotate(-2deg); }
+.screamer-face .eye { position: absolute; top: 30%; width: 17%; aspect-ratio: .72; border-radius: 60% 45% 60% 45%; background: #f3e5d6; box-shadow: 0 0 18px #fff7; }
+.screamer-face .eye::after { content: ""; position: absolute; width: 42%; aspect-ratio: 1; left: 32%; top: 32%; border-radius: 50%; background: #1a080a; }
+.screamer-face .eye.left { left: 22%; transform: rotate(8deg); }
+.screamer-face .eye.right { right: 22%; transform: rotate(-8deg); }
+.screamer-face .mouth { position: absolute; left: 31%; bottom: 18%; width: 38%; height: 28%; border-radius: 48% 52% 46% 54%; background: #120609; box-shadow: inset 0 10px 0 #6c272b; }
+@keyframes secret-in { from { opacity: 0; transform: scale(.72) rotate(-3deg); } to { opacity: 1; transform: none; } }
+
+/* Editor test mode reuses the game renderer and gets the same thumb-control language. */
+.editor-test-deck { padding-top: 2px; }
+.editor-test-line { min-height: 34px; justify-content: center; position: relative; }
+.editor-test-line strong { position: absolute; right: 3px; color: #9fb0bd; font-size: 9px; font-weight: 500; }
+.editor-test-toolbar { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.editor-test-toolbar .tool-button { min-height: 46px; }
+
+@media (max-height: 740px) {
+  .reward-summary { margin-top: 7px; min-height: 38px; padding-top: 6px; padding-bottom: 6px; }
+  .home-footer > p { margin-top: 7px; }
+  .result-stars { font-size: 26px; min-height: 31px; }
+  .result-stars span:nth-child(2) { font-size: 31px; }
+  .result-stats strong { font-size: 19px; }
+}
+@media (max-height: 640px) and (orientation: portrait) {
+  .reward-summary { margin-top: 5px; padding: 5px 7px; min-height: 35px; }
+  .reward-summary > div { min-width: 51px; }
+  .reward-summary > button { font-size: 8px; }
+  .home-footer > p { display: none; }
+  .home-footer .fullscreen-button { display: none !important; }
+  .game-toolbar { margin-top: 5px; }
+  .tool-button { font-size: 8.5px; gap: 3px; }
+  .tool-button .icon { width: 17px; height: 17px; }
+}
+@media (orientation: landscape) and (max-height: 540px) {
+  .reward-summary { margin-top: 5px; min-height: 34px; padding: 4px 7px; }
+  .home-footer > p { display: none; }
+  .game-toolbar { grid-template-columns: repeat(4,minmax(0,1fr)); }
+  .result-stars { grid-column: 1; margin-bottom: 3px; }
+  .iq-note, .result-achievement { grid-column: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .secret-screamer[open] { animation: none !important; }
+}
+
 </style>
 <link rel="icon" href="data:,">
 </head>
 <body>
-<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><symbol id="i-left" viewBox="0 0 24 24"><path d="m13 5-7 7 7 7M6 12h15"/></symbol><symbol id="i-right" viewBox="0 0 24 24"><path d="m11 5 7 7-7 7M18 12H3"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol><symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="3"/></symbol><symbol id="i-undo" viewBox="0 0 24 24"><path d="M8 4 3 9l5 5M3 9h10a7 7 0 1 1-5 12"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path d="M20 8a9 9 0 1 0 1 7M20 3v5h-5"/></symbol><symbol id="i-hint" viewBox="0 0 24 24"><path d="M9 18v-2a6 6 0 1 1 6 0v2M9 18h6M10 22h4M12 3V1"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4M12 17h.01"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5v15M3 4c4-1 6 0 9 1 3-1 5-2 9-1v15c-4-1-6 0-9 1-3-1-5-2-9-1Z"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9"/></symbol><symbol id="i-full" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 10 7-10 7Z" fill="currentColor" stroke="none"/></symbol><symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/></symbol><symbol id="i-diamond" viewBox="0 0 24 24"><path d="m12 3 8 9-8 9-8-9Z"/></symbol><symbol id="i-triangle" viewBox="0 0 24 24"><path d="m12 4 9 15H3Z"/></symbol><symbol id="i-cross" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" stroke-width="3"/></symbol><symbol id="i-fire" viewBox="0 0 24 24"><path d="M13 2c0 5 7 6 7 12a8 8 0 0 1-16 0c0-3 2-5 5-8-1 5 2 7 3 3 1-2-1-4 1-7Z" fill="currentColor" stroke="none"/><path d="M12 12c0 3 5 4 2 7-3 3-5-1-3-3Z" fill="#fff0ce" stroke="none"/></symbol><symbol id="i-ice" viewBox="0 0 24 24"><path d="m12 2 8 5v10l-8 5-8-5V7ZM12 2v20M4 7l16 10M20 7 4 17"/></symbol><symbol id="i-plant" viewBox="0 0 24 24"><path d="M12 22V10M12 12C10 4 15 2 21 3c1 6-4 10-9 9ZM12 18C5 20 2 15 3 9c6-1 10 3 9 9Z"/></symbol><symbol id="i-wind" viewBox="0 0 24 24"><path d="M5 21V9M2 12l3-3 3 3M12 21V3M9 6l3-3 3 3M19 21V9M16 12l3-3 3 3"/></symbol><symbol id="i-charcoal" viewBox="0 0 24 24"><path d="m7 3 5 6-3 5 6 4-1 4M9 14l-6 2M15 18l6-8M16 4l4 3"/></symbol><symbol id="i-portal" viewBox="0 0 24 24"><path d="M4 3v18M20 3v18M8 6l3-2 3 4 3-2M8 18l3 2 3-4 3 2M8 12h8"/></symbol><symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20ZM13.5 7.5l3 3"/></symbol><symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h12l2 2v16H5Z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1" fill="currentColor" stroke="none"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 3h6l1 4H8ZM7 7l1 14h8l1-14M10 11v6M14 11v6"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 20h16"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2c1 7 3 9 10 10-7 1-9 3-10 10-1-7-3-9-10-10 7-1 9-3 10-10Z"/></symbol></defs></svg>
+<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><symbol id="i-left" viewBox="0 0 24 24"><path d="m13 5-7 7 7 7M6 12h15"/></symbol><symbol id="i-right" viewBox="0 0 24 24"><path d="m11 5 7 7-7 7M18 12H3"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol><symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="3"/></symbol><symbol id="i-undo" viewBox="0 0 24 24"><path d="M8 4 3 9l5 5M3 9h10a7 7 0 1 1-5 12"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path d="M20 8a9 9 0 1 0 1 7M20 3v5h-5"/></symbol><symbol id="i-hint" viewBox="0 0 24 24"><path d="M9 18v-2a6 6 0 1 1 6 0v2M9 18h6M10 22h4M12 3V1"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4M12 17h.01"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5v15M3 4c4-1 6 0 9 1 3-1 5-2 9-1v15c-4-1-6 0-9 1-3-1-5-2-9-1Z"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9"/></symbol><symbol id="i-full" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 10 7-10 7Z" fill="currentColor" stroke="none"/></symbol><symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/></symbol><symbol id="i-diamond" viewBox="0 0 24 24"><path d="m12 3 8 9-8 9-8-9Z"/></symbol><symbol id="i-triangle" viewBox="0 0 24 24"><path d="m12 4 9 15H3Z"/></symbol><symbol id="i-cross" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" stroke-width="3"/></symbol><symbol id="i-fire" viewBox="0 0 24 24"><path d="M13 2c0 5 7 6 7 12a8 8 0 0 1-16 0c0-3 2-5 5-8-1 5 2 7 3 3 1-2-1-4 1-7Z" fill="currentColor" stroke="none"/><path d="M12 12c0 3 5 4 2 7-3 3-5-1-3-3Z" fill="#fff0ce" stroke="none"/></symbol><symbol id="i-ice" viewBox="0 0 24 24"><path d="m12 2 8 5v10l-8 5-8-5V7ZM12 2v20M4 7l16 10M20 7 4 17"/></symbol><symbol id="i-plant" viewBox="0 0 24 24"><path d="M12 22V10M12 12C10 4 15 2 21 3c1 6-4 10-9 9ZM12 18C5 20 2 15 3 9c6-1 10 3 9 9Z"/></symbol><symbol id="i-wind" viewBox="0 0 24 24"><path d="M5 21V9M2 12l3-3 3 3M12 21V3M9 6l3-3 3 3M19 21V9M16 12l3-3 3 3"/></symbol><symbol id="i-charcoal" viewBox="0 0 24 24"><path d="m7 3 5 6-3 5 6 4-1 4M9 14l-6 2M15 18l6-8M16 4l4 3"/></symbol><symbol id="i-portal" viewBox="0 0 24 24"><path d="M4 3v18M20 3v18M8 6l3-2 3 4 3-2M8 18l3 2 3-4 3 2M8 12h8"/></symbol><symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20ZM13.5 7.5l3 3"/></symbol><symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h12l2 2v16H5Z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1" fill="currentColor" stroke="none"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 3h6l1 4H8ZM7 7l1 14h8l1-14M10 11v6M14 11v6"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 20h16"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2c1 7 3 9 10 10-7 1-9 3-10 10-1-7-3-9-10-10 7-1 9-3 10-10Z"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2.5 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5-4.7-4.6 6.5-.9Z"/></symbol><symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 3h8v4c0 5-2 7-4 7s-4-2-4-7ZM8 5H4v2c0 3 2 5 5 5M16 5h4v2c0 3-2 5-5 5M12 14v4M8 21h8M9 18h6"/></symbol></defs></svg>
 <main id="app" class="app" data-screen="home">
   <section id="homeScreen" class="screen home-screen" aria-labelledby="homeTitle">
     <header class="home-top">
-      <span class="brand-mark" aria-label="Сближение"><i></i><i></i></span>
+      <button class="brand-mark secret-trigger" id="secretTrigger" type="button" aria-label="Сближение"><i></i><i></i></button>
       <span class="small-label">ЛОГИКА В СВОЁМ РИТМЕ</span>
       <button class="icon-button" id="homeHelpBtn" aria-label="Как играть"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-help"></use></svg></button>
     </header>
@@ -643,6 +742,7 @@ body[data-screen="editor"] .app::before { opacity: .24; }
     <footer class="home-footer">
       <div class="home-progress-heading"><span>Ваше путешествие</span><strong id="homeProgress">0 / 260</strong></div>
       <div class="progress-track"><span id="homeProgressBar"></span></div>
+      <div class="reward-summary" aria-label="Награды"><div><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"></use></svg><strong id="homeStars">0</strong><span>звёзд</span></div><div><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-trophy"></use></svg><strong id="homePerfect">0</strong><span>идеально</span></div><button id="achievementsBtn" type="button">Достижения <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button></div>
       <p>Без таймера. Каждый ход можно отменить.</p>
       <button class="text-button fullscreen-button" id="homeFullscreenBtn" hidden><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-full"></use></svg> На весь экран</button>
     </footer>
@@ -699,6 +799,7 @@ body[data-screen="editor"] .app::before { opacity: .24; }
         <button class="tool-button" id="undoBtn" disabled><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-undo"></use></svg><span>Отмена</span></button>
         <button class="tool-button hint-button" id="hintBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-hint"></use></svg><span id="hintLabel">Подсказка</span></button>
         <button class="tool-button" id="gameHelpBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-book"></use></svg><span>Правила</span></button>
+        <button class="tool-button restart-tool" id="restartQuickBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reset"></use></svg><span>Сначала</span></button>
       </footer>
     </div>
   </section>
@@ -844,12 +945,30 @@ body[data-screen="editor"] .app::before { opacity: .24; }
 </dialog>
 <input id="editorImportFile" type="file" accept="application/json,.json" hidden>
 
+
+<dialog id="achievementsDialog" class="modal achievements-dialog" aria-labelledby="achievementsTitle">
+  <div class="dialog-header"><p class="edition">ПРОГРЕСС</p><button class="icon-button" id="closeAchievementsBtn" aria-label="Закрыть"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg></button></div>
+  <h2 id="achievementsTitle">Достижения</h2>
+  <p class="modal-note" id="achievementsSummary">Идеальных уровней: 0</p>
+  <div class="achievements-list" id="achievementsList"></div>
+</dialog>
+
+<dialog id="secretScreamer" class="secret-screamer" aria-label="Секретная пасхалка">
+  <button id="closeSecretScreamerBtn" type="button" aria-label="Закрыть пасхалку">
+    <span class="screamer-face" aria-hidden="true"><i class="eye left"></i><i class="eye right"></i><i class="mouth"></i></span>
+    <strong id="secretBoo">БУ!</strong><p id="secretAfter">Ладно, это был эксперимент.</p>
+  </button>
+</dialog>
+
 <dialog id="winOverlay" class="modal result-dialog" aria-labelledby="winTitle">
   <div class="result-emblem" aria-hidden="true"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-spark"></use></svg></div>
   <p class="edition" id="winKicker">УРОВЕНЬ ПРОЙДЕН</p>
   <h2 id="winTitle">Есть контакт!</h2>
   <p class="modal-note" id="winDescription">Все цветные блоки убраны.</p>
-  <div class="result-stats"><div><strong id="winMoves">3</strong><span>ходов</span></div><div><strong id="winBest">3</strong><span>лучший результат</span></div></div>
+  <div class="result-stars" id="winStars" aria-label="Оценка уровня"><span>☆</span><span>☆</span><span>☆</span></div>
+  <div class="result-stats"><div><strong id="winMoves">3</strong><span>ходов</span></div><div><strong id="winBest">3</strong><span>лучший результат</span></div><div class="iq-stat"><strong id="winIq">—</strong><span>игровой IQ</span></div></div>
+  <p class="iq-note" id="winIqNote">Шуточный рейтинг прохождения, не тест интеллекта.</p>
+  <p class="result-achievement" id="winAchievement" hidden></p>
   <button class="primary-button" id="nextBtn">Следующий уровень <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg></button>
   <button class="secondary-button" id="winLevelsBtn"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"></use></svg> Выбрать уровень</button>
   <div class="result-secondary"><button class="text-button" id="viewBoardBtn">Посмотреть поле</button><button class="text-button" id="winReplayBtn">Ещё раз</button></div>
@@ -863,7 +982,37 @@ body[data-screen="editor"] .app::before { opacity: .24; }
 /* Generated by scripts/build.mjs. Edit src/, not this file. */
 (() => {
 'use strict';
-const definitions = {"application/GameController.js": function(module, exports, require) {
+const definitions = {"application/AchievementService.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AchievementService = void 0;
+const DEFINITIONS = Object.freeze([
+    { id: 'first-perfect', title: 'Без лишних движений', description: 'Пройдите 1 уровень за минимальное число ходов.', check: p => p.perfectCount >= 1 },
+    { id: 'perfect-5', title: 'Точная рука', description: 'Соберите 5 идеальных прохождений.', check: p => p.perfectCount >= 5 },
+    { id: 'perfect-10', title: 'Перфекционист', description: 'Соберите 10 идеальных прохождений.', check: p => p.perfectCount >= 10 },
+    { id: 'perfect-25', title: 'Архитектор ходов', description: 'Соберите 25 идеальных прохождений.', check: p => p.perfectCount >= 25 },
+    { id: 'perfect-50', title: 'Мастер сближения', description: 'Соберите 50 идеальных прохождений.', check: p => p.perfectCount >= 50 },
+    { id: 'clear-10', title: 'Разогрев', description: 'Пройдите 10 классических уровней.', check: p => p.completedCount >= 10 },
+    { id: 'clear-50', title: 'Уже втянулся', description: 'Пройдите 50 классических уровней.', check: p => p.completedCount >= 50 },
+    { id: 'clear-100', title: 'Сотня', description: 'Пройдите 100 классических уровней.', check: p => p.completedCount >= 100 },
+    { id: 'clear-260', title: 'Классика закрыта', description: 'Пройдите все 260 классических уровней.', check: p => p.completedCount >= 260 },
+    { id: 'stars-300', title: 'Созвездие', description: 'Соберите 300 звёзд.', check: p => p.totalStars >= 300 },
+]);
+class AchievementService {
+    list(progress) {
+        return DEFINITIONS.map(item => ({ ...item, unlocked: item.check(progress) }));
+    }
+    unlockedIds(progress) {
+        return new Set(DEFINITIONS.filter(item => item.check(progress)).map(item => item.id));
+    }
+    newlyUnlocked(before, progress) {
+        return this.list(progress).filter(item => item.unlocked && !before.has(item.id));
+    }
+}
+exports.AchievementService = AchievementService;
+
+},
+"application/GameController.js": function(module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameController = void 0;
@@ -879,11 +1028,14 @@ const RussianText_js_1 = require("../presentation/RussianText.js");
 const UiState_js_1 = require("../presentation/UiState.js");
 const GameSession_js_1 = require("./GameSession.js");
 const HintService_js_1 = require("./HintService.js");
+const AchievementService_js_1 = require("./AchievementService.js");
+const OptimalMoveService_js_1 = require("./OptimalMoveService.js");
 class GameController {
     elements;
     engine;
     levels;
     progress;
+    i18n;
     session;
     ui = new UiState_js_1.UiState();
     view;
@@ -893,6 +1045,8 @@ class GameController {
     input;
     confirm;
     editor;
+    achievements = new AchievementService_js_1.AchievementService();
+    optimal;
     scope = new AbortController();
     reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     resizeObserver = null;
@@ -900,23 +1054,29 @@ class GameController {
     started = false;
     destroyed = false;
     helpReturnScreen = 'home';
-    constructor(elements, engine, levels, progress) {
+    selectionGuideTimer = null;
+    selectionGuideFrame = null;
+    selectionGuideGeneration = 0;
+    secretTimer = null;
+    constructor(elements, engine, levels, progress, i18n) {
         this.elements = elements;
         this.engine = engine;
         this.levels = levels;
         this.progress = progress;
+        this.i18n = i18n;
         const canvas = elements.get('board');
         const context = canvas.getContext('2d');
         if (!context)
             throw new Error('Canvas 2D is unavailable in this browser.');
         this.session = new GameSession_js_1.GameSession(engine, levels, progress.level);
-        this.view = new GameView_js_1.GameView(elements, this.session, this.ui, engine, levels, progress);
+        this.view = new GameView_js_1.GameView(elements, this.session, this.ui, engine, levels, progress, this.achievements, i18n);
         this.renderer = new CanvasRenderer_js_1.CanvasRenderer(canvas, context, this.session, this.ui, engine);
         this.animator = new AnimationPlayer_js_1.AnimationPlayer((frame, value) => {
             this.ui.animation = { frame, progress: value };
             this.renderer.draw();
         });
         this.hints = new HintService_js_1.HintService(engine);
+        this.optimal = new OptimalMoveService_js_1.OptimalMoveService(engine);
         this.confirm = new ConfirmDialog_js_1.ConfirmDialog(elements);
         this.editor = new EditorController_js_1.EditorController(elements, engine, () => this.showHome(), (title, description, acceptLabel) => this.confirm.ask(title, description, acceptLabel));
         this.input = new InputController_js_1.InputController(elements, this.session, this.ui, this);
@@ -1025,7 +1185,8 @@ class GameController {
         this.ui.resetGameplay();
         this.ui.screen = 'game';
         this.view.configureLevel();
-        this.progress.select(index);
+        if (!this.levels.isSecret(index))
+            this.progress.select(index);
         this.view.selectChapterForLevel(index);
         this.view.updateLevelNavigation();
         this.view.render();
@@ -1040,6 +1201,7 @@ class GameController {
             return;
         const message = GameMessages_js_1.GameMessages.selection(selected, this.session.board);
         this.setMessage(message.text, message.kind);
+        this.scheduleSelectionGuide(this.session.levelIndex < 3 && this.session.moves === 0);
         this.renderer.draw();
     }
     cycleSelection(direction) {
@@ -1056,6 +1218,7 @@ class GameController {
         if (this.destroyed)
             return;
         this.session.select(null);
+        this.cancelSelectionGuide();
         this.ui.hint = null;
         this.refresh();
     }
@@ -1066,6 +1229,7 @@ class GameController {
             this.setMessage('Выберите блок на поле или с помощью клавиш ↑ / ↓.');
             return false;
         }
+        this.cancelSelectionGuide();
         const result = this.session.beginMove(dx);
         if (!result) {
             this.setMessage('Проход занят: проверьте соседнюю клетку и выход двери. Блоки нельзя проталкивать.');
@@ -1099,10 +1263,27 @@ class GameController {
         this.session.completeMove();
         this.ui.busy = false;
         this.ui.animation = null;
-        if (this.session.getStatus().kind === 'won') {
-            this.progress.complete(this.session.levelIndex, this.session.moves);
+        const won = this.session.getStatus().kind === 'won';
+        if (won && this.levels.isSecret(this.session.levelIndex)) {
+            this.ui.screen = 'game';
+            this.setMessage(this.i18n.t('secret.after'), 'hint');
+            this.renderer.draw();
+            this.view.openSecretScreamer();
+            if (this.secretTimer !== null)
+                clearTimeout(this.secretTimer);
+            this.secretTimer = window.setTimeout(() => this.closeSecretScreamer(), 1250);
+            return true;
+        }
+        if (won) {
+            const before = this.achievements.unlockedIds(this.progress);
+            const level = this.levels.get(this.session.levelIndex);
+            this.progress.complete(this.session.levelIndex, this.session.moves, level.par);
+            this.ui.newAchievementTitle = this.achievements.newlyUnlocked(before, this.progress).map(item => item.title).join(' · ');
+            this.ui.ratingPending = this.progress.optimalFor(this.session.levelIndex) === null;
             this.view.updateLevelNavigation();
             this.ui.screen = 'complete';
+            if (this.ui.ratingPending)
+                void this.rateCompletion(this.session.levelIndex, before);
         }
         const message = GameMessages_js_1.GameMessages.afterMove(result);
         this.setMessage(message.text, message.kind);
@@ -1114,6 +1295,8 @@ class GameController {
             return;
         this.cancelPending();
         this.setMessage('Ход отменён целиком.');
+        if (this.session.selectedId !== null)
+            this.scheduleSelectionGuide(false);
         this.renderer.draw();
     }
     requestHint() { void this.findHint(); }
@@ -1134,6 +1317,9 @@ class GameController {
                 const action = result.path[0];
                 this.ui.hint = action;
                 this.session.select(action.id);
+                this.cancelSelectionGuide();
+                this.ui.selectionGuideVisible = true;
+                this.ui.selectionGuidePulse = 1;
                 const block = this.session.blocks.find(item => item.id === action.id) ?? action;
                 this.setMessage(`${BlockAppearance_js_1.BlockAppearance.for(block).name}: ${action.dx < 0 ? 'влево ←' : 'вправо →'}. Отсюда есть решение за ${RussianText_js_1.RussianText.moves(result.path.length)}.`, 'hint');
             }
@@ -1156,9 +1342,18 @@ class GameController {
         this.refresh();
     }
     nextLevel() {
+        if (this.levels.isSecret(this.session.levelIndex)) {
+            this.showHome();
+            return;
+        }
         const completed = this.progress.completed;
-        const firstUnsolved = this.levels.all.findIndex((_, index) => !Object.hasOwn(completed, index));
-        this.loadLevel(this.session.levelIndex < this.levels.count - 1 ? this.session.levelIndex + 1 : firstUnsolved < 0 ? 0 : firstUnsolved);
+        let firstUnsolved = -1;
+        for (let i = 0; i < this.levels.publicCount; i++)
+            if (!Object.hasOwn(completed, i)) {
+                firstUnsolved = i;
+                break;
+            }
+        this.loadLevel(this.session.levelIndex < this.levels.publicCount - 1 ? this.session.levelIndex + 1 : firstUnsolved < 0 ? 0 : firstUnsolved);
     }
     showPause() {
         if (this.destroyed || this.ui.screen !== 'game' || this.ui.busy)
@@ -1169,11 +1364,34 @@ class GameController {
     async restartLevel() {
         if (this.destroyed)
             return;
-        const accepted = await this.confirm.ask('Начать уровень заново?', 'Текущий прогресс уровня и история отмены будут сброшены.', 'Начать заново');
+        const accepted = await this.confirm.ask(this.i18n.t('game.restartTitle'), this.i18n.t('game.restartDescription'), this.i18n.t('game.restartAccept'));
         if (!accepted || this.destroyed)
             return;
         this.view.closePause();
         this.loadLevel(this.session.levelIndex);
+    }
+    showAchievements() {
+        if (!this.destroyed)
+            this.view.openAchievements();
+    }
+    closeAchievements() { this.view.closeAchievements(); }
+    openSecretLevel() {
+        if (this.destroyed)
+            return;
+        const index = this.levels.all.findIndex(level => level.secret);
+        if (index >= 0)
+            this.loadLevel(index);
+    }
+    closeSecretScreamer() {
+        if (this.secretTimer !== null) {
+            clearTimeout(this.secretTimer);
+            this.secretTimer = null;
+        }
+        this.view.closeSecretScreamer();
+        if (this.levels.isSecret(this.session.levelIndex) && this.session.getStatus().kind === 'won') {
+            this.ui.screen = 'complete';
+            this.view.render();
+        }
     }
     openLevelInfo() {
         if (!this.destroyed && (this.ui.screen === 'game' || this.ui.screen === 'complete'))
@@ -1184,6 +1402,8 @@ class GameController {
         if (this.destroyed)
             return;
         this.view.closeWin();
+        this.view.closeAchievements();
+        this.view.closeSecretScreamer();
         this.ui.screen = 'game';
         this.view.render();
         requestAnimationFrame(() => { this.renderer.resizeCanvas(); this.renderer.draw(); });
@@ -1210,6 +1430,7 @@ class GameController {
             extinguishedFires: blocks.filter(block => this.engine.isFire(block) && block.out).map(block => block.id),
             fires: blocks.filter(this.engine.isFire).map(block => ({ id: block.id, x: block.x, y: block.y })),
             portals: this.session.board.portals.map(pair => ({ id: pair.id, boundary: Boolean(pair.boundary), oneWay: Boolean(pair.oneWay), a: { ...pair.a }, b: { ...pair.b } })),
+            stars: this.progress.totalStars, perfectCount: this.progress.perfectCount, optimal: this.progress.optimalFor(this.session.levelIndex),
             screen: this.ui.screen, animationPhase: this.ui.animation?.frame.kind ?? null,
         };
     }
@@ -1219,6 +1440,10 @@ class GameController {
         this.session.cancelMove();
         this.cancelPending();
         this.destroyed = true;
+        this.cancelSelectionGuide();
+        this.optimal.cancel();
+        if (this.secretTimer !== null)
+            clearTimeout(this.secretTimer);
         this.editor.dispose();
         this.confirm.dispose();
         this.input.dispose();
@@ -1235,6 +1460,8 @@ class GameController {
         this.view.closePause();
         this.view.closeLevelInfo();
         this.view.closeWin();
+        this.view.closeAchievements();
+        this.view.closeSecretScreamer();
         for (const id of ['editorMetaDialog', 'editorMoreDialog', 'editorSavedDialog']) {
             const dialog = this.elements.get(id);
             if (dialog.open)
@@ -1252,6 +1479,7 @@ class GameController {
     }
     cancelPending() {
         this.generation++;
+        this.cancelSelectionGuide();
         this.hints.cancel();
         this.animator.cancel();
         this.input.resetPointer();
@@ -1259,6 +1487,67 @@ class GameController {
         this.ui.hint = null;
         this.ui.animation = null;
         this.ui.busy = false;
+    }
+    scheduleSelectionGuide(immediate) {
+        this.cancelSelectionGuide();
+        const token = ++this.selectionGuideGeneration;
+        const start = () => {
+            if (token !== this.selectionGuideGeneration || this.destroyed || this.ui.busy || this.ui.screen !== 'game' || this.session.selectedId === null)
+                return;
+            const started = performance.now();
+            this.ui.selectionGuideVisible = true;
+            const tick = (now) => {
+                if (token !== this.selectionGuideGeneration || this.destroyed || this.ui.busy || this.session.selectedId === null)
+                    return;
+                const elapsed = now - started;
+                this.ui.selectionGuidePulse = .5 + .5 * Math.sin(elapsed / 150);
+                this.renderer.draw();
+                if (elapsed < 2100)
+                    this.selectionGuideFrame = requestAnimationFrame(tick);
+                else {
+                    this.ui.selectionGuideVisible = false;
+                    this.ui.selectionGuidePulse = 0;
+                    this.selectionGuideFrame = null;
+                    this.renderer.draw();
+                }
+            };
+            this.selectionGuideFrame = requestAnimationFrame(tick);
+        };
+        this.selectionGuideTimer = window.setTimeout(start, immediate ? 80 : 900);
+    }
+    cancelSelectionGuide() {
+        this.selectionGuideGeneration++;
+        if (this.selectionGuideTimer !== null)
+            clearTimeout(this.selectionGuideTimer);
+        if (this.selectionGuideFrame !== null)
+            cancelAnimationFrame(this.selectionGuideFrame);
+        this.selectionGuideTimer = this.selectionGuideFrame = null;
+        this.ui.selectionGuideVisible = false;
+        this.ui.selectionGuidePulse = 0;
+    }
+    async rateCompletion(levelIndex, before) {
+        try {
+            const fresh = new GameSession_js_1.GameSession(this.engine, this.levels, levelIndex);
+            const result = await this.optimal.solve(fresh.board, fresh.blocks);
+            if (!result || result.kind !== 'solved') {
+                this.ui.ratingPending = false;
+                if (this.ui.screen === 'complete' && this.session.levelIndex === levelIndex)
+                    this.view.render();
+                return;
+            }
+            this.progress.setOptimal(levelIndex, result.path.length);
+            const newly = this.achievements.newlyUnlocked(before, this.progress);
+            if (newly.length)
+                this.ui.newAchievementTitle = newly.map(item => item.title).join(' · ');
+            this.ui.ratingPending = false;
+            this.view.updateLevelNavigation();
+            if (this.ui.screen === 'complete' && this.session.levelIndex === levelIndex)
+                this.view.render();
+        }
+        catch (error) {
+            console.error('Optimal move search failed.', error);
+            this.ui.ratingPending = false;
+        }
     }
     setMessage(text, kind = '') {
         this.ui.message = text;
@@ -1451,6 +1740,48 @@ class HintService {
 exports.HintService = HintService;
 
 },
+"application/OptimalMoveService.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.OptimalMoveService = void 0;
+class OptimalMoveService {
+    engine;
+    maxStates;
+    generation = 0;
+    constructor(engine, maxStates = 160000) {
+        this.engine = engine;
+        this.maxStates = maxStates;
+    }
+    cancel() { this.generation++; }
+    solve(board, blocks) {
+        const token = ++this.generation, search = this.engine.createSearch(board, blocks, this.maxStates);
+        return new Promise((resolve, reject) => {
+            const chunk = () => {
+                if (token !== this.generation) {
+                    resolve(null);
+                    return;
+                }
+                try {
+                    let result = search.result;
+                    for (let i = 0; i < 6 && !result; i++)
+                        result = search.step(300);
+                    if (result) {
+                        resolve(result);
+                        return;
+                    }
+                    setTimeout(chunk, 0);
+                }
+                catch (error) {
+                    reject(error);
+                }
+            };
+            setTimeout(chunk, 0);
+        });
+    }
+}
+exports.OptimalMoveService = OptimalMoveService;
+
+},
 "domain/BlockRules.js": function(module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -1544,6 +1875,9 @@ const LevelRepository_js_1 = require("../levels/LevelRepository.js");
 const GameSession_js_1 = require("../application/GameSession.js");
 const BlockAppearance_js_1 = require("../presentation/BlockAppearance.js");
 const RussianText_js_1 = require("../presentation/RussianText.js");
+const CanvasRenderer_js_1 = require("../presentation/CanvasRenderer.js");
+const UiState_js_1 = require("../presentation/UiState.js");
+const BoardGeometry_js_1 = require("../presentation/BoardGeometry.js");
 const EditorModel_js_1 = require("./EditorModel.js");
 const EditorRenderer_js_1 = require("./EditorRenderer.js");
 class EditorController {
@@ -1567,6 +1901,11 @@ class EditorController {
     widthChoice = this.draft.width;
     heightChoice = this.draft.height;
     testSession = null;
+    testRenderer = null;
+    testUi = new UiState_js_1.UiState();
+    testGuideTimer = null;
+    testGuideFrame = null;
+    testGuideGeneration = 0;
     entered = false;
     constructor(elements, engine, onExit, askConfirmation) {
         this.elements = elements;
@@ -1649,12 +1988,16 @@ class EditorController {
         this.render();
         requestAnimationFrame(() => this.resize());
     }
-    leave() { this.entered = false; this.searchToken++; this.pointer = null; this.saveState(); }
+    leave() { this.entered = false; this.searchToken++; this.pointer = null; this.cancelTestGuide(); this.saveState(); }
     resize() {
         if (!this.entered)
             return;
-        this.renderer.resize(this.elements.get('editorStage'), this.draft);
-        this.draw();
+        if (this.mode === 'test' && this.testRenderer)
+            this.testRenderer.resizeCanvas();
+        else {
+            this.renderer.resize(this.elements.get('editorStage'), this.draft);
+            this.draw();
+        }
     }
     dispose() { this.leave(); this.scope.abort(); }
     setStatus(text, kind = '') {
@@ -1690,8 +2033,8 @@ class EditorController {
         this.draw();
     }
     draw() {
-        if (this.mode === 'test' && this.testSession)
-            this.renderer.draw(this.draft, { board: this.testSession.board, blocks: this.testSession.blocks, selectedId: this.testSession.selectedId });
+        if (this.mode === 'test' && this.testSession && this.testRenderer)
+            this.testRenderer.draw();
         else
             this.renderer.draw(this.draft, { pendingPortal: this.pendingPortal });
     }
@@ -1997,6 +2340,12 @@ class EditorController {
         this.mode = 'test';
         this.pendingPortal = null;
         this.testSession = new GameSession_js_1.GameSession(this.engine, new LevelRepository_js_1.LevelRepository([checked.level]), 0);
+        this.testUi.resetGameplay();
+        this.testUi.screen = 'game';
+        const context = this.canvas.getContext('2d');
+        if (!context)
+            throw new Error('Editor Canvas 2D is unavailable.');
+        this.testRenderer = new CanvasRenderer_js_1.CanvasRenderer(this.canvas, context, this.testSession, this.testUi, this.engine);
         this.setStatus('Тест: выберите блок и двигайте его влево или вправо.');
         this.render();
         this.resize();
@@ -2020,6 +2369,7 @@ class EditorController {
         const session = this.testSession;
         if (!session || this.mode !== 'test' || session.getStatus().kind !== 'playing' || !session.select(id))
             return;
+        this.scheduleTestGuide();
         const block = session.blocks.find(value => value.id === id);
         if (block)
             this.setStatus(`${BlockAppearance_js_1.BlockAppearance.for(block).name}: выберите направление.`);
@@ -2029,6 +2379,7 @@ class EditorController {
         const session = this.testSession;
         if (!session || this.mode !== 'test' || session.selectedId === null || session.getStatus().kind !== 'playing')
             return false;
+        this.cancelTestGuide();
         const result = session.move(dx);
         if (!result) {
             this.setStatus('Этот ход заблокирован.', 'error');
@@ -2044,17 +2395,20 @@ class EditorController {
     testUndo() {
         if (this.testSession?.undo()) {
             this.setStatus('Ход отменён.');
+            if (this.testSession.selectedId !== null)
+                this.scheduleTestGuide();
             this.render();
         }
     }
     resetTest() {
         if (!this.testSession)
             return;
+        this.cancelTestGuide();
         this.testSession.load(0);
         this.setStatus('Тест начат заново.');
         this.render();
     }
-    exitTest() { this.mode = 'build'; this.testSession = null; this.setStatus('Редактирование продолжено. Исходная расстановка не менялась.'); this.render(); this.resize(); }
+    exitTest() { this.cancelTestGuide(); this.mode = 'build'; this.testSession = null; this.testRenderer = null; this.testUi.resetGameplay(); this.setStatus('Редактирование продолжено. Исходная расстановка не менялась.'); this.render(); this.resize(); }
     cycleTest(direction) {
         const session = this.testSession;
         if (!session || session.getStatus().kind !== 'playing')
@@ -2068,9 +2422,45 @@ class EditorController {
         if (block)
             this.selectTestBlock(block.id);
     }
+    scheduleTestGuide() {
+        this.cancelTestGuide();
+        const token = ++this.testGuideGeneration;
+        this.testGuideTimer = window.setTimeout(() => {
+            if (token !== this.testGuideGeneration || !this.entered || this.mode !== 'test' || !this.testSession || this.testSession.selectedId === null)
+                return;
+            const started = performance.now();
+            this.testUi.selectionGuideVisible = true;
+            const tick = (now) => {
+                if (token !== this.testGuideGeneration || !this.entered || this.mode !== 'test' || !this.testSession || this.testSession.selectedId === null)
+                    return;
+                const elapsed = now - started;
+                this.testUi.selectionGuidePulse = .5 + .5 * Math.sin(elapsed / 150);
+                this.draw();
+                if (elapsed < 2100)
+                    this.testGuideFrame = requestAnimationFrame(tick);
+                else {
+                    this.testUi.selectionGuideVisible = false;
+                    this.testUi.selectionGuidePulse = 0;
+                    this.testGuideFrame = null;
+                    this.draw();
+                }
+            };
+            this.testGuideFrame = requestAnimationFrame(tick);
+        }, 900);
+    }
+    cancelTestGuide() {
+        this.testGuideGeneration++;
+        if (this.testGuideTimer !== null)
+            clearTimeout(this.testGuideTimer);
+        if (this.testGuideFrame !== null)
+            cancelAnimationFrame(this.testGuideFrame);
+        this.testGuideTimer = this.testGuideFrame = null;
+        this.testUi.selectionGuideVisible = false;
+        this.testUi.selectionGuidePulse = 0;
+    }
     eventCell(event) {
         const rect = this.canvas.getBoundingClientRect();
-        return { x: Math.floor((event.clientX - rect.left) / rect.width * this.draft.width), y: Math.floor((event.clientY - rect.top) / rect.height * this.draft.height) };
+        return (0, BoardGeometry_js_1.pointerToBoardCell)(rect, event.clientX, event.clientY, this.draft.width, this.draft.height, 0);
     }
     pointerDown(event) {
         if (!this.entered || !event.isPrimary || event.button !== 0)
@@ -2367,6 +2757,7 @@ exports.EditorModel = EditorModel;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EditorRenderer = void 0;
+const BoardGeometry_js_1 = require("../presentation/BoardGeometry.js");
 class EditorRenderer {
     canvas;
     engine;
@@ -2384,8 +2775,9 @@ class EditorRenderer {
         const width = Math.floor(stage.clientWidth), height = Math.floor(stage.clientHeight);
         if (!width || !height)
             return;
-        const scale = Math.min(width / draft.width, height / draft.height, 64);
-        const cssWidth = Math.max(1, Math.floor(draft.width * scale)), cssHeight = Math.max(1, Math.floor(draft.height * scale));
+        const framedWidth = (0, BoardGeometry_js_1.framedCells)(draft.width, 0), framedHeight = (0, BoardGeometry_js_1.framedCells)(draft.height, 0);
+        const scale = Math.min(width / framedWidth, height / framedHeight, 64);
+        const cssWidth = Math.max(1, Math.floor(framedWidth * scale)), cssHeight = Math.max(1, Math.floor(framedHeight * scale));
         this.canvas.style.width = `${cssWidth}px`;
         this.canvas.style.height = `${cssHeight}px`;
         const ratio = Math.min(window.devicePixelRatio || 1, 2), backingWidth = Math.round(cssWidth * ratio), backingHeight = Math.round(cssHeight * ratio);
@@ -2397,11 +2789,12 @@ class EditorRenderer {
     draw(draft, options = {}) {
         if (!this.canvas.width)
             return;
-        const tile = EditorRenderer.TILE, width = draft.width * tile, height = draft.height * tile;
+        const tile = EditorRenderer.TILE, width = (0, BoardGeometry_js_1.framedCells)(draft.width, 0) * tile, height = (0, BoardGeometry_js_1.framedCells)(draft.height, 0) * tile;
         this.ctx.setTransform(this.canvas.width / width, 0, 0, this.canvas.height / height, 0, 0);
         this.ctx.clearRect(0, 0, width, height);
-        this.ctx.fillStyle = '#151c23';
+        this.ctx.fillStyle = '#101820';
         this.ctx.fillRect(0, 0, width, height);
+        this.ctx.save();
         const board = options.board ?? null;
         for (let y = 0; y < draft.height; y++)
             for (let x = 0; x < draft.width; x++) {
@@ -2436,6 +2829,7 @@ class EditorRenderer {
                         this.drawBlock(block, false);
                 }
         }
+        this.ctx.restore();
     }
     roundRect(x, y, width, height, radius) {
         const r = Math.min(radius, width / 2, height / 2), c = this.ctx;
@@ -2635,7 +3029,7 @@ class EditorRenderer {
         const cx = (end.x + .5 + dx * .5) * t, cy = (end.y + .5 + dy * .5) * t, c = this.ctx;
         c.save();
         c.translate(cx, cy);
-        c.strokeStyle = pending ? '#efd7a4' : '#94deda';
+        c.strokeStyle = pending ? '#efd7a4' : '#91dedb';
         c.lineWidth = 5;
         c.shadowColor = c.strokeStyle;
         c.shadowBlur = 10;
@@ -2648,7 +3042,7 @@ class EditorRenderer {
         c.beginPath();
         c.arc(0, 0, 9, 0, Math.PI * 2);
         c.fill();
-        c.fillStyle = pending ? '#efd7a4' : '#a9e8e1';
+        c.fillStyle = pending ? '#efd7a4' : '#91dedb';
         c.font = 'bold 10px system-ui';
         c.textAlign = 'center';
         c.textBaseline = 'middle';
@@ -3218,6 +3612,7 @@ class ProgressRepository {
     key;
     static KEY = 'sblizhenie.progress.elements.v1';
     best = {};
+    optimalMoves = {};
     currentLevel;
     constructor(storage, levelCount, defaultLevel = 0, key = ProgressRepository.KEY) {
         this.storage = storage;
@@ -3228,17 +3623,60 @@ class ProgressRepository {
     }
     get level() { return this.currentLevel; }
     get completed() { return { ...this.best }; }
+    get optimal() { return { ...this.optimalMoves }; }
+    get completedCount() { return Object.keys(this.best).length; }
+    get perfectCount() {
+        let count = 0;
+        for (const [key, moves] of Object.entries(this.best)) {
+            const optimal = this.optimalMoves[Number(key)];
+            if (optimal !== undefined && moves <= optimal)
+                count++;
+        }
+        return count;
+    }
+    get totalStars() {
+        let total = 0;
+        for (const key of Object.keys(this.best))
+            total += this.starsFor(Number(key));
+        return total;
+    }
     select(level) {
         if (!Number.isInteger(level) || level < 0 || level >= this.levelCount)
             throw new RangeError('Invalid progress level.');
         this.currentLevel = level;
         this.save();
     }
-    complete(level, moves) {
+    complete(level, moves, optimal) {
         if (!Number.isInteger(level) || level < 0 || level >= this.levelCount || !Number.isInteger(moves) || moves < 0)
             throw new RangeError('Invalid completion record.');
         this.best[level] = Math.min(this.best[level] ?? Infinity, moves);
+        if (optimal !== undefined)
+            this.setOptimalInternal(level, optimal);
         this.save();
+    }
+    setOptimal(level, moves) {
+        if (!Number.isInteger(level) || level < 0 || level >= this.levelCount || !Number.isInteger(moves) || moves < 0)
+            throw new RangeError('Invalid optimal move record.');
+        this.setOptimalInternal(level, moves);
+        this.save();
+    }
+    optimalFor(level) { return this.optimalMoves[level] ?? null; }
+    bestFor(level) { return this.best[level] ?? null; }
+    starsFor(level) {
+        const best = this.best[level];
+        if (best === undefined)
+            return 0;
+        const optimal = this.optimalMoves[level];
+        if (optimal === undefined)
+            return 1;
+        if (best <= optimal)
+            return 3;
+        const twoStarLimit = optimal + Math.max(1, Math.ceil(optimal * .35));
+        return best <= twoStarLimit ? 2 : 1;
+    }
+    setOptimalInternal(level, moves) {
+        const existing = this.optimalMoves[level];
+        this.optimalMoves[level] = existing === undefined ? moves : Math.min(existing, moves);
     }
     restore() {
         try {
@@ -3252,20 +3690,27 @@ class ProgressRepository {
                 return;
             if (own && typeof saved.level === 'number' && Number.isInteger(saved.level) && saved.level >= 0 && saved.level < this.levelCount)
                 this.currentLevel = saved.level;
-            if (!isRecord(saved.completed))
-                return;
-            const max = legacyMode ? own ? this.levelCount : portal ? 20 : 10 : this.levelCount;
-            for (const [key, value] of Object.entries(saved.completed)) {
-                const index = Number(key);
-                if (Number.isInteger(index) && index >= 0 && index < Math.min(max, this.levelCount) && typeof value === 'number' && Number.isInteger(value) && value >= 0)
-                    this.best[index] = value;
+            if (isRecord(saved.completed)) {
+                const max = legacyMode ? own ? this.levelCount : portal ? 20 : 10 : this.levelCount;
+                for (const [key, value] of Object.entries(saved.completed)) {
+                    const index = Number(key);
+                    if (Number.isInteger(index) && index >= 0 && index < Math.min(max, this.levelCount) && typeof value === 'number' && Number.isInteger(value) && value >= 0)
+                        this.best[index] = value;
+                }
+            }
+            if (isRecord(saved.optimal)) {
+                for (const [key, value] of Object.entries(saved.optimal)) {
+                    const index = Number(key);
+                    if (Number.isInteger(index) && index >= 0 && index < this.levelCount && typeof value === 'number' && Number.isInteger(value) && value >= 0)
+                        this.optimalMoves[index] = value;
+                }
             }
         }
         catch { }
     }
     save() {
         try {
-            this.storage().setItem(this.key, JSON.stringify({ level: this.currentLevel, completed: this.best }));
+            this.storage().setItem(this.key, JSON.stringify({ level: this.currentLevel, completed: this.best, optimal: this.optimalMoves }));
         }
         catch { }
     }
@@ -3297,11 +3742,31 @@ const FLAG_SIDES = [
     [DatLevelArchive_js_1.DatTileFlag.PlatformDirectionLeft, 'left'],
     [DatLevelArchive_js_1.DatTileFlag.PlatformDirectionRight, 'right'],
 ];
+const SECRET_LEVEL = Object.freeze({
+    title: 'Коридор 404',
+    tag: '???',
+    note: 'Тут определённо ничего подозрительного нет.',
+    rows: Object.freeze([
+        '#########',
+        '#A......#',
+        '####.####',
+        '#.......#',
+        '#.#####.#',
+        '#.......#',
+        '#####.###',
+        '#.......#',
+        '#.#####.#',
+        '#.....A.#',
+        '#########',
+    ]),
+    par: 10,
+    secret: true,
+});
 class DatCampaignCatalog {
     campaign;
     constructor(sources = embeddedData_js_1.OLD_ARCHIVES) {
         const decoded = sources.flatMap(source => new DatLevelArchive_js_1.DatLevelArchive(source.name, source.bytes).levels);
-        const levels = decoded.map((level, index) => this.toLevelDefinition(level, index));
+        const levels = [...decoded.map((level, index) => this.toLevelDefinition(level, index)), SECRET_LEVEL];
         this.campaign = Object.freeze({
             id: 'old',
             label: 'Классическая коллекция · 260',
@@ -3852,8 +4317,10 @@ class LevelRepository {
         }));
     }
     get count() { return this.all.length; }
+    get publicCount() { return this.all.filter(level => !level.secret).length; }
     get defaultIndex() { return Math.max(0, this.all.findIndex(level => level.chapter === 'elements')); }
     has(index) { return Number.isInteger(index) && index >= 0 && index < this.count; }
+    isSecret(index) { return this.has(index) && Boolean(this.all[index]?.secret); }
     get(index) {
         if (!this.has(index))
             throw new RangeError(`Unknown level: ${index}.`);
@@ -5352,13 +5819,15 @@ const ProgressRepository_js_1 = require("./infrastructure/ProgressRepository.js"
 const LevelRepository_js_1 = require("./levels/LevelRepository.js");
 const DatCampaignCatalog_js_1 = require("./levels/dat/DatCampaignCatalog.js");
 const DomElements_js_1 = require("./presentation/DomElements.js");
+const I18n_js_1 = require("./presentation/I18n.js");
 try {
     const campaign = new DatCampaignCatalog_js_1.DatCampaignCatalog().get();
     const elements = new DomElements_js_1.DomElements(document);
     const levels = new LevelRepository_js_1.LevelRepository(campaign.levels);
-    const progress = new ProgressRepository_js_1.ProgressRepository(() => window.localStorage, levels.count, levels.defaultIndex, campaign.progressKey);
-    const app = new GameController_js_1.GameController(elements, new PuzzleEngine_js_1.PuzzleEngine(), levels, progress);
-    document.title = 'Сближение — классика · редактор';
+    const progress = new ProgressRepository_js_1.ProgressRepository(() => window.localStorage, levels.publicCount, Math.min(levels.defaultIndex, levels.publicCount - 1), campaign.progressKey);
+    const i18n = new I18n_js_1.I18n();
+    const app = new GameController_js_1.GameController(elements, new PuzzleEngine_js_1.PuzzleEngine(), levels, progress, i18n);
+    document.title = i18n.t('app.title');
     app.start();
     window.Sblizhenie = Object.freeze({
         loadLevel: (index) => app.loadLevel(index),
@@ -5370,6 +5839,7 @@ try {
         levels: () => app.showLevels(),
         editor: () => app.showEditor(),
         snapshot: () => app.snapshot(),
+        setLocale: (locale) => { const result = i18n.setLocale(locale); document.title = i18n.t('app.title'); return result; },
         destroy: () => { app.destroy(); delete window.Sblizhenie; },
     });
 }
@@ -5483,11 +5953,33 @@ class BlockAppearance {
 exports.BlockAppearance = BlockAppearance;
 
 },
+"presentation/BoardGeometry.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BOARD_FRAME_TILES = void 0;
+exports.framedCells = framedCells;
+exports.framedAspect = framedAspect;
+exports.pointerToBoardCell = pointerToBoardCell;
+exports.BOARD_FRAME_TILES = 1;
+function framedCells(size, frameTiles = exports.BOARD_FRAME_TILES) {
+    return size + frameTiles * 2;
+}
+function framedAspect(width, height, frameTiles = exports.BOARD_FRAME_TILES) {
+    return `${framedCells(width, frameTiles)} / ${framedCells(height, frameTiles)}`;
+}
+function pointerToBoardCell(rect, clientX, clientY, width, height, frameTiles = exports.BOARD_FRAME_TILES) {
+    const worldX = (clientX - rect.left) / Math.max(1, rect.width) * framedCells(width, frameTiles) - frameTiles;
+    const worldY = (clientY - rect.top) / Math.max(1, rect.height) * framedCells(height, frameTiles) - frameTiles;
+    return { x: Math.floor(worldX), y: Math.floor(worldY) };
+}
+
+},
 "presentation/CanvasRenderer.js": function(module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CanvasRenderer = void 0;
 const BlockAppearance_js_1 = require("./BlockAppearance.js");
+const BoardGeometry_js_1 = require("./BoardGeometry.js");
 class CanvasRenderer {
     canvas;
     ctx;
@@ -5502,6 +5994,7 @@ class CanvasRenderer {
         this.ui = ui;
         this.engine = engine;
     }
+    get frameTiles() { return this.session.levels.get(this.session.levelIndex).openBoundary ? BoardGeometry_js_1.BOARD_FRAME_TILES : 0; }
     roundRect(x, y, w, h, r) {
         const radius = Math.min(r, w / 2, h / 2);
         this.ctx.beginPath();
@@ -5535,6 +6028,36 @@ class CanvasRenderer {
         this.ctx.beginPath();
         this.ctx.arc(px + CanvasRenderer.TILE / 2, py + CanvasRenderer.TILE / 2, 1.2, 0, Math.PI * 2);
         this.ctx.fill();
+    }
+    boundaryPortalKeys() {
+        const keys = new Set();
+        for (const pair of this.session.board.portals) {
+            if (!pair.boundary)
+                continue;
+            for (const end of [pair.a, pair.b])
+                keys.add(`${end.x},${end.y}:${end.side}`);
+        }
+        return keys;
+    }
+    drawOuterFrame() {
+        const { width, height } = this.session.board, gaps = this.boundaryPortalKeys();
+        for (let x = -1; x <= width; x++) {
+            if (x === -1 || x === width) {
+                this.drawWall(x, -1);
+                this.drawWall(x, height);
+                continue;
+            }
+            if (!gaps.has(`${x},0:top`))
+                this.drawWall(x, -1);
+            if (!gaps.has(`${x},${height - 1}:bottom`))
+                this.drawWall(x, height);
+        }
+        for (let y = 0; y < height; y++) {
+            if (!gaps.has(`0,${y}:left`))
+                this.drawWall(-1, y);
+            if (!gaps.has(`${width - 1},${y}:right`))
+                this.drawWall(width, y);
+        }
     }
     drawPlatforms() {
         if (!this.session.board.platforms?.length)
@@ -6000,25 +6523,26 @@ class CanvasRenderer {
             this.ctx.restore();
         }
     }
-    drawArrow(x, y, dx, highlighted) {
+    drawMoveGuide(block, dx, highlighted) {
+        const pulse = Math.max(0, Math.min(1, this.ui.selectionGuidePulse));
         this.ctx.save();
-        this.ctx.translate((x + .5) * CanvasRenderer.TILE, (y + .5) * CanvasRenderer.TILE);
-        this.ctx.fillStyle = highlighted ? '#b9d7ad28' : '#b9d7ad0b';
-        this.ctx.strokeStyle = highlighted ? '#b9d7ad66' : '#b9d7ad18';
-        this.ctx.lineWidth = 1;
-        this.roundRect(-19, -19, 38, 38, 9);
-        this.ctx.fill();
-        this.ctx.stroke();
-        this.ctx.strokeStyle = highlighted ? '#c6dfb8' : '#899d81';
-        this.ctx.lineWidth = 1.7;
+        this.ctx.translate((block.x + .5) * CanvasRenderer.TILE, (block.y + .5) * CanvasRenderer.TILE);
+        const offset = 22 + pulse * 4;
+        this.ctx.translate(dx * offset, 0);
+        this.ctx.globalAlpha = highlighted ? 1 : .55 + pulse * .35;
+        this.ctx.strokeStyle = highlighted ? '#e1efb9' : '#c4d7b7';
+        this.ctx.fillStyle = highlighted ? '#dcebb122' : '#b9d7ad16';
+        this.ctx.lineWidth = highlighted ? 2.3 : 1.7;
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
         this.ctx.beginPath();
-        this.ctx.moveTo(-8 * dx, 0);
-        this.ctx.lineTo(8 * dx, 0);
-        this.ctx.moveTo(3 * dx, -5);
-        this.ctx.lineTo(8 * dx, 0);
-        this.ctx.lineTo(3 * dx, 5);
+        this.ctx.arc(0, 0, 10 + pulse * 2, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.stroke();
+        this.ctx.beginPath();
+        this.ctx.moveTo(-4 * dx, -5);
+        this.ctx.lineTo(4 * dx, 0);
+        this.ctx.lineTo(-4 * dx, 5);
         this.ctx.stroke();
         this.ctx.restore();
     }
@@ -6026,8 +6550,8 @@ class CanvasRenderer {
         const dirs = { left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] };
         const [dx, dy] = dirs[end.side];
         const x = (end.x + .5 + dx * .5) * CanvasRenderer.TILE, y = (end.y + .5 + dy * .5) * CanvasRenderer.TILE;
-        const colors = ['#91dedb', '#c6abf1', '#f0c58e', '#a8d794'];
-        const color = colors[index % colors.length];
+        const color = '#91dedb';
+        void index;
         const angle = { bottom: 0, top: Math.PI, left: Math.PI / 2, right: -Math.PI / 2 }[end.side];
         this.ctx.save();
         this.ctx.translate(x, y);
@@ -6100,11 +6624,16 @@ class CanvasRenderer {
     draw() {
         if (!this.session.board || !this.canvas.width)
             return;
-        const width = this.session.board.width * CanvasRenderer.TILE, height = this.session.board.height * CanvasRenderer.TILE;
+        const logicalWidth = this.session.board.width * CanvasRenderer.TILE;
+        const width = (0, BoardGeometry_js_1.framedCells)(this.session.board.width, this.frameTiles) * CanvasRenderer.TILE, height = (0, BoardGeometry_js_1.framedCells)(this.session.board.height, this.frameTiles) * CanvasRenderer.TILE;
         this.ctx.setTransform(this.canvas.width / width, 0, 0, this.canvas.height / height, 0, 0);
         this.ctx.clearRect(0, 0, width, height);
-        this.ctx.fillStyle = '#151c23';
+        this.ctx.fillStyle = '#101820';
         this.ctx.fillRect(0, 0, width, height);
+        this.ctx.save();
+        this.ctx.translate(this.frameTiles * CanvasRenderer.TILE, this.frameTiles * CanvasRenderer.TILE);
+        if (this.frameTiles)
+            this.drawOuterFrame();
         for (let y = 0; y < this.session.board.height; y++) {
             for (let x = 0; x < this.session.board.width; x++) {
                 if (this.session.board.walls.has(y * this.session.board.width + x))
@@ -6126,28 +6655,31 @@ class CanvasRenderer {
             this.drawPortal(pair.a, label, index);
             this.drawPortal(pair.b, label, index);
         });
-        if (this.session.levelIndex === 0 && !this.session.levels.get(0).openBoundary && this.session.moves === 0 && !this.ui.busy && this.session.selectedId === null) {
+        if (this.session.levels.count > 1 && this.session.levelIndex === 0 && !this.session.levels.get(0).openBoundary && this.session.moves === 0 && !this.ui.busy && this.session.selectedId === null) {
             this.ctx.save();
             this.ctx.textAlign = 'center';
             this.ctx.fillStyle = '#a7b3a3';
             this.ctx.font = '22px Georgia, serif';
-            this.ctx.fillText('Никуда не спешите.', width / 2, CanvasRenderer.TILE * 2.8);
+            this.ctx.fillText('Никуда не спешите.', logicalWidth / 2, CanvasRenderer.TILE * 2.8);
             this.ctx.fillStyle = '#6f8188';
             this.ctx.font = '11px "Segoe UI", Arial, sans-serif';
-            this.ctx.fillText('Выберите круг. Затем сделайте первый ход.', width / 2, CanvasRenderer.TILE * 3.2);
+            this.ctx.fillText('Выберите круг. Затем сделайте первый ход.', logicalWidth / 2, CanvasRenderer.TILE * 3.2);
             this.ctx.restore();
         }
         this.drawFields(this.ui.animation ? this.ui.animation.frame.before : this.session.blocks);
         if (!this.ui.animation) {
             const selected = this.session.blocks.find(b => b.id === this.session.selectedId);
-            if (selected && this.session.getStatus().kind === 'playing') {
+            this.session.blocks.forEach(b => this.drawBlock(b));
+            if (selected && this.session.getStatus().kind === 'playing' && (this.ui.selectionGuideVisible || this.ui.hint)) {
                 for (const dx of [-1, 1]) {
-                    const to = this.engine.destination(this.session.board, this.session.blocks, selected, dx, 0);
-                    if (to)
-                        this.drawArrow(to.x, to.y, dx, Boolean(this.ui.hint && this.ui.hint.dx === dx));
+                    if (!this.engine.canMove(this.session.board, this.session.blocks, selected.id, dx))
+                        continue;
+                    if (this.ui.hint && this.ui.hint.dx !== dx)
+                        continue;
+                    this.drawMoveGuide(selected, dx, Boolean(this.ui.hint && this.ui.hint.dx === dx));
                 }
             }
-            this.session.blocks.forEach(b => this.drawBlock(b));
+            this.ctx.restore();
             return;
         }
         const { frame, progress: p } = this.ui.animation;
@@ -6189,6 +6721,7 @@ class CanvasRenderer {
                 this.drawBlock({ ...b, x: old.x + (b.x - old.x) * ease, y: old.y + (b.y - old.y) * ease });
             }
         }
+        this.ctx.restore();
     }
     resizeCanvas() {
         if (!this.session.board)
@@ -6197,7 +6730,7 @@ class CanvasRenderer {
         const rect = stage?.getBoundingClientRect();
         const availableWidth = Math.max(1, rect?.width ?? this.canvas.getBoundingClientRect().width);
         const availableHeight = Math.max(1, rect?.height ?? availableWidth);
-        const boardRatio = this.session.board.width / this.session.board.height;
+        const boardRatio = (0, BoardGeometry_js_1.framedCells)(this.session.board.width, this.frameTiles) / (0, BoardGeometry_js_1.framedCells)(this.session.board.height, this.frameTiles);
         let cssWidth = availableWidth;
         let cssHeight = cssWidth / boardRatio;
         if (cssHeight > availableHeight) {
@@ -6262,9 +6795,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DomElements = void 0;
 const TAGS = {
     app: 'main',
-    homeScreen: 'section', homeHelpBtn: 'button', homeTitle: 'h1', continueBtn: 'button', continueLabel: 'strong', continueDetail: 'small', chooseLevelsBtn: 'button', editorBtn: 'button', homeProgress: 'strong', homeProgressBar: 'span', homeFullscreenBtn: 'button',
+    homeScreen: 'section', secretTrigger: 'button', homeHelpBtn: 'button', homeTitle: 'h1', continueBtn: 'button', continueLabel: 'strong', continueDetail: 'small', chooseLevelsBtn: 'button', editorBtn: 'button', homeProgress: 'strong', homeProgressBar: 'span', homeStars: 'strong', homePerfect: 'strong', achievementsBtn: 'button', homeFullscreenBtn: 'button',
     levelsScreen: 'section', levelsBackBtn: 'button', levelsTitle: 'h1', progressText: 'span', chapterSwipe: 'div', chapterKicker: 'p', chapterTitle: 'h2', chapterDescription: 'p', chapterArt: 'div', chapterProgress: 'span', chapterRange: 'span', levelGrid: 'div', prevChapterBtn: 'button', chapterDots: 'div', nextChapterBtn: 'button', chapterFootnote: 'p',
-    gameScreen: 'section', gameLevelsBtn: 'button', levelKicker: 'p', boardTitle: 'h1', pauseBtn: 'button', moveCount: 'strong', blockCount: 'strong', levelInfoBtn: 'button', stage: 'div', board: 'canvas', boardInstructions: 'p', boardDescription: 'p', statusBtn: 'button', statusMessage: 'span', selectionLine: 'div', selectionDot: 'span', selectionText: 'span', showResultBtn: 'button', leftBtn: 'button', rightBtn: 'button', undoBtn: 'button', hintBtn: 'button', hintLabel: 'span', gameHelpBtn: 'button',
+    gameScreen: 'section', gameLevelsBtn: 'button', levelKicker: 'p', boardTitle: 'h1', pauseBtn: 'button', moveCount: 'strong', blockCount: 'strong', levelInfoBtn: 'button', stage: 'div', board: 'canvas', boardInstructions: 'p', boardDescription: 'p', statusBtn: 'button', statusMessage: 'span', selectionLine: 'div', selectionDot: 'span', selectionText: 'span', showResultBtn: 'button', leftBtn: 'button', rightBtn: 'button', undoBtn: 'button', hintBtn: 'button', hintLabel: 'span', gameHelpBtn: 'button', restartQuickBtn: 'button',
     editorScreen: 'section', editorBackBtn: 'button', editorTitleBtn: 'button', editorTitle: 'strong', editorSizeLabel: 'span', editorStage: 'div', editorBoard: 'canvas', editorStatus: 'div', editorBuildDeck: 'div', editorPalette: 'div', portalSidePicker: 'div', editorTestBtn: 'button', editorSaveBtn: 'button', editorMoreBtn: 'button', editorTestDeck: 'div', editorTestSelection: 'span', editorTestMoves: 'strong', editorLeftBtn: 'button', editorRightBtn: 'button', editorUndoBtn: 'button', editorResetTestBtn: 'button', editorExitTestBtn: 'button',
     helpScreen: 'section', closeHelpBtn: 'button', helpTitle: 'h1', ruleCounter: 'span', ruleSwipe: 'div', ruleArt: 'div', ruleKicker: 'p', ruleTitle: 'h2', ruleBody: 'div', prevRuleBtn: 'button', ruleDots: 'div', nextRuleBtn: 'button', playBtn: 'button',
     pauseDialog: 'dialog', closePauseBtn: 'button', pauseTitle: 'h2', pauseDetail: 'p', resumeBtn: 'button', resetBtn: 'button', pauseLevelsBtn: 'button', homeBtn: 'button', animationToggle: 'input', fullscreenBtn: 'button',
@@ -6273,7 +6806,9 @@ const TAGS = {
     editorMetaDialog: 'dialog', closeEditorMetaBtn: 'button', editorMetaTitle: 'h2', editorNameInput: 'input', editorNoteInput: 'textarea', editorMetaApplyBtn: 'button',
     editorMoreDialog: 'dialog', closeEditorMoreBtn: 'button', editorMoreTitle: 'h2', editorWidthMinus: 'button', editorWidthValue: 'strong', editorWidthPlus: 'button', editorHeightMinus: 'button', editorHeightValue: 'strong', editorHeightPlus: 'button', editorResizeBtn: 'button', editorNewBtn: 'button', editorSavedBtn: 'button', editorSavedCount: 'span', editorSolveBtn: 'button', editorExportBtn: 'button', editorImportBtn: 'button',
     editorSavedDialog: 'dialog', closeEditorSavedBtn: 'button', editorSavedTitle: 'h2', editorSavedList: 'div', editorSavedEmpty: 'p', editorImportFile: 'input',
-    winOverlay: 'dialog', winKicker: 'p', winTitle: 'h2', winDescription: 'p', winMoves: 'strong', winBest: 'strong', nextBtn: 'button', winLevelsBtn: 'button', viewBoardBtn: 'button', winReplayBtn: 'button',
+    achievementsDialog: 'dialog', closeAchievementsBtn: 'button', achievementsTitle: 'h2', achievementsSummary: 'p', achievementsList: 'div',
+    secretScreamer: 'dialog', secretBoo: 'strong', secretAfter: 'p', closeSecretScreamerBtn: 'button',
+    winOverlay: 'dialog', winKicker: 'p', winTitle: 'h2', winDescription: 'p', winStars: 'div', winMoves: 'strong', winBest: 'strong', winIq: 'strong', winIqNote: 'p', winAchievement: 'p', nextBtn: 'button', winLevelsBtn: 'button', viewBoardBtn: 'button', winReplayBtn: 'button',
 };
 class DomElements {
     nodes = new Map();
@@ -6352,6 +6887,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameView = void 0;
 const BlockAppearance_js_1 = require("./BlockAppearance.js");
 const RussianText_js_1 = require("./RussianText.js");
+const BoardGeometry_js_1 = require("./BoardGeometry.js");
 const BASE_CHAPTERS = [
     { title: 'Первые шаги', description: 'Совпадения, падения и цепные реакции.' },
     { title: 'Новые пути', description: 'Ищите короткий маршрут к совпадению.' },
@@ -6403,19 +6939,23 @@ class GameView {
     engine;
     levels;
     progress;
+    achievements;
+    i18n;
     chapterSize = 10;
     chapterIndex = 0;
     ruleIndex = 0;
-    constructor(elements, session, ui, engine, levels, progress) {
+    constructor(elements, session, ui, engine, levels, progress, achievements, i18n) {
         this.elements = elements;
         this.session = session;
         this.ui = ui;
         this.engine = engine;
         this.levels = levels;
         this.progress = progress;
+        this.achievements = achievements;
+        this.i18n = i18n;
     }
     get canvas() { return this.elements.get('board'); }
-    get chapterCount() { return Math.ceil(this.levels.count / this.chapterSize); }
+    get chapterCount() { return Math.ceil(this.levels.publicCount / this.chapterSize); }
     createNavigation() { this.selectChapterForLevel(this.session.levelIndex); this.renderChapterNavigation(); this.renderRule(); }
     selectChapterForLevel(levelIndex) { this.chapterIndex = Math.max(0, Math.min(this.chapterCount - 1, Math.floor(levelIndex / this.chapterSize))); }
     changeChapter(direction) {
@@ -6445,10 +6985,10 @@ class GameView {
         this.ui.message = hasDoors ? 'Одинаковые номера — одна пара дверей. Пересеките проём.' : hasFire ? 'Огонь можно двигать. Он обжигает только сверху.' : hasIce || hasPlant || hasWind ? 'Уберите цветные блоки. Специальные элементы могут остаться.' : hasPlatforms ? 'Светлая платформа перекрывает переход между клетками.' : 'Соедините одинаковые блоки. Совпадение — по сторонам.';
         this.ui.messageKind = hasDoors ? 'portal' : hasIce || hasPlant || hasWind ? 'element' : hasFire ? 'fire' : '';
         this.elements.get('boardTitle').textContent = level.title;
-        this.elements.get('levelKicker').textContent = `УРОВЕНЬ ${String(index + 1).padStart(3, '0')} / ${this.levels.count}`;
-        this.canvas.style.aspectRatio = `${this.session.board.width} / ${this.session.board.height}`;
+        this.elements.get('levelKicker').textContent = level.secret ? this.i18n.t('secret.kicker') : `УРОВЕНЬ ${String(index + 1).padStart(3, '0')} / ${this.levels.publicCount}`;
+        this.canvas.style.aspectRatio = (0, BoardGeometry_js_1.framedAspect)(this.session.board.width, this.session.board.height, level.openBoundary ? 1 : 0);
         this.canvas.setAttribute('aria-label', `Игровое поле. Уровень ${index + 1}. ${this.session.board.width} на ${this.session.board.height} клеток.`);
-        this.elements.get('infoKicker').textContent = `УРОВЕНЬ ${String(index + 1).padStart(3, '0')}`;
+        this.elements.get('infoKicker').textContent = level.secret ? this.i18n.t('secret.kicker') : `УРОВЕНЬ ${String(index + 1).padStart(3, '0')}`;
         this.elements.get('infoTitle').textContent = level.title;
         this.elements.get('infoText').textContent = level.note;
         const mechanics = [];
@@ -6494,6 +7034,27 @@ class GameView {
         if (dialog.open)
             dialog.close();
     }
+    openAchievements() {
+        this.renderAchievements();
+        const dialog = this.elements.get('achievementsDialog');
+        if (!dialog.open)
+            dialog.showModal();
+    }
+    closeAchievements() {
+        const dialog = this.elements.get('achievementsDialog');
+        if (dialog.open)
+            dialog.close();
+    }
+    openSecretScreamer() {
+        const dialog = this.elements.get('secretScreamer');
+        if (!dialog.open)
+            dialog.showModal();
+    }
+    closeSecretScreamer() {
+        const dialog = this.elements.get('secretScreamer');
+        if (dialog.open)
+            dialog.close();
+    }
     showScreen(screen) {
         const logical = screen === 'complete' ? 'game' : screen;
         const ids = [
@@ -6507,15 +7068,22 @@ class GameView {
             this.closeWin();
     }
     renderHome() {
-        const completed = this.progress.completed, count = Object.keys(completed).length, current = this.session.levelIndex;
-        this.elements.get('homeProgress').textContent = `${count} / ${this.levels.count}`;
-        this.elements.get('homeProgressBar').style.width = `${100 * count / this.levels.count}%`;
-        this.elements.get('progressText').textContent = `${count} / ${this.levels.count}`;
-        this.elements.get('continueLabel').textContent = count ? 'Продолжить' : 'Играть';
+        const completed = this.progress.completed;
+        let count = 0;
+        for (let i = 0; i < this.levels.publicCount; i++)
+            if (Object.hasOwn(completed, i))
+                count++;
+        const current = this.levels.isSecret(this.session.levelIndex) ? this.progress.level : Math.min(this.session.levelIndex, this.levels.publicCount - 1);
+        this.elements.get('homeProgress').textContent = `${count} / ${this.levels.publicCount}`;
+        this.elements.get('homeProgressBar').style.width = `${100 * count / this.levels.publicCount}%`;
+        this.elements.get('progressText').textContent = `${count} / ${this.levels.publicCount}`;
+        this.elements.get('homeStars').textContent = String(this.classicStars());
+        this.elements.get('homePerfect').textContent = String(this.classicPerfect());
+        this.elements.get('continueLabel').textContent = count ? this.i18n.t('common.continue') : this.i18n.t('common.play');
         this.elements.get('continueDetail').textContent = `Уровень ${current + 1} · ${this.levels.get(current).title}`;
     }
     renderChapterNavigation() {
-        const start = this.chapterIndex * this.chapterSize, end = Math.min(start + this.chapterSize, this.levels.count), completed = this.progress.completed;
+        const start = this.chapterIndex * this.chapterSize, end = Math.min(start + this.chapterSize, this.levels.publicCount), completed = this.progress.completed;
         const grid = this.elements.get('levelGrid');
         grid.replaceChildren();
         for (let i = start; i < end; i++) {
@@ -6523,7 +7091,8 @@ class GameView {
             button.type = 'button';
             button.className = `level-button${done ? ' completed' : ''}${active ? ' active' : ''}`;
             button.dataset.level = String(i);
-            button.innerHTML = `<span class="level-number">${String(i + 1).padStart(i >= 99 ? 3 : 2, '0')}</span><span class="level-state">${active ? 'сейчас' : done ? '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg>' : '·'}</span>`;
+            const stars = this.progress.starsFor(i);
+            button.innerHTML = `<span class="level-number">${String(i + 1).padStart(i >= 99 ? 3 : 2, '0')}</span><span class="level-state">${active ? 'сейчас' : done ? '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg>' : '·'}</span><span class="level-stars" aria-label="${stars} из 3 звёзд">${stars ? '★'.repeat(stars) + '☆'.repeat(3 - stars) : '☆☆☆'}</span>`;
             if (active)
                 button.setAttribute('aria-current', 'step');
             button.setAttribute('aria-label', `Уровень ${i + 1}${done ? ', пройден' : ''}${active ? ', текущий' : ''}`);
@@ -6580,12 +7149,13 @@ class GameView {
         this.elements.get('leftBtn').disabled = this.ui.busy || status.kind !== 'playing' || !selected || !this.engine.canMove(this.session.board, this.session.blocks, this.session.selectedId, -1);
         this.elements.get('rightBtn').disabled = this.ui.busy || status.kind !== 'playing' || !selected || !this.engine.canMove(this.session.board, this.session.blocks, this.session.selectedId, 1);
         this.elements.get('undoBtn').disabled = this.ui.busy || this.session.historyLength === 0;
+        this.elements.get('restartQuickBtn').disabled = this.ui.busy || this.session.moves === 0;
         this.elements.get('hintBtn').disabled = this.ui.busy || this.ui.hintBusy || status.kind !== 'playing';
         this.elements.get('hintLabel').textContent = this.ui.hintBusy ? 'Ищу…' : 'Подсказка';
         const dot = this.elements.get('selectionDot');
         dot.style.backgroundColor = selected ? BlockAppearance_js_1.BlockAppearance.for(selected).color : 'transparent';
         dot.style.borderColor = selected ? BlockAppearance_js_1.BlockAppearance.for(selected).color : '#718293';
-        this.elements.get('selectionText').textContent = this.ui.busy ? 'Ход выполняется…' : selected && status.kind === 'playing' ? BlockAppearance_js_1.BlockAppearance.for(selected).name : status.kind === 'won' ? 'Все цветные блоки убраны' : 'Коснитесь блока';
+        this.elements.get('selectionText').textContent = this.ui.busy ? this.i18n.t('game.moving') : selected && status.kind === 'playing' ? BlockAppearance_js_1.BlockAppearance.for(selected).name : status.kind === 'won' ? this.i18n.t('game.won') : this.i18n.t('game.selectBlock');
         let text = this.ui.message, kind = this.ui.messageKind;
         if (!this.ui.busy && status.kind === 'lost') {
             text = status.reason === 'singleton' ? 'Остался блок без пары. Отмените ход и попробуйте другой путь.' : status.reason === 'proven' ? 'Из этой позиции решения нет. Отмените ход.' : 'Все доступные ходы заблокированы. Отмените ход.';
@@ -6596,7 +7166,7 @@ class GameView {
             kind = 'hint';
         }
         const statusEl = this.elements.get('statusMessage');
-        statusEl.textContent = text || 'Следующий ход — когда будете готовы.';
+        statusEl.textContent = text || this.i18n.t('game.ready');
         statusEl.className = `status-message ${kind}`;
         this.elements.get('showResultBtn').hidden = status.kind !== 'won';
         const descriptions = this.session.blocks.map(block => `${BlockAppearance_js_1.BlockAppearance.for(block).description}: столбец ${block.x + 1}, строка ${block.y + 1}${block.id === this.session.selectedId ? ', выбран' : ''}`);
@@ -6612,16 +7182,72 @@ class GameView {
         const dialog = this.elements.get('winOverlay');
         if (this.ui.screen !== 'complete')
             return;
-        const completed = this.progress.completed, allDone = Object.keys(completed).length === this.levels.count, best = completed[this.session.levelIndex] ?? this.session.moves;
-        this.elements.get('winKicker').textContent = `УРОВЕНЬ ${String(this.session.levelIndex + 1).padStart(3, '0')} ПРОЙДЕН`;
-        this.elements.get('winTitle').textContent = allDone ? 'Классика пройдена!' : 'Есть контакт!';
-        this.elements.get('winDescription').textContent = 'Все цветные блоки убраны.';
+        const secret = this.levels.isSecret(this.session.levelIndex);
+        let classicDone = 0;
+        for (let i = 0; i < this.levels.publicCount; i++)
+            if (Object.hasOwn(this.progress.completed, i))
+                classicDone++;
+        const allDone = classicDone === this.levels.publicCount;
+        const best = secret ? this.session.moves : this.progress.bestFor(this.session.levelIndex) ?? this.session.moves;
+        const optimal = secret ? this.levels.get(this.session.levelIndex).par ?? null : this.progress.optimalFor(this.session.levelIndex);
+        const stars = secret ? this.starsForMoves(this.session.moves, optimal) : this.progress.starsFor(this.session.levelIndex);
+        this.elements.get('winKicker').textContent = secret ? this.i18n.t('secret.kicker') : this.i18n.t('result.levelComplete', { level: String(this.session.levelIndex + 1).padStart(3, '0') });
+        this.elements.get('winTitle').textContent = secret ? this.i18n.t('secret.title') : allDone ? this.i18n.t('result.classicComplete') : this.i18n.t('result.contact');
+        this.elements.get('winDescription').textContent = optimal !== null && this.session.moves <= optimal ? this.i18n.t('result.perfect', { moves: optimal }) : this.ui.ratingPending ? 'Считаю минимальное решение…' : this.i18n.t('result.allRemoved');
         this.elements.get('winMoves').textContent = String(this.session.moves);
         this.elements.get('winBest').textContent = String(best);
-        this.elements.get('nextBtn').innerHTML = this.session.levelIndex < this.levels.count - 1 ? `Следующий уровень ${this.icon('right')}` : allDone ? `С начала ${this.icon('right')}` : `К непройденному ${this.icon('right')}`;
+        const starBox = this.elements.get('winStars');
+        starBox.innerHTML = [1, 2, 3].map(value => `<span class="${value <= stars ? 'earned' : ''}">★</span>`).join('');
+        const iq = this.gameIq(this.session.moves, optimal, stars, this.session.levelIndex);
+        this.elements.get('winIq').textContent = String(iq);
+        this.elements.get('winIqNote').textContent = `${this.i18n.t('result.iqNote')} ${this.iqPhrase(iq)}`;
+        const achievement = this.elements.get('winAchievement');
+        achievement.hidden = !this.ui.newAchievementTitle;
+        achievement.textContent = this.ui.newAchievementTitle ? this.i18n.t('achievement.unlocked', { title: this.ui.newAchievementTitle }) : '';
+        this.elements.get('nextBtn').innerHTML = secret ? `В главное меню ${this.icon('right')}` : this.session.levelIndex < this.levels.publicCount - 1 ? `Следующий уровень ${this.icon('right')}` : allDone ? `С начала ${this.icon('right')}` : `К непройденному ${this.icon('right')}`;
         if (!dialog.open)
             dialog.showModal();
     }
+    renderAchievements() {
+        const list = this.elements.get('achievementsList');
+        list.replaceChildren();
+        this.elements.get('achievementsSummary').textContent = `${this.i18n.t('achievement.perfectCount', { count: this.classicPerfect() })} · ${this.classicStars()} ★`;
+        for (const item of this.achievements.list(this.progress)) {
+            const row = document.createElement('div');
+            row.className = `achievement-row${item.unlocked ? ' unlocked' : ''}`;
+            row.innerHTML = `<span class="achievement-mark">${item.unlocked ? '★' : '○'}</span><span><strong>${item.title}</strong><small>${item.description}</small></span>`;
+            list.append(row);
+        }
+    }
+    classicStars() {
+        let total = 0;
+        for (let i = 0; i < this.levels.publicCount; i++)
+            total += this.progress.starsFor(i);
+        return total;
+    }
+    classicPerfect() {
+        let total = 0;
+        for (let i = 0; i < this.levels.publicCount; i++) {
+            const best = this.progress.bestFor(i), optimal = this.progress.optimalFor(i);
+            if (best !== null && optimal !== null && best <= optimal)
+                total++;
+        }
+        return total;
+    }
+    starsForMoves(moves, optimal) {
+        if (optimal === null)
+            return 1;
+        if (moves <= optimal)
+            return 3;
+        return moves <= optimal + Math.max(1, Math.ceil(optimal * .35)) ? 2 : 1;
+    }
+    gameIq(moves, optimal, stars, level) {
+        if (optimal === null)
+            return 96 + stars * 7 + level % 5;
+        const extra = Math.max(0, moves - optimal);
+        return Math.max(72, Math.min(145, 106 + stars * 9 - extra * 5 + level % 4));
+    }
+    iqPhrase(iq) { return iq >= 138 ? '«Так, а вы точно не писали этот уровень?»' : iq >= 125 ? '«Подозрительно точно.»' : iq >= 110 ? '«Мозг прогрет.»' : iq >= 95 ? '«Нормальный человеческий маршрут.»' : '«Зато было красиво.»'; }
     visiblePlatformCount() {
         const { width, height, walls, platforms } = this.session.board;
         if (!platforms)
@@ -6642,10 +7268,127 @@ class GameView {
 exports.GameView = GameView;
 
 },
+"presentation/I18n.js": function(module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.I18n = void 0;
+const RU = Object.freeze({
+    'app.title': 'Сближение — классика · редактор',
+    'common.play': 'Играть',
+    'common.continue': 'Продолжить',
+    'common.level': 'Уровень {level}',
+    'common.moves': '{count} ходов',
+    'common.restart': 'Сначала',
+    'common.undo': 'Отмена',
+    'common.hint': 'Подсказка',
+    'common.rules': 'Правила',
+    'common.fullscreen': 'На весь экран',
+    'common.exitFullscreen': 'Выйти из полного экрана',
+    'game.selectBlock': 'Коснитесь блока',
+    'game.moving': 'Ход выполняется…',
+    'game.won': 'Все цветные блоки убраны',
+    'game.ready': 'Следующий ход — когда будете готовы.',
+    'game.restartTitle': 'Начать уровень заново?',
+    'game.restartDescription': 'Текущий прогресс уровня и история отмены будут сброшены.',
+    'game.restartAccept': 'Начать заново',
+    'result.levelComplete': 'УРОВЕНЬ {level} ПРОЙДЕН',
+    'result.contact': 'Есть контакт!',
+    'result.classicComplete': 'Классика пройдена!',
+    'result.allRemoved': 'Все цветные блоки убраны.',
+    'result.perfect': 'Идеально! Минимум: {moves}.',
+    'result.iqLabel': 'Игровой IQ',
+    'result.iqNote': 'Шуточный рейтинг прохождения, не тест интеллекта.',
+    'achievement.title': 'Достижения',
+    'achievement.perfectCount': 'Идеальных уровней: {count}',
+    'achievement.unlocked': 'Новое достижение: {title}',
+    'editor.testSelect': 'Тест: выберите блок и двигайте его влево или вправо.',
+    'editor.testWon': 'Тест пройден: все игровые блоки убраны.',
+    'secret.kicker': 'СЕКРЕТНЫЙ УРОВЕНЬ',
+    'secret.title': 'Коридор 404',
+    'secret.note': 'Тут определённо ничего подозрительного нет.',
+    'secret.boo': 'БУ!',
+    'secret.after': 'Ладно, это был эксперимент.',
+});
+const EN = Object.freeze({
+    'app.title': 'Sblizhenie — Classic · Editor',
+    'common.play': 'Play',
+    'common.continue': 'Continue',
+    'common.level': 'Level {level}',
+    'common.moves': '{count} moves',
+    'common.restart': 'Restart',
+    'common.undo': 'Undo',
+    'common.hint': 'Hint',
+    'common.rules': 'Rules',
+    'common.fullscreen': 'Fullscreen',
+    'common.exitFullscreen': 'Exit fullscreen',
+    'game.selectBlock': 'Tap a block',
+    'game.moving': 'Moving…',
+    'game.won': 'All color blocks cleared',
+    'game.ready': 'Take your time for the next move.',
+    'game.restartTitle': 'Restart this level?',
+    'game.restartDescription': 'The current board and undo history will be reset.',
+    'game.restartAccept': 'Restart',
+    'result.levelComplete': 'LEVEL {level} COMPLETE',
+    'result.contact': 'Contact!',
+    'result.classicComplete': 'Classic complete!',
+    'result.allRemoved': 'All color blocks cleared.',
+    'result.perfect': 'Perfect! Minimum: {moves}.',
+    'result.iqLabel': 'Game IQ',
+    'result.iqNote': 'A playful run rating, not an intelligence test.',
+    'achievement.title': 'Achievements',
+    'achievement.perfectCount': 'Perfect levels: {count}',
+    'achievement.unlocked': 'Achievement unlocked: {title}',
+    'editor.testSelect': 'Test: select a block and move it left or right.',
+    'editor.testWon': 'Test complete: all playable blocks cleared.',
+    'secret.kicker': 'SECRET LEVEL',
+    'secret.title': 'Corridor 404',
+    'secret.note': 'There is definitely nothing suspicious here.',
+    'secret.boo': 'BOO!',
+    'secret.after': 'Okay, that was an experiment.',
+});
+const DICTIONARIES = Object.freeze({ ru: RU, en: EN });
+class I18n {
+    current;
+    constructor(locale = null) {
+        this.current = this.normalize(locale ?? I18n.readPreferredLocale());
+        document.documentElement.lang = this.current;
+    }
+    get locale() { return this.current; }
+    setLocale(locale) {
+        this.current = this.normalize(locale);
+        document.documentElement.lang = this.current;
+        try {
+            window.localStorage.setItem('sblizhenie.locale', this.current);
+        }
+        catch { }
+        return this.current;
+    }
+    t(key, vars = {}) {
+        const template = DICTIONARIES[this.current][key] ?? RU[key] ?? key;
+        return template.replace(/\{([A-Za-z0-9_]+)\}/g, (_, name) => String(vars[name] ?? `{${name}}`));
+    }
+    normalize(locale) { return locale.toLowerCase().startsWith('en') ? 'en' : 'ru'; }
+    static readPreferredLocale() {
+        try {
+            const query = new URLSearchParams(window.location.search).get('lang');
+            if (query)
+                return query;
+            const saved = window.localStorage.getItem('sblizhenie.locale');
+            if (saved)
+                return saved;
+        }
+        catch { }
+        return 'ru';
+    }
+}
+exports.I18n = I18n;
+
+},
 "presentation/InputController.js": function(module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InputController = void 0;
+const BoardGeometry_js_1 = require("./BoardGeometry.js");
 class InputController {
     elements;
     session;
@@ -6654,6 +7397,8 @@ class InputController {
     scope = new AbortController();
     pointerStart = null;
     attached = false;
+    secretTaps = 0;
+    lastSecretTap = 0;
     constructor(elements, session, ui, actions) {
         this.elements = elements;
         this.session = session;
@@ -6674,6 +7419,9 @@ class InputController {
         this.elements.get('chooseLevelsBtn').addEventListener('click', () => this.actions.showLevels(), options);
         this.elements.get('editorBtn').addEventListener('click', () => this.actions.showEditor(), options);
         this.elements.get('homeHelpBtn').addEventListener('click', () => this.actions.showHelp('home'), options);
+        this.elements.get('achievementsBtn').addEventListener('click', () => this.actions.showAchievements(), options);
+        this.elements.get('closeAchievementsBtn').addEventListener('click', () => this.actions.closeAchievements(), options);
+        this.elements.get('secretTrigger').addEventListener('click', () => this.secretTap(), options);
         this.elements.get('levelsBackBtn').addEventListener('click', () => this.actions.showHome(), options);
         this.elements.get('prevChapterBtn').addEventListener('click', () => this.actions.changeLevelChapter(-1), options);
         this.elements.get('nextChapterBtn').addEventListener('click', () => this.actions.changeLevelChapter(1), options);
@@ -6687,6 +7435,7 @@ class InputController {
         this.elements.get('undoBtn').addEventListener('click', () => this.actions.undo(), options);
         this.elements.get('hintBtn').addEventListener('click', () => this.actions.requestHint(), options);
         this.elements.get('gameHelpBtn').addEventListener('click', () => this.actions.showHelp('game'), options);
+        this.elements.get('restartQuickBtn').addEventListener('click', () => { void this.actions.restartLevel(); }, options);
         this.elements.get('closeHelpBtn').addEventListener('click', () => this.actions.closeHelp(), options);
         this.elements.get('playBtn').addEventListener('click', () => this.actions.closeHelp(), options);
         this.elements.get('prevRuleBtn').addEventListener('click', () => this.actions.changeRule(-1), options);
@@ -6704,6 +7453,7 @@ class InputController {
         this.elements.get('winLevelsBtn').addEventListener('click', () => this.actions.showLevels(), options);
         this.elements.get('winReplayBtn').addEventListener('click', () => this.actions.loadLevel(this.session.levelIndex), options);
         this.elements.get('viewBoardBtn').addEventListener('click', () => this.actions.reviewResult(), options);
+        this.elements.get('closeSecretScreamerBtn').addEventListener('click', () => this.actions.closeSecretScreamer(), options);
         const grid = this.elements.get('levelGrid');
         grid.addEventListener('click', event => {
             const button = event.target instanceof Element ? event.target.closest('button[data-level]') : null;
@@ -6716,6 +7466,19 @@ class InputController {
         this.elements.get('fullscreenBtn').addEventListener('click', () => { void this.toggleFullscreen(); }, options);
         document.addEventListener('fullscreenchange', () => this.updateFullscreenButtons(), options);
         window.addEventListener('keydown', event => this.keyDown(event), options);
+        const app = this.elements.get('app');
+        app.addEventListener('dblclick', event => {
+            if (event.target instanceof Element && event.target.closest('button,canvas'))
+                event.preventDefault();
+        }, options);
+        app.addEventListener('selectstart', event => {
+            if (event.target instanceof Element && event.target.closest('button,.game-deck,.editor-test-deck'))
+                event.preventDefault();
+        }, options);
+        app.addEventListener('gesturestart', event => {
+            if (event.target instanceof Element && event.target.closest('.game-screen,.editor-screen'))
+                event.preventDefault();
+        }, { ...options, passive: false });
         this.updateFullscreenButtons();
     }
     resetPointer() {
@@ -6732,7 +7495,8 @@ class InputController {
     isPlaying() { return this.ui.screen === 'game' && !this.ui.busy && this.session.getStatus().kind === 'playing'; }
     eventCell(event) {
         const rect = this.canvas.getBoundingClientRect();
-        return { x: Math.floor((event.clientX - rect.left) / rect.width * this.session.board.width), y: Math.floor((event.clientY - rect.top) / rect.height * this.session.board.height) };
+        const frame = this.session.levels.get(this.session.levelIndex).openBoundary ? 1 : 0;
+        return (0, BoardGeometry_js_1.pointerToBoardCell)(rect, event.clientX, event.clientY, this.session.board.width, this.session.board.height, frame);
     }
     pointerDown(event) {
         if (!event.isPrimary || event.button !== 0 || !this.isPlaying())
@@ -6862,6 +7626,15 @@ class InputController {
             this.actions.requestHint();
         }
     }
+    secretTap() {
+        const now = performance.now();
+        this.secretTaps = now - this.lastSecretTap > 1600 ? 1 : this.secretTaps + 1;
+        this.lastSecretTap = now;
+        if (this.secretTaps >= 7) {
+            this.secretTaps = 0;
+            this.actions.openSecretLevel();
+        }
+    }
     async toggleFullscreen() {
         try {
             if (document.fullscreenElement)
@@ -6906,12 +7679,20 @@ class UiState {
     hintBusy = false;
     hint = null;
     animation = null;
+    selectionGuideVisible = false;
+    selectionGuidePulse = 0;
+    newAchievementTitle = '';
+    ratingPending = false;
     message = '';
     messageKind = '';
     animationsEnabled = true;
     resetGameplay() {
         this.busy = this.hintBusy = false;
         this.hint = this.animation = null;
+        this.selectionGuideVisible = false;
+        this.selectionGuidePulse = 0;
+        this.newAchievementTitle = '';
+        this.ratingPending = false;
         this.message = '';
         this.messageKind = '';
     }
